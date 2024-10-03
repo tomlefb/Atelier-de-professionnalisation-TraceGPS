@@ -7,7 +7,7 @@
 
 // convertirEnDateFR($laDate) : reçoit une date US (aaaa-mm-jj) et fournit sa conversion au format Français (jj/mm/aaaa)
 // convertirEnDateUS($laDate) : reçoit une date française (jj/mm/aaaa) et fournit sa conversion au format US (aaaa-mm-jj)
-// corrigerDate($laDate) : reçoit une date et fournit cette date en remplaçant les "-" par des "/"
+// corrigerDate($laDate) : rrrreçoit une date et fournit cette date en remplaçant les "-" par des "/"
 // corrigerPrenom($lePrenom) : reçoit un prénom et fournit ce prénom corrigé en mettant en majuscules le premier caractère, 
 //    et le caractère qui suit un éventuel tiret, et en mettant en minuscules les autres caractères
 // corrigerTelephone($leNumero) : reçoit un numéro et fournit ce numéro corrigé en le mettant sous la forme de 
