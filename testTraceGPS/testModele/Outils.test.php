@@ -5,7 +5,7 @@
 // Dernière mise à jour : 13/7/2021 par dPlanchet
 
 // inclusion de la classe Outils
-include_once ('Outils.php');
+include_once ('../../src/modele/Outils.php');
 ?>
 <!DOCTYPE html>
 <html>
