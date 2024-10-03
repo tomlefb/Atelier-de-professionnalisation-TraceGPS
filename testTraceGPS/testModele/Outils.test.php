@@ -1,8 +1,8 @@
 <?php
 // Projet TraceGPS
 // fichier : modele/Outils.test.php
-// Rôle : test de la classe Outils.php
-// Dernière mise à jour : 18/5/2021 par dPlanchet
+// Rôle : test de la classe Outils.php (il suffit d'afficher cette page dans un navigateur web)
+// Dernière mise à jour : 13/7/2021 par dPlanchet
 
 // inclusion de la classe Outils
 include_once ('Outils.php');
@@ -98,21 +98,23 @@ echo ('<br>');
 // test de la méthode creerMdp---------------------------------------------------------------------
 echo ('<b>Test de la méthode creerMdp : </b><br>');
 echo ('Un mot de passe : ' . Outils::creerMdp() . '<br>');
-echo ('Un mot de passe : ' . Outils::creerMdp() . '<br>');
-echo ('Un mot de passe : ' . Outils::creerMdp() . '<br>');
+echo ('Un autre mot de passe : ' . Outils::creerMdp() . '<br>');
+echo ('Et encore un autre mot de passe : ' . Outils::creerMdp() . '<br>');
 echo ('<br>');
 
 // test de la méthode envoyerMail------------------------------------------------------------------
 // ATTENTION : remplacez l'adr destinataire par votre adresse pour pouvoir vérifier la réception du mail
-$adresseDestinataire = "xxxxxxxxxxxxxxxxxxxxxx";
+$adresseDestinataire = "xxxxxxxxxxxxxxxxxx";
 $sujet = "sujet du test";
 $message = "corps du message";
 $adresseEmetteur = "delasalle.sio.crib@gmail.com";
 $ok = false;
 $ok = Outils::envoyerMail ($adresseDestinataire, $sujet, $message, $adresseEmetteur);
 echo ('<b>Test de la méthode envoyerMail : </b><br>');
-if ($ok == true) echo ('Un mail vient d\'être envoyé !<br>');
-else echo ('L\'envoi du mail a rencontré un problème !<br>');
+if ($ok == true) 
+    echo ('Un mail vient d\'être envoyé !<br>');
+else 
+    echo ('L\'envoi du mail a rencontré un problème !<br>');
 echo ('<br>');
 
 // test de la méthode estUnCodePostalValide -------------------------------------------------------
