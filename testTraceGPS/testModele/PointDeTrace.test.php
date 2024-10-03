@@ -5,7 +5,7 @@
 // Dernière mise à jour : 18/7/2021 par dPlanchet
 
 // inclusion de la classe PointDeTrace
-include_once ('PointDeTrace.php');
+include_once ('../../src/modele/PointDeTrace.php');
 ?>
 <!DOCTYPE html>
 <html>

@@ -4,7 +4,7 @@
 // Rôle : test de la classe Trace.php
 // Dernière mise à jour : 15/7/2021 par dPlanchet
 // inclusion de la classe Trace
-include_once ('Trace.php');
+include_once ('../../src/modele/Trace.php');
 ?>
 <!DOCTYPE html>
 <html>

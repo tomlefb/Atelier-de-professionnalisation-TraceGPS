@@ -4,7 +4,7 @@
 // Rôle : test de la classe Utilisateur.php
 // Dernière mise à jour : 18/7/2021 par dPlanchet
 
-include_once ('Utilisateur.php');
+include_once ('../../src/modele/Utilisateur.php');
 
 ?>
 <!DOCTYPE html>
