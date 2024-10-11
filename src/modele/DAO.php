@@ -44,7 +44,7 @@ include_once ('Point.php');
 include_once ('Outils.php');
 
 // inclusion des paramètres de l'application
-include_once ('../service/parametres.php');
+include_once('parametres.php');
 
 // début de la classe DAO (Data Access Object)
 class DAO
@@ -60,6 +60,7 @@ class DAO
     // ------------------------------------------------------------------------------------------------------
     public function __construct() {
         global $PARAM_HOTE, $PARAM_PORT, $PARAM_BDD, $PARAM_USER, $PARAM_PWD;
+        echo $PARAM_HOTE;
         try
         {	$this->cnx = new PDO ("mysql:host=" . $PARAM_HOTE . ";port=" . $PARAM_PORT . ";dbname=" . $PARAM_BDD,
             $PARAM_USER,
@@ -73,7 +74,9 @@ class DAO
         return false;
         }
     }
-    
+
+
+
     public function __destruct() {
         // ferme la connexion à MySQL :
         unset($this->cnx);
@@ -160,15 +163,15 @@ class DAO
         }
         else {
             // création d'un objet Utilisateur
-            $unId = utf8_encode($uneLigne->id);
-            $unPseudo = utf8_encode($uneLigne->pseudo);
-            $unMdpSha1 = utf8_encode($uneLigne->mdpSha1);
-            $uneAdrMail = utf8_encode($uneLigne->adrMail);
-            $unNumTel = utf8_encode($uneLigne->numTel);
-            $unNiveau = utf8_encode($uneLigne->niveau);
-            $uneDateCreation = utf8_encode($uneLigne->dateCreation);
-            $unNbTraces = utf8_encode($uneLigne->nbTraces);
-            $uneDateDerniereTrace = utf8_encode($uneLigne->dateDerniereTrace);
+            $unId = $uneLigne->id !== null ? mb_convert_encoding($uneLigne->id, 'UTF-8', 'UTF-8') : "";
+            $unPseudo = $uneLigne->pseudo !== null ? mb_convert_encoding($uneLigne->pseudo, 'UTF-8', 'UTF-8') : "";
+            $unMdpSha1 = $uneLigne->mdpSha1 !== null ? mb_convert_encoding($uneLigne->mdpSha1, 'UTF-8', 'UTF-8') : "";
+            $uneAdrMail = $uneLigne->adrMail !== null ? mb_convert_encoding($uneLigne->adrMail, 'UTF-8', 'UTF-8') : "";
+            $unNumTel = $uneLigne->numTel !== null ? mb_convert_encoding($uneLigne->numTel, 'UTF-8', 'UTF-8') : "";
+            $unNiveau = $uneLigne->niveau !== null ? mb_convert_encoding($uneLigne->niveau, 'UTF-8', 'UTF-8') : "";
+            $uneDateCreation = $uneLigne->dateCreation !== null ? mb_convert_encoding($uneLigne->dateCreation, 'UTF-8', 'UTF-8') : "";
+            $unNbTraces = $uneLigne->nbTraces !== null ? mb_convert_encoding($uneLigne->nbTraces, 'UTF-8', 'UTF-8') : "";
+            $uneDateDerniereTrace = $uneLigne->dateDerniereTrace !== null ? mb_convert_encoding($uneLigne->dateDerniereTrace, 'UTF-8', 'UTF-8') : "";
             
             $unUtilisateur = new Utilisateur($unId, $unPseudo, $unMdpSha1, $uneAdrMail, $unNumTel, $unNiveau, $uneDateCreation, $unNbTraces, $uneDateDerniereTrace);
             return $unUtilisateur;
@@ -196,15 +199,15 @@ class DAO
         // tant qu'une ligne est trouvée :
         while ($uneLigne) {
             // création d'un objet Utilisateur
-            $unId = utf8_encode($uneLigne->id);
-            $unPseudo = utf8_encode($uneLigne->pseudo);
-            $unMdpSha1 = utf8_encode($uneLigne->mdpSha1);
-            $uneAdrMail = utf8_encode($uneLigne->adrMail);
-            $unNumTel = utf8_encode($uneLigne->numTel);
-            $unNiveau = utf8_encode($uneLigne->niveau);
-            $uneDateCreation = utf8_encode($uneLigne->dateCreation);
-            $unNbTraces = utf8_encode($uneLigne->nbTraces);
-            $uneDateDerniereTrace = utf8_encode($uneLigne->dateDerniereTrace);
+            $unId = $uneLigne->id !== null ? mb_convert_encoding($uneLigne->id, 'UTF-8', 'UTF-8') : "";
+            $unPseudo = $uneLigne->pseudo !== null ? mb_convert_encoding($uneLigne->pseudo, 'UTF-8', 'UTF-8') : "";
+            $unMdpSha1 = $uneLigne->mdpSha1 !== null ? mb_convert_encoding($uneLigne->mdpSha1, 'UTF-8', 'UTF-8') : "";
+            $uneAdrMail = $uneLigne->adrMail !== null ? mb_convert_encoding($uneLigne->adrMail, 'UTF-8', 'UTF-8') : "";
+            $unNumTel = $uneLigne->numTel !== null ? mb_convert_encoding($uneLigne->numTel, 'UTF-8', 'UTF-8') : "";
+            $unNiveau = $uneLigne->niveau !== null ? mb_convert_encoding($uneLigne->niveau, 'UTF-8', 'UTF-8') : "";
+            $uneDateCreation = $uneLigne->dateCreation !== null ? mb_convert_encoding($uneLigne->dateCreation, 'UTF-8', 'UTF-8') : "";
+            $unNbTraces = $uneLigne->nbTraces !== null ? mb_convert_encoding($uneLigne->nbTraces, 'UTF-8', 'UTF-8') : "";
+            $uneDateDerniereTrace = $uneLigne->dateDerniereTrace !== null ? mb_convert_encoding($uneLigne->dateDerniereTrace, 'UTF-8', 'UTF-8') : "";
             
             $unUtilisateur = new Utilisateur($unId, $unPseudo, $unMdpSha1, $uneAdrMail, $unNumTel, $unNiveau, $uneDateCreation, $unNbTraces, $uneDateDerniereTrace);
             // ajout de l'utilisateur à la collection
@@ -232,12 +235,12 @@ class DAO
         $txt_req1 .= " values (:pseudo, :mdpSha1, :adrMail, :numTel, :niveau, :dateCreation)";
         $req1 = $this->cnx->prepare($txt_req1);
         // liaison de la requête et de ses paramètres
-        $req1->bindValue("pseudo", utf8_decode($unUtilisateur->getPseudo()), PDO::PARAM_STR);
-        $req1->bindValue("mdpSha1", utf8_decode(sha1($unUtilisateur->getMdpsha1())), PDO::PARAM_STR);
-        $req1->bindValue("adrMail", utf8_decode($unUtilisateur->getAdrmail()), PDO::PARAM_STR);
-        $req1->bindValue("numTel", utf8_decode($unUtilisateur->getNumTel()), PDO::PARAM_STR);
-        $req1->bindValue("niveau", utf8_decode($unUtilisateur->getNiveau()), PDO::PARAM_INT);
-        $req1->bindValue("dateCreation", utf8_decode($unUtilisateur->getDateCreation()), PDO::PARAM_STR);
+        $req1->bindValue("pseudo", $unUtilisateur->getPseudo() !== null ? mb_convert_encoding($unUtilisateur->getPseudo(), 'UTF-8', 'UTF-8') : "", PDO::PARAM_STR);
+        $req1->bindValue("mdpSha1", $unUtilisateur->getMdpsha1() !== null ? mb_convert_encoding(sha1($unUtilisateur->getMdpsha1()), 'UTF-8', 'UTF-8') : "", PDO::PARAM_STR);
+        $req1->bindValue("adrMail", $unUtilisateur->getAdrmail() !== null ? mb_convert_encoding($unUtilisateur->getAdrmail(), 'UTF-8', 'UTF-8') : "", PDO::PARAM_STR);
+        $req1->bindValue("numTel", $unUtilisateur->getNumTel() !== null ? mb_convert_encoding($unUtilisateur->getNumTel(), 'UTF-8', 'UTF-8') : "", PDO::PARAM_STR);
+        $req1->bindValue("niveau", $unUtilisateur->getNiveau() !== null ? mb_convert_encoding($unUtilisateur->getNiveau(), 'UTF-8', 'UTF-8') : "", PDO::PARAM_INT);
+        $req1->bindValue("dateCreation", $unUtilisateur->getDateCreation() !== null ? mb_convert_encoding($unUtilisateur->getDateCreation(), 'UTF-8', 'UTF-8') : "", PDO::PARAM_STR);
         // exécution de la requête
         $ok = $req1->execute();
         // sortir en cas d'échec
@@ -253,14 +256,17 @@ class DAO
     // enregistre le nouveau mot de passe $nouveauMdp de l'utilisateur $pseudo daprès l'avoir hashé en SHA1
     // fournit true si la modification s'est bien effectuée, false sinon
     // modifié par dP le 9/1/2018
-    public function modifierMdpUtilisateur($pseudo, $nouveauMdp) {
+    // modifie le mot de passe de l'utilisateur $pseudo avec le nouveau mot de passe $nouveauMdp
+    // fournit true si la modification s'est bien effectuée, false sinon
+    public function modifierMdpUtilisateur($pseudo, $nouveauMdp)
+    {
         // préparation de la requête
         $txt_req = "update tracegps_utilisateurs set mdpSha1 = :nouveauMdp";
         $txt_req .= " where pseudo = :pseudo";
         $req = $this->cnx->prepare($txt_req);
         // liaison de la requête et de ses paramètres
-        $req->bindValue("nouveauMdp", sha1($nouveauMdp), PDO::PARAM_STR);
-        $req->bindValue("pseudo", $pseudo, PDO::PARAM_STR);
+        $req->bindValue("nouveauMdp", $nouveauMdp !== null ? mb_convert_encoding(sha1($nouveauMdp), 'UTF-8', 'UTF-8') : "", PDO::PARAM_STR);
+        $req->bindValue("pseudo", $pseudo !== null ? mb_convert_encoding($pseudo, 'UTF-8', 'UTF-8') : "", PDO::PARAM_STR);
         // exécution de la requête
         $ok = $req->execute();
         return $ok;
@@ -274,33 +280,31 @@ class DAO
         $unUtilisateur = $this->getUnUtilisateur($pseudo);
         if ($unUtilisateur == null) {
             return false;
-        }
-        else {
+        } else {
             $idUtilisateur = $unUtilisateur->getId();
-            
+
             // suppression des traces de l'utilisateur (et des points correspondants)
             $lesTraces = $this->getLesTraces($idUtilisateur);
-            if($lesTraces != null)
-			{
-				foreach ($lesTraces as $uneTrace) {
-					$this->supprimerUneTrace($uneTrace->getId());
-				}
+            if ($lesTraces != null) {
+                foreach ($lesTraces as $uneTrace) {
+                    $this->supprimerUneTrace($uneTrace->getId());
+                }
             }
             // préparation de la requête de suppression des autorisations
-            $txt_req1 = "delete from tracegps_autorisations" ;
+            $txt_req1 = "delete from tracegps_autorisations";
             $txt_req1 .= " where idAutorisant = :idUtilisateur or idAutorise = :idUtilisateur";
             $req1 = $this->cnx->prepare($txt_req1);
             // liaison de la requête et de ses paramètres
-            $req1->bindValue("idUtilisateur", utf8_decode($idUtilisateur), PDO::PARAM_INT);
+            $req1->bindValue("idUtilisateur", $idUtilisateur !== null ? mb_convert_encoding($idUtilisateur, 'UTF-8', 'UTF-8') : "", PDO::PARAM_INT);
             // exécution de la requête
             $ok = $req1->execute();
-            
+
             // préparation de la requête de suppression de l'utilisateur
-            $txt_req2 = "delete from tracegps_utilisateurs" ;
+            $txt_req2 = "delete from tracegps_utilisateurs";
             $txt_req2 .= " where pseudo = :pseudo";
             $req2 = $this->cnx->prepare($txt_req2);
             // liaison de la requête et de ses paramètres
-            $req2->bindValue("pseudo", utf8_decode($pseudo), PDO::PARAM_STR);
+            $req2->bindValue("pseudo", $pseudo !== null ? mb_convert_encoding($pseudo, 'UTF-8', 'UTF-8') : "", PDO::PARAM_STR);
             // exécution de la requête
             $ok = $req2->execute();
             return $ok;
@@ -314,17 +318,18 @@ class DAO
     public function envoyerMdp($pseudo, $nouveauMdp) {
         global $ADR_MAIL_EMETTEUR;
         // si le pseudo n'est pas dans la table tracegps_utilisateurs :
-        if ( $this->existePseudoUtilisateur($pseudo) == false ) return false;
-        
+        if ($this->existePseudoUtilisateur($pseudo) == false) return false;
+
         // recherche de l'adresse mail
-        $adrMail = $this->getUnUtilisateur($pseudo)->getAdrMail();
-        
+        $utilisateur = $this->getUnUtilisateur($pseudo);
+        $adrMail = $utilisateur !== null && $utilisateur->getAdrMail() !== null ? mb_convert_encoding($utilisateur->getAdrMail(), 'UTF-8', 'UTF-8') : "";
+
         // envoie un mail à l'utilisateur avec son nouveau mot de passe
         $sujet = "Modification de votre mot de passe d'accès au service TraceGPS";
-        $message = "Cher(chère) " . $pseudo . "\n\n";
-        $message .= "Votre mot de passe d'accès au service service TraceGPS a été modifié.\n\n";
-        $message .= "Votre nouveau mot de passe est : " . $nouveauMdp ;
-        $ok = Outils::envoyerMail ($adrMail, $sujet, $message, $ADR_MAIL_EMETTEUR);
+        $message = "Cher(chère) " . ($pseudo !== null ? mb_convert_encoding($pseudo, 'UTF-8', 'UTF-8') : "") . "\n\n";
+        $message .= "Votre mot de passe d'accès au service TraceGPS a été modifié.\n\n";
+        $message .= "Votre nouveau mot de passe est : " . ($nouveauMdp !== null ? mb_convert_encoding($nouveauMdp, 'UTF-8', 'UTF-8') : "");
+        $ok = Outils::envoyerMail($adrMail, $sujet, $message, $ADR_MAIL_EMETTEUR);
         return $ok;
     }
     
@@ -346,10 +351,30 @@ class DAO
     
     
     // --------------------------------------------------------------------------------------
-    // début de la zone attribuée au développeur 1 (xxxxxxxxxxxxxxxxxxxx) : lignes 350 à 549
+    // début de la zone attribuée au développeur 1 (Tom) : lignes 350 à 549
     // --------------------------------------------------------------------------------------
-    
 
+    // Vérifie si une adresse e-mail existe dans la table tracegps_utilisateurs
+    // Retourne true si l'adresse e-mail existe, false sinon
+    public function existeAdrMailUtilisateur($adrMail) {
+        // Préparation de la requête de recherche
+        $txt_req = "SELECT COUNT(*) AS nombre FROM tracegps_utilisateurs WHERE adrMail = :adrMail";
+        $req = $this->cnx->prepare($txt_req);
+
+        // Liaison de la requête et de ses paramètres
+        $adrMail = $adrMail !== null ? mb_convert_encoding($adrMail, 'UTF-8', 'UTF-8') : "";
+        $req->bindValue("adrMail", $adrMail, PDO::PARAM_STR);
+
+        // Exécution de la requête
+        $req->execute();
+        $uneLigne = $req->fetch(PDO::FETCH_OBJ);
+
+        // Libère les ressources du jeu de données
+        $req->closeCursor();
+
+        // Retourne true si le nombre est supérieur à 0, false sinon
+        return $uneLigne !== false && $uneLigne->nombre > 0;
+    }
     
     
     
