@@ -14,7 +14,7 @@
 <body>
 
 <?php
-// connexion du serveur web à la base MySQL pd va
+// connexion du serveur web à la base MySQL
 include_once ('../../src/modele/DAO.php');
 $dao = new DAO();
 
