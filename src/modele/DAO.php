@@ -356,25 +356,7 @@ class DAO
 
     // Vérifie si une adresse e-mail existe dans la table tracegps_utilisateurs
     // Retourne true si l'adresse e-mail existe, false sinon
-    public function existeAdrMailUtilisateur($adrMail) {
-        // Préparation de la requête de recherche
-        $txt_req = "SELECT COUNT(*) AS nombre FROM tracegps_utilisateurs WHERE adrMail = :adrMail";
-        $req = $this->cnx->prepare($txt_req);
 
-        // Liaison de la requête et de ses paramètres
-        $adrMail = $adrMail !== null ? mb_convert_encoding($adrMail, 'UTF-8', 'UTF-8') : "";
-        $req->bindValue("adrMail", $adrMail, PDO::PARAM_STR);
-
-        // Exécution de la requête
-        $req->execute();
-        $uneLigne = $req->fetch(PDO::FETCH_OBJ);
-
-        // Libère les ressources du jeu de données
-        $req->closeCursor();
-
-        // Retourne true si le nombre est supérieur à 0, false sinon
-        return $uneLigne !== false && $uneLigne->nombre > 0;
-    }
     
     
     
