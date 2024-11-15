@@ -391,6 +391,32 @@ class DAO
         return $lesTraces;
     }
 
+    //13. creerUneTrace
+    // enregistre la trace $uneTrace dans la table tracegps_traces
+    // met à jour l'objet $uneTrace avec l'identifiant attribué par le SGBD
+    // retourne true si l'enregistrement a réussi, false sinon
+    public function creerUneTrace($uneTrace) {
+        $txt_req = "INSERT INTO tracegps_traces (dateHeureDebut, dateHeureFin, terminee, idUtilisateur)
+                VALUES (:dateHeureDebut, :dateHeureFin, :terminee, :idUtilisateur)";
+        $req = $this->cnx->prepare($txt_req);
+        $req->bindValue("dateHeureDebut", $uneTrace->getDateHeureDebut(), PDO::PARAM_STR);
+        if ($uneTrace->getDateHeureFin() == null) {
+            $req->bindValue("dateHeureFin", null, PDO::PARAM_NULL);
+        } else {
+            $req->bindValue("dateHeureFin", $uneTrace->getDateHeureFin(), PDO::PARAM_STR);
+        }
+        $req->bindValue("terminee", $uneTrace->getTerminee(), PDO::PARAM_BOOL);
+        $req->bindValue("idUtilisateur", $uneTrace->getIdUtilisateur(), PDO::PARAM_INT);
+
+        $ok = $req->execute();
+        if ($ok) {
+            $uneTrace->setId($this->cnx->lastInsertId());
+        }
+        $req->closeCursor();
+        return $ok;
+    }
+
+
 
 
 
