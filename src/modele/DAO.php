@@ -442,6 +442,36 @@ class DAO
 
 
 
+    //15. terminerUneTrace
+    // termine la trace d'identifiant $idTrace dans la table tracegps_traces
+    // enregistre la date de fin et met le champ terminee à 1
+    // retourne true si la modification a réussi, false sinon
+    public function terminerUneTrace($idTrace) {
+        // Récupération du dernier point de la trace pour déterminer la date de fin
+        $lesPoints = $this->getLesPointsDeTrace($idTrace);
+        $dateFin = null;
+        if (sizeof($lesPoints) > 0) {
+            $dernierPoint = end($lesPoints);
+            $dateFin = $dernierPoint->getDateHeure();
+        } else {
+            $dateFin = date('Y-m-d H:i:s');
+        }
+
+        // Mise à jour de la trace
+        $txt_req = "UPDATE tracegps_traces
+                SET dateHeureFin = :dateHeureFin, terminee = 1
+                WHERE id = :idTrace";
+        $req = $this->cnx->prepare($txt_req);
+        $req->bindValue("dateHeureFin", $dateFin, PDO::PARAM_STR);
+        $req->bindValue("idTrace", $idTrace, PDO::PARAM_INT);
+
+        $ok = $req->execute();
+        $req->closeCursor();
+        return $ok;
+    }
+
+
+
 
 
 
