@@ -418,20 +418,15 @@ class DAO
     // supprime la trace d'identifiant $idTrace dans la table tracegps_traces ainsi que tous ses points
     // retourne true si la suppression a réussi, false sinon
     public function supprimerUneTrace($idTrace) {
-        // Suppression des points associés
         $txt_req1 = "DELETE FROM tracegps_points WHERE idTrace = :idTrace";
         $req1 = $this->cnx->prepare($txt_req1);
         $req1->bindValue("idTrace", $idTrace, PDO::PARAM_INT);
         $ok1 = $req1->execute();
 
-        // Suppression de la trace
         $txt_req2 = "DELETE FROM tracegps_traces WHERE id = :idTrace";
         $req2 = $this->cnx->prepare($txt_req2);
         $req2->bindValue("idTrace", $idTrace, PDO::PARAM_INT);
         $ok2 = $req2->execute();
-
-        $req1->closeCursor();
-        $req2->closeCursor();
 
         return $ok1 && $ok2;
     }
@@ -443,22 +438,14 @@ class DAO
     // enregistre la date de fin et met le champ terminee à 1
     // retourne true si la modification a réussi, false sinon
     public function terminerUneTrace($idTrace) {
-        // Récupération du dernier point de la trace pour déterminer la date de fin
         $lesPoints = $this->getLesPointsDeTrace($idTrace);
-        $dateFin = null;
-        if (sizeof($lesPoints) > 0) {
-            $dernierPoint = end($lesPoints);
-            $dateFin = $dernierPoint->getDateHeure();
-        } else {
-            $dateFin = date('Y-m-d H:i:s');
-        }
+        $dateFin = $lesPoints ? end($lesPoints)->getDateHeure() : date('Y-m-d H:i:s');
 
-        // Mise à jour de la trace
         $txt_req = "UPDATE tracegps_traces
-                SET dateHeureFin = :dateHeureFin, terminee = 1
+                SET dateFin = :dateFin, terminee = 1
                 WHERE id = :idTrace";
         $req = $this->cnx->prepare($txt_req);
-        $req->bindValue("dateHeureFin", $dateFin, PDO::PARAM_STR);
+        $req->bindValue("dateFin", $dateFin, PDO::PARAM_STR);
         $req->bindValue("idTrace", $idTrace, PDO::PARAM_INT);
 
         $ok = $req->execute();
