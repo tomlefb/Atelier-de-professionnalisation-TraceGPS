@@ -362,11 +362,11 @@ class DAO
     // fournit la collection des traces que l'utilisateur $idUtilisateur a le droit de consulter
     // le résultat est fourni sous forme d'une collection d'objets Trace
     public function getLesTracesAutorisees($idUtilisateur) {
-        $txt_req = "SELECT t.id, t.dateHeureDebut, t.dateHeureFin, t.terminee, t.idUtilisateur
+        $txt_req = "SELECT t.id, t.dateDebut, t.dateFin, t.terminee, t.idUtilisateur
                 FROM tracegps_traces t
-                INNER JOIN tracegps_autorisations a ON t.idUtilisateur = a.idAutorisant
+                JOIN tracegps_autorisations a ON t.idUtilisateur = a.idAutorisant
                 WHERE a.idAutorise = :idUtilisateur
-                ORDER BY t.dateHeureDebut DESC";
+                ORDER BY t.dateDebut DESC";
         $req = $this->cnx->prepare($txt_req);
         $req->bindValue("idUtilisateur", $idUtilisateur, PDO::PARAM_INT);
         $req->execute();
@@ -375,12 +375,11 @@ class DAO
         while ($uneLigne = $req->fetch(PDO::FETCH_OBJ)) {
             $uneTrace = new Trace(
                 $uneLigne->id,
-                $uneLigne->dateHeureDebut,
-                $uneLigne->dateHeureFin,
+                $uneLigne->dateDebut,
+                $uneLigne->dateFin,
                 $uneLigne->terminee,
                 $uneLigne->idUtilisateur
             );
-            // Ajout des points de la trace
             $lesPoints = $this->getLesPointsDeTrace($uneTrace->getId());
             foreach ($lesPoints as $unPoint) {
                 $uneTrace->ajouterPoint($unPoint);
@@ -391,20 +390,17 @@ class DAO
         return $lesTraces;
     }
 
+
     //13. creerUneTrace
     // enregistre la trace $uneTrace dans la table tracegps_traces
     // met à jour l'objet $uneTrace avec l'identifiant attribué par le SGBD
     // retourne true si l'enregistrement a réussi, false sinon
     public function creerUneTrace($uneTrace) {
-        $txt_req = "INSERT INTO tracegps_traces (dateHeureDebut, dateHeureFin, terminee, idUtilisateur)
-                VALUES (:dateHeureDebut, :dateHeureFin, :terminee, :idUtilisateur)";
+        $txt_req = "INSERT INTO tracegps_traces (dateDebut, dateFin, terminee, idUtilisateur)
+                VALUES (:dateDebut, :dateFin, :terminee, :idUtilisateur)";
         $req = $this->cnx->prepare($txt_req);
-        $req->bindValue("dateHeureDebut", $uneTrace->getDateHeureDebut(), PDO::PARAM_STR);
-        if ($uneTrace->getDateHeureFin() == null) {
-            $req->bindValue("dateHeureFin", null, PDO::PARAM_NULL);
-        } else {
-            $req->bindValue("dateHeureFin", $uneTrace->getDateHeureFin(), PDO::PARAM_STR);
-        }
+        $req->bindValue("dateDebut", $uneTrace->getDateHeureDebut(), PDO::PARAM_STR);
+        $req->bindValue("dateFin", $uneTrace->getDateHeureFin() ?? null, PDO::PARAM_NULL);
         $req->bindValue("terminee", $uneTrace->getTerminee(), PDO::PARAM_BOOL);
         $req->bindValue("idUtilisateur", $uneTrace->getIdUtilisateur(), PDO::PARAM_INT);
 
