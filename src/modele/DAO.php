@@ -571,7 +571,29 @@ class DAO
         // Retourne true si au moins une autorisation existe, sinon false
         return ($nbLignes > 0);
     }
-    
+
+    public function creerUneAutorisation($idAutorisant, $idAutorise) {
+        // Vérifie d'abord si l'autorisation existe déjà
+        if ($this->autoriseAConsulter($idAutorisant, $idAutorise)) {
+            return false; // Retourne false si l'autorisation existe déjà
+        }
+
+        // Prépare la requête d'insertion
+        $txtReq = "INSERT INTO tracegps_autorisations (idAutorisant, idAutorise) VALUES (:idAutorisant, :idAutorise)";
+        $req = $this->cnx->prepare($txtReq);
+        // Lie les paramètres
+        $req->bindValue(":idAutorisant", $idAutorisant, PDO::PARAM_INT);
+        $req->bindValue(":idAutorise", $idAutorise, PDO::PARAM_INT);
+
+        // Exécute la requête et retourne le résultat
+        try {
+            $req->execute();
+            return true; // Retourne true si l'insertion a réussi
+        } catch (Exception $ex) {
+            // En cas d'erreur, retourne false
+            return false;
+        }
+    }
     
     
     
