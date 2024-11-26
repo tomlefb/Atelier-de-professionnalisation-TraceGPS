@@ -59,20 +59,22 @@ if ($ok) {
     echo "<p>Echec lors de la suppression de la trace.</p>";
 }
 
-// Test de terminerUneTrace
 echo "<h3>Test de terminerUneTrace :</h3>";
-$trace = $dao->getUneTrace(3);
-echo "<h4>Avant de terminer :</h4>";
-echo $trace->toString() . "<br>";
+// on choisit une trace non terminée
+$unIdTrace = 3;
+// on l'affiche
+$laTrace = $dao->getUneTrace($unIdTrace);
+echo "<h4>l'objet laTrace avant l'appel de la méthode terminerUneTrace : </h4>";
+echo ($laTrace->toString());
+echo ('<br>');
+// on la termine
+$dao->terminerUneTrace($unIdTrace);
+// et on l'affiche à nouveau
+$laTrace = $dao->getUneTrace($unIdTrace);
+echo "<h4>l'objet laTrace après l'appel de la méthode terminerUneTrace : </h4>";
+echo ($laTrace->toString());
+echo ('<br>');
 
-$ok = $dao->terminerUneTrace(3);
-if ($ok) {
-    $trace = $dao->getUneTrace(3);
-    echo "<h4>Après avoir terminé :</h4>";
-    echo $trace->toString() . "<br>";
-} else {
-    echo "<p>Echec lors de la terminaison de la trace.</p>";
-}
 
 // ferme la connexion à MySQL :
 unset($dao);
