@@ -594,6 +594,24 @@ class DAO
             return false;
         }
     }
+
+    public function supprimerUneAutorisation($idAutorisant, $idAutorise) {
+        // Prépare la requête de suppression
+        $txtReq = "DELETE FROM tracegps_autorisations WHERE idAutorisant = :idAutorisant AND idAutorise = :idAutorise";
+        $req = $this->cnx->prepare($txtReq);
+        // Lie les paramètres
+        $req->bindValue(":idAutorisant", $idAutorisant, PDO::PARAM_INT);
+        $req->bindValue(":idAutorise", $idAutorise, PDO::PARAM_INT);
+
+        // Exécute la requête et retourne true si une ligne a été affectée
+        try {
+            $req->execute();
+            return ($req->rowCount() > 0); // rowCount retourne le nombre de lignes supprimées
+        } catch (Exception $ex) {
+            // En cas d'erreur, retourne false
+            return false;
+        }
+    }
     
     
     
