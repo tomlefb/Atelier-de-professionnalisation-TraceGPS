@@ -553,7 +553,7 @@ class DAO
     
     
     // --------------------------------------------------------------------------------------
-    // début de la zone attribuée au développeur 2 (xxxxxxxxxxxxxxxxxxxx) : lignes 550 à 749
+    // début de la zone attribuée au développeur 2 (Nael) : lignes 550 à 749
     // --------------------------------------------------------------------------------------
     
 
