@@ -37,6 +37,8 @@
 
 
 // certaines méthodes nécessitent les classes suivantes :
+use modele\Point;
+
 include_once ('Utilisateur.php');
 include_once ('Trace.php');
 include_once ('PointDeTrace.php');
@@ -612,199 +614,251 @@ class DAO
             return false;
         }
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+    public function getLesPointsDeTrace($idTrace) {
+        $txtReq = "SELECT * FROM tracegps_points WHERE idTrace = :idTrace ORDER BY id";
+        $req = $this->cnx->prepare($txtReq);
+        $req->bindValue(":idTrace", $idTrace, PDO::PARAM_INT);
+
+        $lesPoints = [];
+        $tempsCumule = 0;          // Temps cumulé en secondes
+        $distanceCumulee = 0.0;    // Distance cumulée en km
+        $vitesse = 0;
+        $precedentPoint = null;    // Stockage du point précédent pour calculs
+
+        try {
+            $req->execute();
+            while ($uneLigne = $req->fetch(PDO::FETCH_ASSOC)) {
+
+                $unPoint = new PointDeTrace(
+                    $uneLigne['idTrace'],
+                    $uneLigne['id'],
+                    $uneLigne['latitude'],
+                    $uneLigne['longitude'],
+                    $uneLigne['altitude'],
+                    $uneLigne['dateHeure'],
+                    $uneLigne['rythmeCardio'],
+                    $tempsCumule,
+                    $distanceCumulee,
+                    $vitesse
+                );
+
+                // Calcul de distance et de temps
+                if (count($lesPoints) >0) {
+
+                    $distanceCumulee += Point::getDistance($precedentPoint, $unPoint);
+                    $unPoint->setDistanceCumulee($distanceCumulee);
+                    $tempsCumule += strtotime($unPoint->getDateHeure()) - strtotime($precedentPoint->getDateHeure());
+                    $unPoint->setTempsCumule($tempsCumule);
+                    // Calcul de la vitesse en km/h (distance / temps)
+                    $vitesse = $tempsCumule > 0 ? ($distanceCumulee / ($tempsCumule / 3600)) : 0;
+                    $unPoint->setVitesse($vitesse);
+
+                }
+
+
+                $lesPoints[] = $unPoint;
+                $precedentPoint = $unPoint; // Mise à jour du point précédent
+            }
+        } catch (Exception $ex) {
+            return [];
+        }
+        return $lesPoints;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // --------------------------------------------------------------------------------------
     // début de la zone attribuée au développeur 3 (xxxxxxxxxxxxxxxxxxxx) : lignes 750 à 949
     // --------------------------------------------------------------------------------------
