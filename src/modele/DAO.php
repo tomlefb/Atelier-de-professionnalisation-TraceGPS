@@ -555,9 +555,22 @@ class DAO
     // --------------------------------------------------------------------------------------
     // début de la zone attribuée au développeur 2 (Nael) : lignes 550 à 749
     // --------------------------------------------------------------------------------------
-    
 
-    
+
+    public function autoriseAConsulter($idAutorisant, $idAutorise) {
+        // Prépare une requête SQL pour vérifier l'existence d'une autorisation dans la table tracegps_autorisations
+        $txtReq = "SELECT COUNT(*) FROM tracegps_autorisations WHERE idAutorisant = :idAutorisant AND idAutorise = :idAutorise";
+        $req = $this->cnx->prepare($txtReq);
+        // Lie les paramètres
+        $req->bindValue(":idAutorisant", $idAutorisant, PDO::PARAM_INT);
+        $req->bindValue(":idAutorise", $idAutorise, PDO::PARAM_INT);
+        // Exécute la requête
+        $req->execute();
+        // Récupère le résultat
+        $nbLignes = $req->fetchColumn();
+        // Retourne true si au moins une autorisation existe, sinon false
+        return ($nbLignes > 0);
+    }
     
     
     

@@ -27,7 +27,7 @@
 
 <?php
 // connexion du serveur web à la base MySQL
-include_once ('DAO.php');
+include_once ('../../src/modele/DAO.php');
 $dao = new DAO();
 
 
@@ -35,7 +35,13 @@ $dao = new DAO();
 // modifié par nael le xxxxxxxxxx
 echo "<h3>Test de xxxxxxxxxxxxxxxxx : </h3>";
 // A CONTINUER .........
-
+// test de la méthode autoriseAConsulter ----------------------------------------------------------
+// modifié par dP le 13/8/2021
+echo "<h3>Test de autoriseAConsulter : </h3>";
+if ($dao->autoriseAConsulter(2, 3)) $autorise = "oui"; else $autorise = "non";
+echo "<p>L'utilisateur 2 autorise l'utilisateur 3 : <b>" . $autorise . "</b><br>";
+if ($dao->autoriseAConsulter(3, 2)) $autorise = "oui"; else $autorise = "non";
+echo "<p>L'utilisateur 3 autorise l'utilisateur 2 : <b>" . $autorise . "</b><br>";
 
 
 
