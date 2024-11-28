@@ -34,37 +34,6 @@ $dao = new DAO();
 // test de la méthode existeAdrMailUtilisateur ----------------------------------------------------------
 // modifié par Lohann le 26/11/2024
 
-// test de la méthode existeAdrMailUtilisateur ----------------------------------------------------
-// modifié par dP le 12/8/2021
-echo "<h3>Test de existeAdrMailUtilisateur : </h3>";
-if ($dao->existeAdrMailUtilisateur("admin@gmail.com")) $existe = "oui"; else $existe = "non";
-echo "<p>Existence de l'utilisateur 'admin@gmail.com' : <b>" . $existe . "</b><br>";
-if ($dao->existeAdrMailUtilisateur("delasalle.sio.eleves@gmail.com")) $existe = "oui"; else $existe = "non";
-echo "Existence de l'utilisateur 'delasalle.sio.eleves@gmail.com' : <b>" . $existe . "</b></br>";
-
-// test de la méthode getLesUtilisateursAutorisant ------------------------------------------------
-// modifié par dP le 13/8/2021
-echo "<h3>Test de getLesUtilisateursAutorisant() : </h3>";
-$lesUtilisateurs = $dao->getLesUtilisateursAutorisant(4);
-$nbReponses = sizeof($lesUtilisateurs);
-echo "<p>Nombre d'utilisateurs autorisant l'utilisateur 4 à voir leurs parcours : " . $nbReponses . "</p>";
-// affichage des utilisateurs
-foreach ($lesUtilisateurs as $unUtilisateur)
-{ echo ($unUtilisateur->toString());
-    echo ('<br>');
-}
-
-// test de la méthode getLesUtilisateursAutorises -------------------------------------------------
-// modifié par dP le 13/8/2021
-echo "<h3>Test de getLesUtilisateursAutorises(idUtilisateur) : </h3>";
-$lesUtilisateurs = $dao->getLesUtilisateursAutorises(2);
-$nbReponses = sizeof($lesUtilisateurs);
-echo "<p>Nombre d'utilisateurs autorisés par l'utilisateur 2 : " . $nbReponses . "</p>";
-// affichage des utilisateurs
-foreach ($lesUtilisateurs as $unUtilisateur)
-{ echo ($unUtilisateur->toString());
-    echo ('<br>');
-}
 
 // ferme la connexion à MySQL :
 unset($dao);
