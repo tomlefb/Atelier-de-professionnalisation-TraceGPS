@@ -37,6 +37,8 @@
 
 
 // certaines méthodes nécessitent les classes suivantes :
+use modele\Point;
+
 include_once ('Utilisateur.php');
 include_once ('Trace.php');
 include_once ('PointDeTrace.php');
@@ -654,205 +656,310 @@ class DAO
 
 
     // --------------------------------------------------------------------------------------
-    // début de la zone attribuée au développeur 2 (xxxxxxxxxxxxxxxxxxxx) : lignes 550 à 749
+    // début de la zone attribuée au développeur 2 (Nael) : lignes 550 à 749
     // --------------------------------------------------------------------------------------
-    
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+    public function autoriseAConsulter($idAutorisant, $idAutorise) {
+        // Prépare une requête SQL pour vérifier l'existence d'une autorisation dans la table tracegps_autorisations
+        $txtReq = "SELECT COUNT(*) FROM tracegps_autorisations WHERE idAutorisant = :idAutorisant AND idAutorise = :idAutorise";
+        $req = $this->cnx->prepare($txtReq);
+        // Lie les paramètres
+        $req->bindValue(":idAutorisant", $idAutorisant, PDO::PARAM_INT);
+        $req->bindValue(":idAutorise", $idAutorise, PDO::PARAM_INT);
+        // Exécute la requête
+        $req->execute();
+        // Récupère le résultat
+        $nbLignes = $req->fetchColumn();
+        // Retourne true si au moins une autorisation existe, sinon false
+        return ($nbLignes > 0);
+    }
+
+    public function creerUneAutorisation($idAutorisant, $idAutorise) {
+        // Vérifie d'abord si l'autorisation existe déjà
+        if ($this->autoriseAConsulter($idAutorisant, $idAutorise)) {
+            return false; // Retourne false si l'autorisation existe déjà
+        }
+
+        // Prépare la requête d'insertion
+        $txtReq = "INSERT INTO tracegps_autorisations (idAutorisant, idAutorise) VALUES (:idAutorisant, :idAutorise)";
+        $req = $this->cnx->prepare($txtReq);
+        // Lie les paramètres
+        $req->bindValue(":idAutorisant", $idAutorisant, PDO::PARAM_INT);
+        $req->bindValue(":idAutorise", $idAutorise, PDO::PARAM_INT);
+
+        // Exécute la requête et retourne le résultat
+        try {
+            $req->execute();
+            return true; // Retourne true si l'insertion a réussi
+        } catch (Exception $ex) {
+            // En cas d'erreur, retourne false
+            return false;
+        }
+    }
+
+    public function supprimerUneAutorisation($idAutorisant, $idAutorise) {
+        // Prépare la requête de suppression
+        $txtReq = "DELETE FROM tracegps_autorisations WHERE idAutorisant = :idAutorisant AND idAutorise = :idAutorise";
+        $req = $this->cnx->prepare($txtReq);
+        // Lie les paramètres
+        $req->bindValue(":idAutorisant", $idAutorisant, PDO::PARAM_INT);
+        $req->bindValue(":idAutorise", $idAutorise, PDO::PARAM_INT);
+
+        // Exécute la requête et retourne true si une ligne a été affectée
+        try {
+            $req->execute();
+            return ($req->rowCount() > 0); // rowCount retourne le nombre de lignes supprimées
+        } catch (Exception $ex) {
+            // En cas d'erreur, retourne false
+            return false;
+        }
+    }
+
+    public function getLesPointsDeTrace($idTrace) {
+        $txtReq = "SELECT * FROM tracegps_points WHERE idTrace = :idTrace ORDER BY id";
+        $req = $this->cnx->prepare($txtReq);
+        $req->bindValue(":idTrace", $idTrace, PDO::PARAM_INT);
+
+        $lesPoints = [];
+        $tempsCumule = 0;          // Temps cumulé en secondes
+        $distanceCumulee = 0.0;    // Distance cumulée en km
+        $vitesse = 0;
+        $precedentPoint = null;    // Stockage du point précédent pour calculs
+
+        try {
+            $req->execute();
+            while ($uneLigne = $req->fetch(PDO::FETCH_ASSOC)) {
+
+                $unPoint = new PointDeTrace(
+                    $uneLigne['idTrace'],
+                    $uneLigne['id'],
+                    $uneLigne['latitude'],
+                    $uneLigne['longitude'],
+                    $uneLigne['altitude'],
+                    $uneLigne['dateHeure'],
+                    $uneLigne['rythmeCardio'],
+                    $tempsCumule,
+                    $distanceCumulee,
+                    $vitesse
+                );
+
+                // Calcul de distance et de temps
+                if (count($lesPoints) >0) {
+
+                    $distanceCumulee += Point::getDistance($precedentPoint, $unPoint);
+                    $unPoint->setDistanceCumulee($distanceCumulee);
+                    $tempsCumule += strtotime($unPoint->getDateHeure()) - strtotime($precedentPoint->getDateHeure());
+                    $unPoint->setTempsCumule($tempsCumule);
+                    // Calcul de la vitesse en km/h (distance / temps)
+                    $vitesse = $tempsCumule > 0 ? ($distanceCumulee / ($tempsCumule / 3600)) : 0;
+                    $unPoint->setVitesse($vitesse);
+
+                }
+
+
+                $lesPoints[] = $unPoint;
+                $precedentPoint = $unPoint; // Mise à jour du point précédent
+            }
+        } catch (Exception $ex) {
+            return [];
+        }
+        return $lesPoints;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // --------------------------------------------------------------------------------------
     // début de la zone attribuée au développeur 3 (xxxxxxxxxxxxxxxxxxxx) : lignes 750 à 949
     // --------------------------------------------------------------------------------------
