@@ -353,11 +353,10 @@ class DAO
     
     
     // --------------------------------------------------------------------------------------
-    // début de la zone attribuée au développeur 1 (Tom) : lignes 350 à 549
+    // début de la zone attribuée au développeur 1 (Lohann) : lignes 350 à 549
     // --------------------------------------------------------------------------------------
 
-    // Vérifie si une adresse e-mail existe dans la table tracegps_utilisateurs
-    // Retourne true si l'adresse e-mail existe, false sinon
+
 
 
     //12. getLesTracesAutorisees
@@ -1163,7 +1162,125 @@ class DAO
     // --------------------------------------------------------------------------------------
     // début de la zone attribuée test au développeur 4 (Tom) : lignes 950 à 1150
     // --------------------------------------------------------------------------------------
-    
+    //1.    existeAdrMailUtilisateur
+    // Vérifie si une adresse e-mail existe dans la table tracegps_utilisateurs
+    // Retourne true si l'adresse e-mail existe, false sinon
+    public function existeAdrMailUtilisateur ($adrMail) {
+        $txt_req = "SELECT count(*) from tracegps_utilisateurs where adrMail = :adrMail";
+        $req = $this->cnx->prepare($txt_req);
+        // liaison de la requête et de ses paramètres
+        $req->bindValue("adrMail", $adrMail, PDO::PARAM_STR);
+        // execution de la requête
+        $req->execute();
+        $nbReponses = $req->fetchColumn(0);
+        //libère les ressources du jeu de données
+        $req->closeCursor();
+
+        if ($nbReponses == 0) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    //2. getLesUtilisateursAutorisant($idUtilisateur)
+    //fournit la collection des utilisateurs (de niveau 1) autorisant l'utilisateur $idUtilisateur à voir leurs parcours
+    //Retourne la collection des utilisateurs qui ont donné l'autorisation à $idUtilisateur
+    public function getLesUtilisateursAutorisant($idUtilisateur) {
+        // Requête pour récupérer les informations des utilisateurs autorisants
+        $txt_req = "SELECT u.id, u.pseudo, u.mdpSha1, u.adrMail, u.numTel, u.niveau, u.dateCreation,
+                       (SELECT COUNT(*) FROM tracegps_traces t WHERE t.idUtilisateur = u.id) AS nbTraces,
+                       (SELECT MAX(t.dateDebut) FROM tracegps_traces t WHERE t.idUtilisateur = u.id) AS dateDerniereTrace
+                FROM tracegps_utilisateurs u
+                JOIN tracegps_autorisations a ON u.id = a.idAutorisant
+                WHERE a.idAutorise = :idUtilisateur";
+
+        // Préparation de la requête
+        $req = $this->cnx->prepare($txt_req);
+
+        // Liaison de l'idUtilisateur au paramètre
+        $req->bindValue("idUtilisateur", $idUtilisateur, PDO::PARAM_INT);
+
+        // Exécution de la requête
+        $req->execute();
+
+        // Tableau pour stocker les utilisateurs récupérés
+        $lesUtilisateurs = [];
+
+        // Parcours des résultats et création des objets Utilisateur
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) {
+            $unUtilisateur = new Utilisateur(
+                $row['id'],
+                $row['pseudo'],
+                $row['mdpSha1'],
+                $row['adrMail'],
+                $row['numTel'],
+                $row['niveau'],
+                $row['dateCreation'],
+                $row['nbTraces'],           // Nombre de traces
+                $row['dateDerniereTrace']   // Date de la dernière trace
+            );
+
+            // Ajout de l'utilisateur au tableau
+            $lesUtilisateurs[] = $unUtilisateur;
+        }
+
+        // Libération des ressources
+        $req->closeCursor();
+
+        // Retourne la collection d'utilisateurs
+        return $lesUtilisateurs;
+    }
+
+    //3. fournit la collection des utilisateurs (de niveau 1) autorisés à voir les parcours de l'utilisateur $idUtilisateur
+    //   Retourne la collection des utilisateurs qui sont autorisés à voir les parcours de l'utilisateur $idUtilisateur
+    public function getLesUtilisateursAutorises($idUtilisateur) {
+        // Requête SQL pour récupérer les utilisateurs autorisés
+        $txt_req = "SELECT u.id, u.pseudo, u.mdpSha1, u.adrMail, u.numTel, u.niveau, u.dateCreation,
+                   (SELECT COUNT(*) FROM tracegps_traces t WHERE t.idUtilisateur = u.id) AS nbTraces,
+                   (SELECT MAX(t.dateDebut) FROM tracegps_traces t WHERE t.idUtilisateur = u.id) AS dateDerniereTrace
+            FROM tracegps_utilisateurs u
+            JOIN tracegps_autorisations a ON u.id = a.idAutorise
+            WHERE a.idAutorisant = :idUtilisateur";
+
+
+        // Préparation de la requête
+        $req = $this->cnx->prepare($txt_req);
+
+        // Liaison des paramètres
+        $req->bindValue("idUtilisateur", $idUtilisateur, PDO::PARAM_INT);
+
+        // Exécution de la requête
+        $req->execute();
+
+        // Tableau pour stocker les utilisateurs récupérés
+        $lesUtilisateurs = [];
+
+        // Parcours des résultats et instanciation des objets Utilisateur
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) {
+            $unUtilisateur = new Utilisateur(
+                $row['id'],
+                $row['pseudo'],
+                $row['mdpSha1'],
+                $row['adrMail'],
+                $row['numTel'],
+                $row['niveau'],
+                $row['dateCreation'],
+                $row['nbTraces'],           // Nombre de traces
+                $row['dateDerniereTrace']   // Date de la dernière trace
+            );
+
+            // Ajout de l'utilisateur à la collection
+            $lesUtilisateurs[] = $unUtilisateur;
+        }
+
+        // Libération des ressources
+        $req->closeCursor();
+
+        // Retourne la collection d'utilisateurs autorisés
+        return $lesUtilisateurs;
+    }
     
     
     
