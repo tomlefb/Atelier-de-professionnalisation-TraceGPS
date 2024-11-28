@@ -427,6 +427,52 @@ public function existeAdrMailUtilisateur ($adrMail) {
 
     //3. fournit la collection des utilisateurs (de niveau 1) autorisés à voir les parcours de l'utilisateur $idUtilisateur
     //   Retourne la collection des utilisateurs qui sont autorisés à voir les parcours de l'utilisateur $idUtilisateur
+    public function getLesUtilisateursAutorises($idUtilisateur) {
+        // Requête SQL pour récupérer les utilisateurs autorisés
+        $txt_req = "SELECT u.id, u.pseudo, u.mdpSha1, u.adrMail, u.numTel, u.niveau, u.dateCreation,
+                   (SELECT COUNT(*) FROM tracegps_traces t WHERE t.idUtilisateur = u.id) AS nbTraces,
+                   (SELECT MAX(t.dateDebut) FROM tracegps_traces t WHERE t.idUtilisateur = u.id) AS dateDerniereTrace
+            FROM tracegps_utilisateurs u
+            JOIN tracegps_autorisations a ON u.id = a.idAutorise
+            WHERE a.idAutorisant = :idUtilisateur";
+
+
+        // Préparation de la requête
+        $req = $this->cnx->prepare($txt_req);
+
+        // Liaison des paramètres
+        $req->bindValue("idUtilisateur", $idUtilisateur, PDO::PARAM_INT);
+
+        // Exécution de la requête
+        $req->execute();
+
+        // Tableau pour stocker les utilisateurs récupérés
+        $lesUtilisateurs = [];
+
+        // Parcours des résultats et instanciation des objets Utilisateur
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) {
+            $unUtilisateur = new Utilisateur(
+                $row['id'],
+                $row['pseudo'],
+                $row['mdpSha1'],
+                $row['adrMail'],
+                $row['numTel'],
+                $row['niveau'],
+                $row['dateCreation'],
+                $row['nbTraces'],           // Nombre de traces
+                $row['dateDerniereTrace']   // Date de la dernière trace
+            );
+
+            // Ajout de l'utilisateur à la collection
+            $lesUtilisateurs[] = $unUtilisateur;
+        }
+
+        // Libération des ressources
+        $req->closeCursor();
+
+        // Retourne la collection d'utilisateurs autorisés
+        return $lesUtilisateurs;
+    }
 
 
 

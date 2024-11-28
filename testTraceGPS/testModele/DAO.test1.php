@@ -54,9 +54,23 @@ foreach ($lesUtilisateurs as $unUtilisateur)
     echo ('<br>');
 }
 
+// test de la méthode getLesUtilisateursAutorises -------------------------------------------------
+// modifié par dP le 13/8/2021
+echo "<h3>Test de getLesUtilisateursAutorises(idUtilisateur) : </h3>";
+$lesUtilisateurs = $dao->getLesUtilisateursAutorises(2);
+$nbReponses = sizeof($lesUtilisateurs);
+echo "<p>Nombre d'utilisateurs autorisés par l'utilisateur 2 : " . $nbReponses . "</p>";
+// affichage des utilisateurs
+foreach ($lesUtilisateurs as $unUtilisateur)
+{ echo ($unUtilisateur->toString());
+    echo ('<br>');
+}
+
 // ferme la connexion à MySQL :
 unset($dao);
 ?>
+
+
 
 </body>
 </html>
