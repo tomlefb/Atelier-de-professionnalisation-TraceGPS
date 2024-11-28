@@ -353,7 +353,7 @@ class DAO
     
     
     // --------------------------------------------------------------------------------------
-    // début de la zone attribuée au développeur 1 (Lohann) : lignes 350 à 549
+    // début de la zone attribuée au développeur 1 (Tom) : lignes 350 à 549
     // --------------------------------------------------------------------------------------
 
 
@@ -1160,7 +1160,7 @@ class DAO
     
    
     // --------------------------------------------------------------------------------------
-    // début de la zone attribuée test au développeur 4 (Tom) : lignes 950 à 1150
+    // début de la zone attribuée test au développeur 4 (Lohann) : lignes 950 à 1150
     // --------------------------------------------------------------------------------------
     //1.    existeAdrMailUtilisateur
     // Vérifie si une adresse e-mail existe dans la table tracegps_utilisateurs
