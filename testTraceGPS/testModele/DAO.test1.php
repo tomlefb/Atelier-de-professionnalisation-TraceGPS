@@ -44,7 +44,7 @@ echo "Existence de l'utilisateur 'delasalle.sio.eleves@gmail.com' : <b>" . $exis
 
 // test de la méthode getLesUtilisateursAutorisant ------------------------------------------------
 // modifié par dP le 13/8/2021
-echo "<h3>Test de getLesUtilisateursAutorisant(idUtilisateur) : </h3>";
+echo "<h3>Test de getLesUtilisateursAutorisant() : </h3>";
 $lesUtilisateurs = $dao->getLesUtilisateursAutorisant(4);
 $nbReponses = sizeof($lesUtilisateurs);
 echo "<p>Nombre d'utilisateurs autorisant l'utilisateur 4 à voir leurs parcours : " . $nbReponses . "</p>";

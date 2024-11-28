@@ -377,201 +377,245 @@ public function existeAdrMailUtilisateur ($adrMail) {
 }
 
     //2. getLesUtilisateursAutorisant($idUtilisateur)
-    //
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    //fournit la collection des utilisateurs (de niveau 1) autorisant l'utilisateur $idUtilisateur à voir leurs parcours
+    //Retourne la collection des utilisateurs qui ont donné l'autorisation à $idUtilisateur
+    public function getLesUtilisateursAutorisant($idUtilisateur) {
+        // Requête pour récupérer les informations des utilisateurs autorisants
+        $txt_req = "SELECT u.id, u.pseudo, u.mdpSha1, u.adrMail, u.numTel, u.niveau, u.dateCreation,
+                       (SELECT COUNT(*) FROM tracegps_traces t WHERE t.idUtilisateur = u.id) AS nbTraces,
+                       (SELECT MAX(t.dateDebut) FROM tracegps_traces t WHERE t.idUtilisateur = u.id) AS dateDerniereTrace
+                FROM tracegps_utilisateurs u
+                JOIN tracegps_autorisations a ON u.id = a.idAutorisant
+                WHERE a.idAutorise = :idUtilisateur";
+
+        // Préparation de la requête
+        $req = $this->cnx->prepare($txt_req);
+
+        // Liaison de l'idUtilisateur au paramètre
+        $req->bindValue("idUtilisateur", $idUtilisateur, PDO::PARAM_INT);
+
+        // Exécution de la requête
+        $req->execute();
+
+        // Tableau pour stocker les utilisateurs récupérés
+        $lesUtilisateurs = [];
+
+        // Parcours des résultats et création des objets Utilisateur
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) {
+            $unUtilisateur = new Utilisateur(
+                $row['id'],
+                $row['pseudo'],
+                $row['mdpSha1'],
+                $row['adrMail'],
+                $row['numTel'],
+                $row['niveau'],
+                $row['dateCreation'],
+                $row['nbTraces'],           // Nombre de traces
+                $row['dateDerniereTrace']   // Date de la dernière trace
+            );
+
+            // Ajout de l'utilisateur au tableau
+            $lesUtilisateurs[] = $unUtilisateur;
+        }
+
+        // Libération des ressources
+        $req->closeCursor();
+
+        // Retourne la collection d'utilisateurs
+        return $lesUtilisateurs;
+    }
+
+    //3. fournit la collection des utilisateurs (de niveau 1) autorisés à voir les parcours de l'utilisateur $idUtilisateur
+    //   Retourne la collection des utilisateurs qui sont autorisés à voir les parcours de l'utilisateur $idUtilisateur
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // --------------------------------------------------------------------------------------
     // début de la zone attribuée au développeur 2 (xxxxxxxxxxxxxxxxxxxx) : lignes 550 à 749
     // --------------------------------------------------------------------------------------
