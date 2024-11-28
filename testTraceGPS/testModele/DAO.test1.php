@@ -27,25 +27,60 @@
 
 <?php
 // connexion du serveur web à la base MySQL
-include_once ('DAO.php');
+include_once ('../../src/modele/DAO.php');
 $dao = new DAO();
 
 
-// test de la méthode xxxxxxxxxxxxxxxxxxxxxxxxxxx ----------------------------------------------------------
-// modifié par xxxxxxxxxxxxxxxxx le xxxxxxxxxx
-echo "<h3>Test de xxxxxxxxxxxxxxxxx : </h3>";
-// A CONTINUER .........
+// Test de getLesTracesAutorisees
+echo "<h3>Test de getLesTracesAutorisees :</h3>";
+$lesTraces = $dao->getLesTracesAutorisees(2);
+echo "<p>Nombre de traces autorisées à l'utilisateur 2 : " . count($lesTraces) . "</p>";
+foreach ($lesTraces as $uneTrace) {
+    echo $uneTrace->toString() . "<br>";
+}
 
+// Test de creerUneTrace
+echo "<h3>Test de creerUneTrace :</h3>";
+$trace1 = new Trace(0, "2024-11-15 14:00:00", "2024-11-15 14:10:00", true, 2);
+$ok = $dao->creerUneTrace($trace1);
+if ($ok) {
+    echo "<p>Trace bien enregistrée :</p>";
+    echo $trace1->toString();
+} else {
+    echo "<p>Echec lors de l'enregistrement de la trace.</p>";
+}
 
+// Test de supprimerUneTrace
+echo "<h3>Test de supprimerUneTrace :</h3>";
+$ok = $dao->supprimerUneTrace($trace1->getId());
+if ($ok) {
+    echo "<p>Trace supprimée avec succès !</p>";
+} else {
+    echo "<p>Echec lors de la suppression de la trace.</p>";
+}
 
-
-
-
+echo "<h3>Test de terminerUneTrace :</h3>";
+// on choisit une trace non terminée
+$unIdTrace = 3;
+// on l'affiche
+$laTrace = $dao->getUneTrace($unIdTrace);
+echo "<h4>l'objet laTrace avant l'appel de la méthode terminerUneTrace : </h4>";
+echo ($laTrace->toString());
+echo ('<br>');
+// on la termine
+$dao->terminerUneTrace($unIdTrace);
+// et on l'affiche à nouveau
+$laTrace = $dao->getUneTrace($unIdTrace);
+echo "<h4>l'objet laTrace après l'appel de la méthode terminerUneTrace : </h4>";
+echo ($laTrace->toString());
+echo ('<br>');
 
 
 // ferme la connexion à MySQL :
 unset($dao);
 ?>
+
+
 
 </body>
 </html>
