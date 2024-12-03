@@ -21,7 +21,7 @@
 // curl -i -X GET "http://sio.lyceedelasalle.fr/tracegps/api/Connecter?pseudo=europa&mdp=13e3668bbee30b004380052b086457b014504b3e&lang=json"
 // curl -i -X GET "http://sio.lyceedelasalle.fr/tracegps/api/Connecterr?pseudo=europa&mdp=13e3668bbee30b004380052b086457b014504b3e&lang=json"
 // curl -i -X GET "http://sio.lyceedelasalle.fr/tracegps/api/connecter?pseudo=europa&mdp=13e3668bbee30b004380052b086457b014504b3e&lang=json"
-include_once ('../../modele/DAO.php');
+//include_once ('../../modele/DAO.php');
 // connexion du serveur web à la base MySQL
 $dao = new DAO();
 
@@ -116,7 +116,8 @@ function creerFluxXML($msg)
 	$doc->formatOutput = true;
 	
 	// renvoie le contenu XML
-	return $doc->saveXML();
+
+    return $doc->saveXML();
 }
 
 // ================================================================================================
@@ -145,6 +146,4 @@ function creerFluxJSON($msg)
     // retourne le contenu JSON (l'option JSON_PRETTY_PRINT gère les sauts de ligne et l'indentation)
     return json_encode($elt_racine, JSON_PRETTY_PRINT);
 }
-
 // ================================================================================================
-?>
