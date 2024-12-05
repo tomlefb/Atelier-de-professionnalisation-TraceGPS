@@ -1,4 +1,9 @@
 <?php
+
+//link de test : http://localhost/ws-php-nd/tracegps-commun/version_clean/Atelier-de-professionnalisation-TraceGPS/src/api/ChangerDeMdp
+
+
+
 // Projet TraceGPS - services web
 // fichier :  api/services/ChangerDeMdp.php
 // Dernière mise à jour : 3/7/2021 par dP
