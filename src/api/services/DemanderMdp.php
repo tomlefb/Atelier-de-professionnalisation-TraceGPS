@@ -47,21 +47,15 @@ if ($this->getMethodeRequete() != "GET") {
                 $msg = "Erreur : problème lors de l'enregistrement du mot de passe.";
                 $code_reponse = 500;
             } else {
-                // Récupération de l'adresse email de l'utilisateur
-                $adrMail = $dao->existeAdrMailUtilisateur($pseudo);
+                // Utilisation de la méthode envoyerMdp
+                $ok = $dao->envoyerMdp($pseudo,$nouveauMdp);
 
-                // Envoi d'un courriel avec le nouveau mot de passe
-                $sujet = "Votre nouveau mot de passe";
-                $contenuMail = "Bonjour,\n\nVoici votre nouveau mot de passe : $nouveauMdp\n\n";
-                $contenuMail .= "Pensez à le changer lors de votre prochaine connexion.\n\nL'équipe TraceGPS.";
-                global $ADR_MAIL_EMETTEUR;
-
-                if (!Outils::envoyerMail($adrMail, $sujet, $contenuMail, $ADR_MAIL_EMETTEUR)) {
+                if (!$ok) {
                     $msg = "Enregistrement effectué ; l'envoi du courriel à l'utilisateur a rencontré un problème.";
                     $code_reponse = 500;
                 } else {
-                    $msg = "Enregistrement effectué ; vous allez recevoir un courriel avec votre nouveau mot de passe.";
-                    $code_reponse = 201;
+                        $msg = "Enregistrement effectué ; vous allez recevoir un courriel avec votre nouveau mot de passe.";
+                        $code_reponse = 201;
                 }
             }
         }

@@ -239,7 +239,7 @@ class DAO
         // liaison de la requête et de ses paramètres
         $req1->bindValue("pseudo", $unUtilisateur->getPseudo() !== null ? mb_convert_encoding($unUtilisateur->getPseudo(), 'UTF-8', 'UTF-8') : "", PDO::PARAM_STR);
         $req1->bindValue("mdpSha1", $unUtilisateur->getMdpsha1() !== null ? mb_convert_encoding(sha1($unUtilisateur->getMdpsha1()), 'UTF-8', 'UTF-8') : "", PDO::PARAM_STR);
-        $req1->bindValue("adrMail", $unUtilisateur->getAdrmail() !== null ? mb_convert_encoding($unUtilisateur->getAdrmail(), 'UTF-8', 'UTF-8') : "", PDO::PARAM_STR);
+        $req1->bindValue("adrMail", $unUtilisateur->getAdrMail() !== null ? mb_convert_encoding($unUtilisateur->getAdrmail(), 'UTF-8', 'UTF-8') : "", PDO::PARAM_STR);
         $req1->bindValue("numTel", $unUtilisateur->getNumTel() !== null ? mb_convert_encoding($unUtilisateur->getNumTel(), 'UTF-8', 'UTF-8') : "", PDO::PARAM_STR);
         $req1->bindValue("niveau", $unUtilisateur->getNiveau() !== null ? mb_convert_encoding($unUtilisateur->getNiveau(), 'UTF-8', 'UTF-8') : "", PDO::PARAM_INT);
         $req1->bindValue("dateCreation", $unUtilisateur->getDateCreation() !== null ? mb_convert_encoding($unUtilisateur->getDateCreation(), 'UTF-8', 'UTF-8') : "", PDO::PARAM_STR);
