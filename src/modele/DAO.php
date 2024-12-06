@@ -555,63 +555,56 @@ class DAO
     // --------------------------------------------------------------------------------------
     // début de la zone attribuée au développeur 2 (xxxxxxxxxxxxxxxxxxxx) : lignes 550 à 749
     // --------------------------------------------------------------------------------------
-    
+    public function getLesPointsDeTrace($idTrace) {
+        $txtReq = "SELECT * FROM tracegps_points WHERE idTrace = :idTrace ORDER BY id";
+        $req = $this->cnx->prepare($txtReq);
+        $req->bindValue(":idTrace", $idTrace, PDO::PARAM_INT);
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+        $lesPoints = [];
+        $tempsCumule = 0;          // Temps cumulé en secondes
+        $distanceCumulee = 0.0;    // Distance cumulée en km
+        $vitesse = 0;
+        $precedentPoint = null;    // Stockage du point précédent pour calculs
+
+        try {
+            $req->execute();
+            while ($uneLigne = $req->fetch(PDO::FETCH_ASSOC)) {
+
+                $unPoint = new PointDeTrace(
+                    $uneLigne['idTrace'],
+                    $uneLigne['id'],
+                    $uneLigne['latitude'],
+                    $uneLigne['longitude'],
+                    $uneLigne['altitude'],
+                    $uneLigne['dateHeure'],
+                    $uneLigne['rythmeCardio'],
+                    $tempsCumule,
+                    $distanceCumulee,
+                    $vitesse
+                );
+
+                // Calcul de distance et de temps
+                if (count($lesPoints) >0) {
+
+                    $distanceCumulee += Point::getDistance($precedentPoint, $unPoint);
+                    $unPoint->setDistanceCumulee($distanceCumulee);
+                    $tempsCumule += strtotime($unPoint->getDateHeure()) - strtotime($precedentPoint->getDateHeure());
+                    $unPoint->setTempsCumule($tempsCumule);
+                    // Calcul de la vitesse en km/h (distance / temps)
+                    $vitesse = $tempsCumule > 0 ? ($distanceCumulee / ($tempsCumule / 3600)) : 0;
+                    $unPoint->setVitesse($vitesse);
+
+                }
+
+
+                $lesPoints[] = $unPoint;
+                $precedentPoint = $unPoint; // Mise à jour du point précédent
+            }
+        } catch (Exception $ex) {
+            return [];
+        }
+        return $lesPoints;
+    }
     
     
     
@@ -756,9 +749,66 @@ class DAO
     // début de la zone attribuée au développeur 3 (xxxxxxxxxxxxxxxxxxxx) : lignes 750 à 949
     // --------------------------------------------------------------------------------------
     
-    
-    
-    
+    // Méthode creerUnPointDeTrace
+    // Enregistre le point $unPointDeTrace dans la bdd
+    // return True or False
+    public function creerUnPointDeTrace($unPointDeTrace){
+
+        $txt_req = "INSERT INTO tracegps_points VALUES (:idTrace, :id, :latitude, :longitude, :altitude, :dateHeure, :rythmeCardio);";
+
+        $req = $this->cnx->prepare($txt_req);
+
+        $req->bindValue("idTrace", $unPointDeTrace->getIdTrace(), PDO::PARAM_INT);
+        $req->bindValue("id", $unPointDeTrace->getId(), PDO::PARAM_INT);
+        $req->bindValue("latitude", $unPointDeTrace->getLatitude());
+        $req->bindValue("longitude", $unPointDeTrace->getLongitude());
+        $req->bindValue("altitude", $unPointDeTrace->getAltitude());
+        $req->bindValue("dateHeure", $unPointDeTrace->getDateHeure());
+        $req->bindValue("rythmeCardio", $unPointDeTrace->getRythmeCardio(), PDO::PARAM_INT);
+
+        $req->execute();
+
+        $req->closeCursor();
+    }
+
+    // Méthode getUneTrace
+    // Fournit un objet Trace à partir de son id $idTrace
+    // return objet Trace si existe, Sinon null
+    public function getUneTrace($idTrace){
+
+        $txt_req = "SELECT * FROM tracegps_traces WHERE id = :id ;";
+
+        $req = $this->cnx->prepare($txt_req);
+
+        $req->bindValue("id", $idTrace, PDO::PARAM_INT);
+
+        $id = $idTrace;
+        $dateHeureDebut = null;
+        $dateHeureFin = null;
+        $terminee = 0;
+        $idUtilisateur = 0;
+        $lesPointsDeTrace = [];
+
+        try {
+            $req->execute();
+            while ($uneLigne = $req->fetch(PDO::FETCH_ASSOC)) {
+
+                $laTrace = new Trace(
+                    $uneLigne['id'],
+                    $uneLigne['dateDebut'],
+                    $uneLigne['dateFin'],
+                    $uneLigne['terminee'],
+                    $uneLigne['idUtilisateur'],
+                    DAO::getLesPointsDeTrace($id)
+                );
+            }
+        } catch (Exception $ex) {
+            return [];
+        }
+        return $laTrace;
+
+
+    }
     
     
     
