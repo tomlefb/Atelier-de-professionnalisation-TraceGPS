@@ -960,205 +960,285 @@ class DAO
 
 
     // --------------------------------------------------------------------------------------
-    // début de la zone attribuée au développeur 3 (xxxxxxxxxxxxxxxxxxxx) : lignes 750 à 949
+    // début de la zone attribuée au développeur 3 (Nael) : lignes 750 à 949
     // --------------------------------------------------------------------------------------
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-   
+    public function getUneTrace($idTrace) {
+        // Requête SQL pour récupérer une trace par son ID
+        $sql = "SELECT * FROM tracegps_traces WHERE id = :id";
+
+        // Préparation de la requête
+        $stmt = $this->cnx->prepare($sql);
+
+        // Bind de la valeur de l'ID
+        $stmt->bindValue(':id', $idTrace, PDO::PARAM_INT);
+
+        // Exécution de la requête
+        $stmt->execute();
+
+        // Récupération du résultat sous forme de tableau associatif
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Si la trace existe
+        if ($result) {
+            // Création d'un objet Trace avec les données récupérées
+            $uneTrace = new Trace(
+                $result['id'],
+                $result['dateDebut'],
+                $result['dateFin'],
+                $result['terminee'],
+                $result['idUtilisateur']
+            );
+
+            // Récupérer les points associés à la trace
+            $lesPoints = $this->getLesPointsDeTrace($idTrace);
+
+            // Assigner les points à l'objet Trace
+            $uneTrace->setLesPointsDeTrace($lesPoints);
+
+            // Retourner l'objet Trace
+            return $uneTrace;
+        } else {
+            // Si aucune trace n'est trouvée, retourner null
+            return null;
+        }
+    }
+
+
+    public function creerUnPointDeTrace($unPointDeTrace) {
+        try {
+            // Vérification si le point de trace existe déjà (selon ta clé primaire)
+            $sqlCheck = "SELECT COUNT(*) FROM tracegps_points WHERE idTrace = :idTrace AND id = :id";
+            $stmtCheck = $this->cnx->prepare($sqlCheck);
+            $stmtCheck->bindValue(':idTrace', $unPointDeTrace->getIdTrace(), PDO::PARAM_INT);
+            $stmtCheck->bindValue(':id', $unPointDeTrace->getId(), PDO::PARAM_INT);
+            $stmtCheck->execute();
+            $count = $stmtCheck->fetchColumn();
+
+            // Si le point existe déjà, on ne l'insère pas
+            if ($count > 0) {
+                return false; // Ou tu peux choisir de mettre à jour l'enregistrement existant si tu préfères
+            }
+
+            // Sinon, on insère le nouveau point de trace
+            $sql = "INSERT INTO tracegps_points (idTrace, id, latitude, longitude, altitude, dateHeure, rythmeCardio) 
+                VALUES (:idTrace, :id, :latitude, :longitude, :altitude, :dateHeure, :rythmeCardio)";
+
+            $stmt = $this->cnx->prepare($sql);
+            $stmt->bindValue(':idTrace', $unPointDeTrace->getIdTrace(), PDO::PARAM_INT);
+            $stmt->bindValue(':id', $unPointDeTrace->getId(), PDO::PARAM_INT);
+            $stmt->bindValue(':latitude', $unPointDeTrace->getLatitude());
+            $stmt->bindValue(':longitude', $unPointDeTrace->getLongitude());
+            $stmt->bindValue(':altitude', $unPointDeTrace->getAltitude());
+            $stmt->bindValue(':dateHeure', $unPointDeTrace->getDateHeure());
+            $stmt->bindValue(':rythmeCardio', $unPointDeTrace->getRythmeCardio(), PDO::PARAM_INT);
+
+            // Exécution de l'insertion
+            $result = $stmt->execute();
+
+            return $result;
+        } catch (PDOException $e) {
+            // En cas d'erreur, on logue l'erreur et on retourne false
+            error_log("Erreur lors de l'insertion du point de trace : " . $e->getMessage());
+
+
+            return false;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // --------------------------------------------------------------------------------------
     // début de la zone attribuée test au développeur 4 (Lohann) : lignes 950 à 1150
     // --------------------------------------------------------------------------------------
