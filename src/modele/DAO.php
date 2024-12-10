@@ -960,10 +960,69 @@ class DAO
 
 
     // --------------------------------------------------------------------------------------
-    // début de la zone attribuée au développeur 3 (xxxxxxxxxxxxxxxxxxxx) : lignes 750 à 949
+    // début de la zone attribuée au développeur 3 (Briac) : lignes 750 à 949
     // --------------------------------------------------------------------------------------
     
-    
+    // Méthode creerUnPointDeTrace
+    // Enregistre le point $unPointDeTrace dans la bdd
+    // return True or False
+    public function creerUnPointDeTrace($unPointDeTrace){
+
+        $txt_req = "INSERT INTO tracegps_points VALUES (:idTrace, :id, :latitude, :longitude, :altitude, :dateHeure, :rythmeCardio);";
+
+        $req = $this->cnx->prepare($txt_req);
+
+        $req->bindValue("idTrace", $unPointDeTrace->getIdTrace(), PDO::PARAM_INT);
+        $req->bindValue("id", $unPointDeTrace->getId(), PDO::PARAM_INT);
+        $req->bindValue("latitude", $unPointDeTrace->getLatitude());
+        $req->bindValue("longitude", $unPointDeTrace->getLongitude());
+        $req->bindValue("altitude", $unPointDeTrace->getAltitude());
+        $req->bindValue("dateHeure", $unPointDeTrace->getDateHeure());
+        $req->bindValue("rythmeCardio", $unPointDeTrace->getRythmeCardio(), PDO::PARAM_INT);
+
+        $req->execute();
+
+        $req->closeCursor();
+    }
+
+    // Méthode getUneTrace
+    // Fournit un objet Trace à partir de son id $idTrace
+    // return objet Trace si existe, Sinon null
+    public function getUneTrace($idTrace){
+
+        $txt_req = "SELECT * FROM tracegps_traces WHERE id = :id ;";
+
+        $req = $this->cnx->prepare($txt_req);
+
+        $req->bindValue("id", $idTrace, PDO::PARAM_INT);
+
+        $id = $idTrace;
+        $dateHeureDebut = null;
+        $dateHeureFin = null;
+        $terminee = 0;
+        $idUtilisateur = 0;
+        $lesPointsDeTrace = [];
+
+        try {
+            $req->execute();
+            while ($uneLigne = $req->fetch(PDO::FETCH_ASSOC)) {
+
+                $laTrace = new Trace(
+                    $uneLigne['id'],
+                    $uneLigne['dateDebut'],
+                    $uneLigne['dateFin'],
+                    $uneLigne['terminee'],
+                    $uneLigne['idUtilisateur'],
+                    DAO::getLesPointsDeTrace($id)
+                );
+            }
+        } catch (Exception $ex) {
+            return [];
+        }
+        return $laTrace;
+
+
+    }
     
     
     
