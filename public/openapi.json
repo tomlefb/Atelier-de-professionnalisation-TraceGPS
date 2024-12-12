@@ -133,7 +133,7 @@
       }
     },
     "/Connecter": {
-      "get": {
+      "post": {
         "summary": "Authentifier un utilisateur",
         "description": "Permet à un utilisateur de s'authentifier en fournissant son pseudo et son mot de passe hashé en SHA-1.",
         "parameters": [
@@ -217,6 +217,114 @@
               },
               "application/xml": {
                 "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : méthode HTTP incorrecte.</reponse></data>"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/CreerUnUtilisateur.php": {
+      "post": {
+        "summary": "Créer un compte utilisateur",
+        "description": "Permet à un utilisateur de se créer un compte en fournissant un pseudo, une adresse mail et un numéro de téléphone.",
+        "parameters": [
+          {
+            "name": "pseudo",
+            "in": "query",
+            "required": true,
+            "description": "Le pseudo de l'utilisateur. Doit être unique et contenir au moins 8 caractères.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "adrMail",
+            "in": "query",
+            "required": true,
+            "description": "L'adresse email de l'utilisateur. Doit être unique et valide.",
+            "schema": {
+              "type": "string",
+              "format": "email"
+            }
+          },
+          {
+            "name": "numTel",
+            "in": "query",
+            "required": true,
+            "description": "Le numéro de téléphone de l'utilisateur. Doit être valide.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "description": "Langue du flux de réponse (xml ou json). Par défaut : xml.",
+            "schema": {
+              "type": "string",
+              "enum": ["xml", "json"]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Compte créé avec succès",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Enregistrement effectué ; vous allez recevoir un courriel avec votre mot de passe."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Enregistrement effectué ; vous allez recevoir un courriel avec votre mot de passe.</reponse></data>"
+              }
+            }
+          },
+          "400": {
+            "description": "Données incomplètes ou incorrectes",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : pseudo trop court (8 car minimum) ou déjà existant."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : pseudo trop court (8 car minimum) ou déjà existant.</reponse></data>"
+              }
+            }
+          },
+          "406": {
+            "description": "Méthode HTTP incorrecte",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : méthode HTTP incorrecte."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : méthode HTTP incorrecte.</reponse></data>"
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur interne du serveur",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : problème lors de l'enregistrement."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : problème lors de l'enregistrement.</reponse></data>"
               }
             }
           }
