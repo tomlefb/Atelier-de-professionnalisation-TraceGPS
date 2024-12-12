@@ -1,7 +1,7 @@
 <?php
 // Projet tracegps
 // fichier : test_acces_bdd_tracegps.php
-// Rôle : test de l'accès à la base de données tracegps sur le serveur MySql en localhost
+// Rôle : test.php de l'accès à la base de données tracegps sur le serveur MySql en localhost
 // Dernière mise à jour : 12/7/2021 par dPlanchet
 ?>
 <!DOCTYPE html>

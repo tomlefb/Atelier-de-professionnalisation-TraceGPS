@@ -1,7 +1,7 @@
 <?php
 // Projet TraceGPS
-// fichier : modele/Point.test.php
-// Rôle : test de la classe Point.php
+// fichier : modele/Point.test.php.php
+// Rôle : test.php de la classe Point.php
 // Dernière mise à jour : 18/12/2021 par dPlanchet
 // inclusion de la classe Point
 use modele\Point;
@@ -44,14 +44,14 @@ echo ("longitude : " . $unPoint2->getLongitude() . "<br>");
 echo ("altitude : " . $unPoint2->getAltitude() . "<br>");
 echo ('<br>');
 
-// test de la méthode toString
+// test.php de la méthode toString
 echo "<h4>méthode toString sur objet unPoint2 : </h4>";
 echo ($unPoint2->toString());
 echo ('<br>');
 
-// test de la méthode statique getDistance
+// test.php de la méthode statique getDistance
 $distance = Point::getDistance($unPoint1, $unPoint2);
-echo "<h4>test de la méthode statique getDistance entre unPoint1 et unPoint2 : </h4>";
+echo "<h4>test.php de la méthode statique getDistance entre unPoint1 et unPoint2 : </h4>";
 echo ("distance : " . $distance . "<br>");
 echo ('<br>');
 

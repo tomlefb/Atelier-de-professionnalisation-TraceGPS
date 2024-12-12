@@ -39,7 +39,7 @@ else {
         $code_reponse = 400;
     }
     else
-    {	// test de l'authentification de l'utilisateur
+    {	// test.php de l'authentification de l'utilisateur
     	// la méthode getNiveauConnexion de la classe DAO retourne les valeurs 0 (non identifié) ou 1 (utilisateur) ou 2 (administrateur)
     	$niveauConnexion = $dao->getNiveauConnexion($pseudoAutorisant, $mdpSha1);
     

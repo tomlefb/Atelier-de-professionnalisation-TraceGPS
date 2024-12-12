@@ -1,0 +1,227 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API TraceGPS",
+    "version": "1.0.0",
+    "description": "Documentation interactive des services TraceGPS"
+  },
+  "servers": [
+    {
+      "url": "http://localhost/ws-php-dp/TraceGPS/src/api",
+      "description": "Serveur local"
+    }
+  ],
+  "paths": {
+    "/ChangerDeMdp": {
+      "post": {
+        "summary": "Changer le mot de passe",
+        "description": "Permet à un utilisateur de changer son mot de passe en fournissant son pseudo, l'ancien mot de passe et le nouveau mot de passe.",
+        "parameters": [
+          {
+            "name": "pseudo",
+            "in": "query",
+            "required": true,
+            "description": "Le pseudo de l'utilisateur.",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "mdp",
+            "in": "query",
+            "required": true,
+            "description": "L'ancien mot de passe de l'utilisateur, hashé en SHA-1.",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "nouveauMdp",
+            "in": "query",
+            "required": true,
+            "description": "Le nouveau mot de passe de l'utilisateur.",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "confirmationMdp",
+            "in": "query",
+            "required": true,
+            "description": "Confirmation du nouveau mot de passe.",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "description": "Langue du flux de réponse (xml ou json). Par défaut, xml.",
+            "schema": { "type": "string", "enum": ["xml", "json"] }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Mot de passe changé avec succès",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Enregistrement effectué ; vous allez recevoir un courriel de confirmation."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Enregistrement effectué ; vous allez recevoir un courriel de confirmation.</reponse></data>"
+              }
+            }
+          },
+          "400": {
+            "description": "Données incomplètes ou incorrectes",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : données incomplètes."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : données incomplètes.</reponse></data>"
+              }
+            }
+          },
+          "401": {
+            "description": "Authentification incorrecte",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : authentification incorrecte."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : authentification incorrecte.</reponse></data>"
+              }
+            }
+          },
+          "406": {
+            "description": "Méthode HTTP incorrecte",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : méthode HTTP incorrecte."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : méthode HTTP incorrecte.</reponse></data>"
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur interne du serveur",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : problème lors de l'enregistrement du mot de passe."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : problème lors de l'enregistrement du mot de passe.</reponse></data>"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Connecter": {
+      "get": {
+        "summary": "Authentifier un utilisateur",
+        "description": "Permet à un utilisateur de s'authentifier en fournissant son pseudo et son mot de passe hashé en SHA-1.",
+        "parameters": [
+          {
+            "name": "pseudo",
+            "in": "query",
+            "required": true,
+            "description": "Le pseudo de l'utilisateur.",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "mdp",
+            "in": "query",
+            "required": true,
+            "description": "Le mot de passe hashé en SHA-1.",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "description": "Langue du flux de réponse (xml ou json). Par défaut, xml.",
+            "schema": { "type": "string", "enum": ["xml", "json"] }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Utilisateur ou administrateur authentifié",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Utilisateur authentifié."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Utilisateur authentifié.</reponse></data>"
+              }
+            }
+          },
+          "400": {
+            "description": "Données incomplètes",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : données incomplètes."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : données incomplètes.</reponse></data>"
+              }
+            }
+          },
+          "401": {
+            "description": "Authentification incorrecte",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : authentification incorrecte."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : authentification incorrecte.</reponse></data>"
+              }
+            }
+          },
+          "406": {
+            "description": "Méthode HTTP incorrecte",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : méthode HTTP incorrecte."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : méthode HTTP incorrecte.</reponse></data>"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

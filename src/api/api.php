@@ -42,6 +42,7 @@ class Api extends Rest
             case "demarrerenregistrementparcours" : {$this->DemarrerEnregistrementParcours(); break;}
             case "envoyerposition" : {$this->EnvoyerPosition(); break;}
             case "arreterenregistrementparcours" : {$this->ArreterEnregistrementParcours(); break;}
+            case "test" : {$this->test(); break;}
             
             // l'action demandée n'existe pas, la réponse est 404 ("Page not found") et aucune donnée n'est envoyée
             default : {
@@ -141,6 +142,10 @@ class Api extends Rest
     // Ce service permet à un utilisateur de terminer l'enregistrement de son parcours
     private function ArreterEnregistrementParcours()
     {   include_once ("services/ArreterEnregistrementParcours.php");
+    }
+
+    private function test()
+    {   include_once ("services/test.php");
     }
 } // fin de la classe Api
 

@@ -1,11 +1,11 @@
 <?php
 // Projet TraceGPS
 // fichier : modele/DAO.test1.php
-// Rôle : test de la classe DAO.php
+// Rôle : test.php de la classe DAO.php
 // Dernière mise à jour : xxxxxxxxxxxxxxxxx par xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 // Le code des tests restant à développer va être réparti entre les membres de l'équipe de développement.
-// Afin de limiter les conflits avec GitHub, il est décidé d'attribuer un fichier de test à chaque développeur.
+// Afin de limiter les conflits avec GitHub, il est décidé d'attribuer un fichier de test.php à chaque développeur.
 // Développeur 1 : fichier DAO.test1.php
 // Développeur 2 : fichier DAO.test2.php
 // Développeur 3 : fichier DAO.test3.php
@@ -31,7 +31,7 @@ include_once ('../../src/modele/DAO.php');
 $dao = new DAO();
 
 
-// test de la méthode existeAdrMailUtilisateur ----------------------------------------------------
+// test.php de la méthode existeAdrMailUtilisateur ----------------------------------------------------
 // modifié par dP le 12/8/2021
 echo "<h3>Test de existeAdrMailUtilisateur : </h3>";
 if ($dao->existeAdrMailUtilisateur("admin@gmail.com")) $existe = "oui"; else $existe = "non";
@@ -39,7 +39,7 @@ echo "<p>Existence de l'utilisateur 'admin@gmail.com' : <b>" . $existe . "</b><b
 if ($dao->existeAdrMailUtilisateur("delasalle.sio.eleves@gmail.com")) $existe = "oui"; else $existe = "non";
 echo "Existence de l'utilisateur 'delasalle.sio.eleves@gmail.com' : <b>" . $existe . "</b></br>";
 
-// test de la méthode getLesUtilisateursAutorisant ------------------------------------------------
+// test.php de la méthode getLesUtilisateursAutorisant ------------------------------------------------
 // modifié par dP le 13/8/2021
 echo "<h3>Test de getLesUtilisateursAutorisant() : </h3>";
 $lesUtilisateurs = $dao->getLesUtilisateursAutorisant(4);
@@ -51,7 +51,7 @@ foreach ($lesUtilisateurs as $unUtilisateur)
     echo ('<br>');
 }
 
-// test de la méthode getLesUtilisateursAutorises -------------------------------------------------
+// test.php de la méthode getLesUtilisateursAutorises -------------------------------------------------
 // modifié par dP le 13/8/2021
 echo "<h3>Test de getLesUtilisateursAutorises(idUtilisateur) : </h3>";
 $lesUtilisateurs = $dao->getLesUtilisateursAutorises(2);
