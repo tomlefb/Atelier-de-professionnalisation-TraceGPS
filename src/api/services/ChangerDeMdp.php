@@ -14,7 +14,6 @@
 
 // Les paramètres doivent être passés par la méthode GET :
 //     http://<hébergeur>/tracegps/api/ChangerDeMdppseudo=europa&mdp=13e3668bbee30b004380052b086457b014504b3e&nouveauMdp=123&confirmationMdp=123&lang=xml
-include_once ('../../modele/DAO.php');
 // connexion du serveur web à la base MySQL
 $dao = new DAO();
 	

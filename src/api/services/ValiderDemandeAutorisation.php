@@ -17,7 +17,7 @@
 	
 // ces variables globales sont définies dans le fichier modele/parametres.php
 global $ADR_MAIL_EMETTEUR, $ADR_SERVICE_WEB;
-include_once ('../../modele/DAO.php');
+
 // connexion du serveur web à la base MySQL
 $dao = new DAO();
 
@@ -110,15 +110,3 @@ else {
 }
 unset($dao);   // ferme la connexion à MySQL
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<title>Validation TraceGPS</title>
-	<style type="text/css">body {font-family: Arial, Helvetica, sans-serif; font-size: small;}</style>
-</head>
-<body>
-	<p><?php echo $message; ?></p>
-	<p><a href="Javascript:window.close();">Fermer</a></p>
-</body>
-</html>

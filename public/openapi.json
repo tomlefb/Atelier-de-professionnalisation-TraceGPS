@@ -13,7 +13,7 @@
   ],
   "paths": {
     "/ChangerDeMdp": {
-      "post": {
+      "get": {
         "summary": "Changer le mot de passe",
         "description": "Permet à un utilisateur de changer son mot de passe en fournissant son pseudo, l'ancien mot de passe et le nouveau mot de passe.",
         "parameters": [
@@ -22,35 +22,49 @@
             "in": "query",
             "required": true,
             "description": "Le pseudo de l'utilisateur.",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "mdp",
             "in": "query",
             "required": true,
             "description": "L'ancien mot de passe de l'utilisateur, hashé en SHA-1.",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "nouveauMdp",
             "in": "query",
             "required": true,
             "description": "Le nouveau mot de passe de l'utilisateur.",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "confirmationMdp",
             "in": "query",
             "required": true,
             "description": "Confirmation du nouveau mot de passe.",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "lang",
             "in": "query",
             "required": false,
             "description": "Langue du flux de réponse (xml ou json). Par défaut, xml.",
-            "schema": { "type": "string", "enum": ["xml", "json"] }
+            "schema": {
+              "type": "string",
+              "enum": [
+                "xml",
+                "json"
+              ]
+            }
           }
         ],
         "responses": {
@@ -133,7 +147,7 @@
       }
     },
     "/Connecter": {
-      "post": {
+      "get": {
         "summary": "Authentifier un utilisateur",
         "description": "Permet à un utilisateur de s'authentifier en fournissant son pseudo et son mot de passe hashé en SHA-1.",
         "parameters": [
@@ -142,21 +156,31 @@
             "in": "query",
             "required": true,
             "description": "Le pseudo de l'utilisateur.",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "mdp",
             "in": "query",
             "required": true,
             "description": "Le mot de passe hashé en SHA-1.",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "lang",
             "in": "query",
             "required": false,
             "description": "Langue du flux de réponse (xml ou json). Par défaut, xml.",
-            "schema": { "type": "string", "enum": ["xml", "json"] }
+            "schema": {
+              "type": "string",
+              "enum": [
+                "xml",
+                "json"
+              ]
+            }
           }
         ],
         "responses": {
@@ -223,8 +247,8 @@
         }
       }
     },
-    "/CreerUnUtilisateur.php": {
-      "post": {
+    "/CreerUnUtilisateur": {
+      "get": {
         "summary": "Créer un compte utilisateur",
         "description": "Permet à un utilisateur de se créer un compte en fournissant un pseudo, une adresse mail et un numéro de téléphone.",
         "parameters": [
@@ -263,7 +287,10 @@
             "description": "Langue du flux de réponse (xml ou json). Par défaut : xml.",
             "schema": {
               "type": "string",
-              "enum": ["xml", "json"]
+              "enum": [
+                "xml",
+                "json"
+              ]
             }
           }
         ],
@@ -325,6 +352,277 @@
               },
               "application/xml": {
                 "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : problème lors de l'enregistrement.</reponse></data>"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetTousLesUtilisateurs": {
+      "get": {
+        "summary": "Obtenir la liste de tous les utilisateurs",
+        "description": "Permet à un utilisateur authentifié d'obtenir la liste de tous les utilisateurs (de niveau 1).",
+        "parameters": [
+          {
+            "name": "pseudo",
+            "in": "query",
+            "required": true,
+            "description": "Le pseudo de l'utilisateur authentifié.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mdp",
+            "in": "query",
+            "required": true,
+            "description": "Le mot de passe hashé en SHA-1 de l'utilisateur authentifié.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "description": "Langue du flux de réponse (xml ou json). Par défaut : xml.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "xml",
+                "json"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste des utilisateurs récupérée avec succès",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "2 utilisateur(s).",
+                    "donnees": {
+                      "lesUtilisateurs": [
+                        {
+                          "id": 2,
+                          "pseudo": "callisto",
+                          "adrMail": "delasalle.sio.eleves@gmail.com",
+                          "numTel": "22.33.44.55.66",
+                          "niveau": 1,
+                          "dateCreation": "2018-08-12 19:45:23",
+                          "nbTraces": 2,
+                          "dateDerniereTrace": "2018-01-19 13:08:48"
+                        },
+                        {
+                          "id": 3,
+                          "pseudo": "europa",
+                          "adrMail": "delasalle.sio.eleves@gmail.com",
+                          "numTel": "22.33.44.55.66",
+                          "niveau": 1,
+                          "dateCreation": "2018-08-12 19:45:23",
+                          "nbTraces": 0
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>2 utilisateur(s).</reponse><donnees><lesUtilisateurs><utilisateur><id>2</id><pseudo>callisto</pseudo><adrMail>delasalle.sio.eleves@gmail.com</adrMail><numTel>22.33.44.55.66</numTel><niveau>1</niveau><dateCreation>2018-08-12 19:45:23</dateCreation><nbTraces>2</nbTraces><dateDerniereTrace>2018-01-19 13:08:48</dateDerniereTrace></utilisateur><utilisateur><id>3</id><pseudo>europa</pseudo><adrMail>delasalle.sio.eleves@gmail.com</adrMail><numTel>22.33.44.55.66</numTel><niveau>1</niveau><dateCreation>2018-08-12 19:45:23</dateCreation><nbTraces>0</nbTraces></utilisateur></lesUtilisateurs></donnees></data>"
+              }
+            }
+          },
+          "400": {
+            "description": "Données incomplètes ou incorrectes",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : données incomplètes."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : données incomplètes.</reponse></data>"
+              }
+            }
+          },
+          "401": {
+            "description": "Authentification incorrecte",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : authentification incorrecte."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : authentification incorrecte.</reponse></data>"
+              }
+            }
+          },
+          "406": {
+            "description": "Méthode HTTP incorrecte",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : méthode HTTP incorrecte."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : méthode HTTP incorrecte.</reponse></data>"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/SupprimerUnUtilisateur": {
+      "get": {
+        "summary": "Supprimer un utilisateur",
+        "description": "Permet à un administrateur de supprimer un utilisateur (à condition qu'il ne possède aucune trace enregistrée).",
+        "parameters": [
+          {
+            "name": "pseudo",
+            "in": "query",
+            "required": true,
+            "description": "Le pseudo de l'administrateur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mdp",
+            "in": "query",
+            "required": true,
+            "description": "Le mot de passe hashé en SHA-1 de l'administrateur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pseudoAsupprimer",
+            "in": "query",
+            "required": true,
+            "description": "Le pseudo de l'utilisateur à supprimer.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "description": "Langue du flux de réponse (xml ou json). Par défaut : xml.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "xml",
+                "json"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Suppression effectuée avec succès",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Suppression effectuée ; un courriel va être envoyé à l'utilisateur."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Suppression effectuée ; un courriel va être envoyé à l'utilisateur.</reponse></data>"
+              }
+            }
+          },
+          "400": {
+            "description": "Données incomplètes ou suppression impossible",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "incomplete_data": {
+                    "summary": "Données incomplètes",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : données incomplètes."
+                      }
+                    }
+                  },
+                  "deletion_impossible": {
+                    "summary": "Suppression impossible",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : suppression impossible ; cet utilisateur possède encore des traces."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "incomplete_data": {
+                    "summary": "Données incomplètes",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : données incomplètes.</reponse></data>"
+                  },
+                  "deletion_impossible": {
+                    "summary": "Suppression impossible",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : suppression impossible ; cet utilisateur possède encore des traces.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentification incorrecte",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : authentification incorrecte."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : authentification incorrecte.</reponse></data>"
+              }
+            }
+          },
+          "406": {
+            "description": "Méthode HTTP incorrecte",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : méthode HTTP incorrecte."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : méthode HTTP incorrecte.</reponse></data>"
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur interne du serveur",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : problème lors de la suppression de l'utilisateur."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : problème lors de la suppression de l'utilisateur.</reponse></data>"
               }
             }
           }
