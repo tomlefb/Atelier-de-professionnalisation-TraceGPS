@@ -15,7 +15,7 @@
     "/ChangerDeMdp": {
       "get": {
         "summary": "Changer le mot de passe",
-        "description": "Permet à un utilisateur de changer son mot de passe en fournissant son pseudo, l'ancien mot de passe et le nouveau mot de passe.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Ancien mot de passe (SHA-1) : `5baa61e4c9b93f3f0682250b6cf8331b` (hash pour 'password')\n- Nouveau mot de passe : `newpassword`",
+        "description": "Permet à un utilisateur de changer son mot de passe en fournissant son pseudo, l'ancien mot de passe et le nouveau mot de passe.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Ancien mot de passe (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e` (hash pour 'password')\n- Nouveau mot de passe : `newpassword`",
         "parameters": [
           {
             "name": "pseudo",
@@ -72,14 +72,24 @@
             "description": "Mot de passe changé avec succès",
             "content": {
               "application/json": {
-                "example": {
-                  "data": {
-                    "reponse": "Enregistrement effectué ; vous allez recevoir un courriel de confirmation."
+                "examples": {
+                  "success": {
+                    "summary": "Mot de passe changé",
+                    "value": {
+                      "data": {
+                        "reponse": "Enregistrement effectué ; vous allez recevoir un courriel de confirmation."
+                      }
+                    }
                   }
                 }
               },
               "application/xml": {
-                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Enregistrement effectué ; vous allez recevoir un courriel de confirmation.</reponse></data>"
+                "examples": {
+                  "success": {
+                    "summary": "Mot de passe changé (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Enregistrement effectué ; vous allez recevoir un courriel de confirmation.</reponse></data>"
+                  }
+                }
               }
             }
           },
@@ -149,7 +159,7 @@
     "/Connecter": {
       "get": {
         "summary": "Authentifier un utilisateur",
-        "description": "Permet à un utilisateur de s'authentifier en fournissant son pseudo et son mot de passe hashé en SHA-1.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Mot de passe (SHA-1) : `5baa61e4c9b93f3f0682250b6cf8331b`",
+        "description": "Permet à un utilisateur de s'authentifier en fournissant son pseudo et son mot de passe hashé en SHA-1.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Mot de passe (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e`",
         "parameters": [
           {
             "name": "pseudo",
@@ -361,7 +371,7 @@
     "/GetTousLesUtilisateurs": {
       "get": {
         "summary": "Obtenir la liste de tous les utilisateurs",
-        "description": "Permet à un utilisateur authentifié d'obtenir la liste de tous les utilisateurs (de niveau 1).\n\n**Exemple de test :**\n- Pseudo : `admin`\n- Mot de passe (SHA-1) : `d033e22ae348aeb5660fc2140aec35850c4da997` (hash pour 'adminpass')",
+        "description": "Permet à un utilisateur authentifié d'obtenir la liste de tous les utilisateurs (de niveau 1).\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Mot de passe (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e` (hash pour 'adminpass')",
         "parameters": [
           {
             "name": "pseudo",
@@ -485,7 +495,7 @@
     "/SupprimerUnUtilisateur": {
       "get": {
         "summary": "Supprimer un utilisateur",
-        "description": "Permet à un administrateur de supprimer un utilisateur (à condition qu'il ne possède aucune trace enregistrée).\n\n**Exemple de test :**\n- Pseudo administrateur : `admin`\n- Mot de passe administrateur (SHA-1) : `d033e22ae348aeb5660fc2140aec35850c4da997`\n- Pseudo de l'utilisateur à supprimer : `usertodelete`",
+        "description": "Permet à un administrateur de supprimer un utilisateur (à condition qu'il ne possède aucune trace enregistrée).\n\n**Exemple de test :**\n- Pseudo administrateur : `callisto`\n- Mot de passe administrateur (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e`\n- Pseudo de l'utilisateur à supprimer : `usertodelete`",
         "parameters": [
           {
             "name": "pseudo",
@@ -632,7 +642,7 @@
     "/ArreterEnregistrementParcours": {
       "get": {
         "summary": "Terminer un enregistrement de parcours",
-        "description": "Ce service permet à un utilisateur authentifié de terminer l'enregistrement d'un parcours.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Mot de passe (SHA-1) : `5baa61e4c9b93f3f0682250b6cf8331b`\n- ID Trace : `23`",
+        "description": "Ce service permet à un utilisateur authentifié de terminer l'enregistrement d'un parcours.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Mot de passe (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e`\n- ID Trace : `23`",
         "parameters": [
           {
             "name": "pseudo",
@@ -757,7 +767,7 @@
     "/DemarrerEnregistrementParcours": {
       "get": {
         "summary": "Démarrer un enregistrement de parcours",
-        "description": "Ce service permet à un utilisateur authentifié de démarrer l'enregistrement d'un parcours.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Mot de passe (SHA-1) : `5baa61e4c9b93f3f0682250b6cf8331b`",
+        "description": "Ce service permet à un utilisateur authentifié de démarrer l'enregistrement d'un parcours.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Mot de passe (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e`",
         "parameters": [
           {
             "name": "pseudo",
@@ -881,7 +891,7 @@
     "/SupprimerUnParcours": {
       "get": {
         "summary": "Supprimer un parcours",
-        "description": "Ce service permet à un utilisateur authentifié de supprimer un de ses parcours.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Mot de passe (SHA-1) : `5baa61e4c9b93f3f0682250b6cf8331b`\n- ID Trace : `23`",        "parameters": [
+        "description": "Ce service permet à un utilisateur authentifié de supprimer un de ses parcours.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Mot de passe (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e`\n- ID Trace : `23`",        "parameters": [
           {
             "name": "pseudo",
             "in": "query",
