@@ -1531,6 +1531,212 @@
           }
         }
       }
+    },
+    "/RetirerUneAutorisation": {
+      "get": {
+        "summary": "Retirer une autorisation",
+        "description": "Ce service permet à un utilisateur de retirer une autorisation de localisation précédemment accordée à un autre utilisateur.",
+        "parameters": [
+          {
+            "name": "pseudo",
+            "in": "query",
+            "required": true,
+            "description": "Le pseudo de l'utilisateur qui souhaite retirer l'autorisation.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mdp",
+            "in": "query",
+            "required": true,
+            "description": "Le mot de passe hashé en SHA-1 de l'utilisateur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pseudoARetirer",
+            "in": "query",
+            "required": true,
+            "description": "Le pseudo de l'utilisateur pour lequel l'autorisation doit être retirée.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "texteMessage",
+            "in": "query",
+            "required": false,
+            "description": "Un message optionnel envoyé à l'utilisateur à qui l'autorisation est retirée.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "description": "Langue du flux de réponse (xml ou json). Par défaut : xml.",
+            "schema": {
+              "type": "string",
+              "enum": ["xml", "json"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Autorisation retirée avec succès",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "success": {
+                    "summary": "Succès (JSON)",
+                    "value": {
+                      "data": {
+                        "reponse": "Autorisation supprimée ; utilisateur destinataire a été notifié."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "success": {
+                    "summary": "Succès (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Autorisation supprimée ; utilisateur destinataire a été notifié.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Données incomplètes ou incorrectes",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : données incomplètes",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : données incomplètes."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : données incomplètes (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : données incomplètes.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentification incorrecte",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : authentification incorrecte",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : authentification incorrecte."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : authentification incorrecte (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : authentification incorrecte.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Utilisateur inexistant",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : utilisateur inexistant",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : pseudo utilisateur inexistant."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : utilisateur inexistant (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : pseudo utilisateur inexistant.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Aucune autorisation accordée",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : autorisation inexistante",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : l'autorisation n'était pas accordée."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : autorisation inexistante (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : l'autorisation n'était pas accordée.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur interne",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : problème interne",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : problème lors de la suppression de l'autorisation."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : problème interne (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : problème lors de la suppression de l'autorisation.</reponse></data>"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
