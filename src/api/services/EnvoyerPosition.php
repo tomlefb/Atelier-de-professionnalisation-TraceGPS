@@ -5,7 +5,7 @@
 // Dernière mise à jour : [Votre Date]
 // Rôle : Ce service permet à un utilisateur authentifié d'envoyer sa position
 
-include_once('../../modele/DAO.php');
+//include_once('../../modele/DAO.php');
 
 // Connexion au DAO
 $dao = new DAO();

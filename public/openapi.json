@@ -1045,6 +1045,493 @@
           }
         }
       }
+    },
+    "/DemanderUneAutorisation": {
+      "get": {
+        "summary": "Demander une autorisation",
+        "description": "Ce service permet à un utilisateur authentifié de demander une autorisation à un autre utilisateur en spécifiant un message personnalisé.",
+        "parameters": [
+          {
+            "name": "pseudo",
+            "in": "query",
+            "required": true,
+            "description": "Le pseudo de l'utilisateur demandeur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mdp",
+            "in": "query",
+            "required": true,
+            "description": "Le mot de passe hashé en SHA-1 de l'utilisateur demandeur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pseudoDestinataire",
+            "in": "query",
+            "required": true,
+            "description": "Le pseudo de l'utilisateur destinataire de la demande.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "texteMessage",
+            "in": "query",
+            "required": true,
+            "description": "Le message personnalisé envoyé avec la demande.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "nomPrenom",
+            "in": "query",
+            "required": true,
+            "description": "Le nom et prénom de l'utilisateur demandeur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "description": "Langue du flux de réponse (xml ou json). Par défaut : xml.",
+            "schema": {
+              "type": "string",
+              "enum": ["xml", "json"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Demande envoyée avec succès",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "success": {
+                    "summary": "Succès (JSON)",
+                    "value": {
+                      "data": {
+                        "reponse": "pseudoDestinataire va recevoir un courriel avec votre demande."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "success": {
+                    "summary": "Succès (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>pseudoDestinataire va recevoir un courriel avec votre demande.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Données incomplètes",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : données incomplètes",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : données incomplètes."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : données incomplètes (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : données incomplètes.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentification incorrecte",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : authentification incorrecte",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : authentification incorrecte."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : authentification incorrecte (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : authentification incorrecte.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Utilisateur destinataire non trouvé",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : pseudo utilisateur inexistant",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : pseudo utilisateur inexistant."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : pseudo utilisateur inexistant (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : pseudo utilisateur inexistant.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Méthode HTTP incorrecte",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : méthode HTTP incorrecte",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : méthode HTTP incorrecte."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : méthode HTTP incorrecte (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : méthode HTTP incorrecte.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur interne",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : problème lors de l'envoi de la demande",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : l'envoi du courriel de demande d'autorisation a rencontré un problème."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : problème lors de l'envoi de la demande (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : l'envoi du courriel de demande d'autorisation a rencontré un problème.</reponse></data>"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/EnvoyerPosition": {
+      "get": {
+        "summary": "Envoyer une position",
+        "description": "Ce service permet à un utilisateur authentifié d'envoyer sa position dans une trace en cours.",
+        "parameters": [
+          {
+            "name": "pseudo",
+            "in": "query",
+            "required": true,
+            "description": "Le pseudo de l'utilisateur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mdp",
+            "in": "query",
+            "required": true,
+            "description": "Le mot de passe hashé en SHA-1 de l'utilisateur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "idTrace",
+            "in": "query",
+            "required": true,
+            "description": "L'identifiant de la trace à laquelle la position doit être ajoutée.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "dateHeure",
+            "in": "query",
+            "required": true,
+            "description": "La date et l'heure de la position (format : YYYY-MM-DD HH:mm:ss).",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "latitude",
+            "in": "query",
+            "required": true,
+            "description": "La latitude de la position.",
+            "schema": {
+              "type": "number",
+              "format": "float"
+            }
+          },
+          {
+            "name": "longitude",
+            "in": "query",
+            "required": true,
+            "description": "La longitude de la position.",
+            "schema": {
+              "type": "number",
+              "format": "float"
+            }
+          },
+          {
+            "name": "altitude",
+            "in": "query",
+            "required": true,
+            "description": "L'altitude de la position (en mètres).",
+            "schema": {
+              "type": "number",
+              "format": "float"
+            }
+          },
+          {
+            "name": "rythmeCardio",
+            "in": "query",
+            "required": false,
+            "description": "Le rythme cardiaque enregistré (facultatif).",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "description": "Langue du flux de réponse (xml ou json). Par défaut : xml.",
+            "schema": {
+              "type": "string",
+              "enum": ["xml", "json"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Position enregistrée avec succès",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "success": {
+                    "summary": "Succès (JSON)",
+                    "value": {
+                      "data": {
+                        "reponse": "Point enregistré."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "success": {
+                    "summary": "Succès (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Point enregistré.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Données incomplètes",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : données incomplètes",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : données incomplètes."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : données incomplètes (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : données incomplètes.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentification incorrecte",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : authentification incorrecte",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : authentification incorrecte."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : authentification incorrecte (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : authentification incorrecte.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Trace non associée à l'utilisateur",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : la trace ne correspond pas",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : le numéro de trace ne correspond pas à cet utilisateur."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : la trace ne correspond pas (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : le numéro de trace ne correspond pas à cet utilisateur.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Trace inexistante",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : la trace n'existe pas",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : le numéro de trace n'existe pas."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : la trace n'existe pas (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : le numéro de trace n'existe pas.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Trace déjà terminée",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : la trace est terminée",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : la trace est déjà terminée."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : la trace est terminée (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : la trace est déjà terminée.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur interne",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : problème lors de l'enregistrement",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : problème lors de l'enregistrement du point."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : problème lors de l'enregistrement (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : problème lors de l'enregistrement du point.</reponse></data>"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
+

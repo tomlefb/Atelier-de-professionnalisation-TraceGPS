@@ -4,7 +4,7 @@
 // Fichier : api/services/RetirerUneAutorisation.php
 // Dernière mise à jour : [Votre Date]
 // Rôle : Ce service permet à un utilisateur de retirer une autorisation de localisation à un autre membre
-include_once('../../modele/DAO.php');
+//include_once('../../modele/DAO.php');
 
 // Connexion au DAO
 $dao = new DAO();

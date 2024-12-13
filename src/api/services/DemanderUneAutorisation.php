@@ -4,7 +4,7 @@
 // Fichier : api/services/DemanderUneAutorisation.php
 // Dernière mise à jour : [Votre Date]
 // Rôle : Ce service permet à un utilisateur de demander une autorisation à un autre membre
-include_once('../../modele/DAO.php');
+//include_once('../../modele/DAO.php');
 
 // Connexion au DAO
 $dao = new DAO();
@@ -30,6 +30,7 @@ if ($this->getMethodeRequete() != "GET") {
         $msg = "Erreur : données incomplètes.";
         $code_reponse = 400;
     } else {
+
         // Vérification de l'authentification de l'utilisateur demandeur
         if ($dao->getNiveauConnexion($pseudo, $mdpSha1) == 0) {
             $msg = "Erreur : authentification incorrecte.";
