@@ -21,7 +21,7 @@
 // curl -i -X GET "http://sio.lyceedelasalle.fr/tracegps/api/Connecter?pseudo=europa&mdp=13e3668bbee30b004380052b086457b014504b3e&lang=json"
 // curl -i -X GET "http://sio.lyceedelasalle.fr/tracegps/api/Connecterr?pseudo=europa&mdp=13e3668bbee30b004380052b086457b014504b3e&lang=json"
 // curl -i -X GET "http://sio.lyceedelasalle.fr/tracegps/api/connecter?pseudo=europa&mdp=13e3668bbee30b004380052b086457b014504b3e&lang=json"
-include_once ('../../modele/DAO.php');
+//include_once ('../../modele/DAO.php');
 // connexion du serveur web à la base MySQL
 $dao = new DAO();
 
@@ -66,11 +66,11 @@ unset($dao);
 // création du flux en sortie
 if ($lang == "xml") {
     $content_type = "application/xml; charset=utf-8";      // indique le format XML pour la réponse
-    $donnees = creerFluxXML ($msg);
+    $donnees = creerFluxXML($msg);
 }
 else {
     $content_type = "application/json; charset=utf-8";      // indique le format Json pour la réponse
-    $donnees = creerFluxJSON ($msg);
+    $donnees = creerFluxJSON($msg);
 }
 
 // envoi de la réponse HTTP
