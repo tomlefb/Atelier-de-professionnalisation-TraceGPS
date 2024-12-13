@@ -996,28 +996,25 @@ class DAO
 
         $req->bindValue("id", $idTrace, PDO::PARAM_INT);
 
-        $id = $idTrace;
-        $dateHeureDebut = null;
-        $dateHeureFin = null;
-        $terminee = 0;
-        $idUtilisateur = 0;
+        $laTrace = null;
         $lesPointsDeTrace = [];
 
-        try {
-            $req->execute();
-            while ($uneLigne = $req->fetch(PDO::FETCH_ASSOC)) {
+        $req->execute();
+        $result = $req->fetch(PDO::FETCH_ASSOC);
 
-                $laTrace = new Trace(
-                    $uneLigne['id'],
-                    $uneLigne['dateDebut'],
-                    $uneLigne['dateFin'],
-                    $uneLigne['terminee'],
-                    $uneLigne['idUtilisateur'],
-                    DAO::getLesPointsDeTrace($id)
-                );
-            }
-        } catch (Exception $ex) {
-            return [];
+        if($result) {
+            
+            $laTrace = new Trace(
+                $result['id'],
+                $result['dateDebut'],
+                $result['dateFin'],
+                $result['terminee'],
+                $result['idUtilisateur']
+            );
+            $lesPointsDeTrace = $this->getLesPointsDeTrace($idTrace);
+            $laTrace->setLesPointsDeTrace($lesPointsDeTrace);
+        } else {
+            return null;
         }
         return $laTrace;
 

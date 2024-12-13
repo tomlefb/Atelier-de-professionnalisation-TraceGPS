@@ -37,33 +37,59 @@ $dao = new DAO();
 echo "<h3>Test de Briac Villeneuve : </h3>";
 
 
+
+
+
+
 // test de la méthode creerUnPointDeTrace ---------------------------------------------------------
 // modifié par dP le 13/8/2021
-echo "<h3>Test de creerUnPointDeTrace : </h3>";
-// on affiche d'abord le nombre de points (5) de la trace 1
-$lesPoints = $dao->getLesPointsDeTrace(1);
-$nbPoints = sizeof($lesPoints);
-echo "<p>Nombre de points de la trace 1 : " . $nbPoints . "</p>";
-// on crée un sixième point et on l'ajoute à la trace 1
-$unIdTrace = 1;
-$unID = 6;
-$uneLatitude = 48.20;
-$uneLongitude = -1.55;
-$uneAltitude = 50;
-$uneDateHeure = date('Y-m-d H:i:s', time());
-$unRythmeCardio = 80;
-$unTempsCumule = 0;
-$uneDistanceCumulee = 0;
-$uneVitesse = 15;
-$unPoint = new PointDeTrace($unIdTrace, $unID, $uneLatitude, $uneLongitude, $uneAltitude, $uneDateHeure,
-$unRythmeCardio, $unTempsCumule, $uneDistanceCumulee, $uneVitesse);
-$ok = $dao->creerUnPointDeTrace($unPoint);
-// on affiche à nouveau le nombre de points (6) de la trace 1
-$lesPoints = $dao->getLesPointsDeTrace(1);
-$nbPoints = sizeof($lesPoints);
-echo "<p>Nombre de points de la trace 1 : " . $nbPoints . "</p>";
-echo ('<br>');
+//echo "<h3>Test de creerUnPointDeTrace : </h3>";
+//// on affiche d'abord le nombre de points (5) de la trace 1
+//$lesPoints = $dao->getLesPointsDeTrace(1);
+//$nbPoints = sizeof($lesPoints);
+//echo "<p>Nombre de points de la trace 1 : " . $nbPoints . "</p>";
+//// on crée un sixième point et on l'ajoute à la trace 1
+//$unIdTrace = 1;
+//$unID = 6;
+//$uneLatitude = 48.20;
+//$uneLongitude = -1.55;
+//$uneAltitude = 50;
+//$uneDateHeure = date('Y-m-d H:i:s', time());
+//$unRythmeCardio = 80;
+//$unTempsCumule = 0;
+//$uneDistanceCumulee = 0;
+//$uneVitesse = 15;
+//$unPoint = new PointDeTrace($unIdTrace, $unID, $uneLatitude, $uneLongitude, $uneAltitude, $uneDateHeure,
+//$unRythmeCardio, $unTempsCumule, $uneDistanceCumulee, $uneVitesse);
+//$ok = $dao->creerUnPointDeTrace($unPoint);
+//// on affiche à nouveau le nombre de points (6) de la trace 1
+//$lesPoints = $dao->getLesPointsDeTrace(1);
+//$nbPoints = sizeof($lesPoints);
+//echo "<p>Nombre de points de la trace 1 : " . $nbPoints . "</p>";
+//echo ('<br>');
 
+
+
+
+
+
+// test de la méthode getUneTrace -----------------------------------------------------------------
+// modifié par dP le 14/8/2021
+echo "<h3>Test de getUneTrace : </h3>";
+$uneTrace = $dao->getUneTrace(2);
+if ($uneTrace) {
+ echo "<p>La trace 2 existe : <br>" . $uneTrace->toString() . "</p>";
+}
+else {
+ echo "<p>La trace 2 n'existe pas !</p>";
+}
+$uneTrace = $dao->getUneTrace(100);
+if ($uneTrace) {
+ echo "<p>La trace 100 existe : <br>" . $uneTrace->toString() . "</p>";
+}
+else {
+ echo "<p>La trace 100 n'existe pas !</p>";
+}
 
 
 
