@@ -2190,6 +2190,230 @@
           }
         }
       }
+    },
+    "/GetUnParcoursEtSesPoints": {
+      "get": {
+        "summary": "Obtenir les détails d'un parcours et ses points",
+        "description": "Permet à un utilisateur d'obtenir les détails d'un de ses parcours ou d'un parcours d'un utilisateur qui l'autorise.",
+        "parameters": [
+          {
+            "name": "pseudo",
+            "in": "query",
+            "required": false,
+            "description": "Le pseudo de l'utilisateur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mdp",
+            "in": "query",
+            "required": false,
+            "description": "Le mot de passe hashé en SHA-1 de l'utilisateur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "idTrace",
+            "in": "query",
+            "required": false,
+            "description": "L'identifiant de la trace à consulter.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "description": "Langue du flux de réponse (xml ou json). Par défaut : xml.",
+            "schema": {
+              "type": "string",
+              "enum": ["xml", "json"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Données de la trace demandée.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "success": {
+                    "summary": "Succès (JSON)",
+                    "value": {
+                      "data": {
+                        "reponse": "Données de la trace demandée.",
+                        "donnees": {
+                          "trace": {
+                            "id": 2,
+                            "dateHeureDebut": "2018-01-19 13:08:48",
+                            "terminee": 1,
+                            "dateHeureFin": "2018-01-19 13:11:48",
+                            "idUtilisateur": 2
+                          },
+                          "lesPoints": [
+                            {
+                              "id": 1,
+                              "latitude": 48.2109,
+                              "longitude": -1.5535,
+                              "altitude": 60,
+                              "dateHeure": "2018-01-19 13:08:48",
+                              "rythmeCardio": 81
+                            },
+                            {
+                              "id": 10,
+                              "latitude": 48.2199,
+                              "longitude": -1.5445,
+                              "altitude": 150,
+                              "dateHeure": "2018-01-19 13:11:48",
+                              "rythmeCardio": 90
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "success": {
+                    "summary": "Succès (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<data>\n  <reponse>Données de la trace demandée.</reponse>\n  <donnees>\n    <trace>\n      <id>2</id>\n      <dateHeureDebut>2018-01-19 13:08:48</dateHeureDebut>\n      <terminee>1</terminee>\n      <dateHeureFin>2018-01-19 13:11:48</dateHeureFin>\n      <idUtilisateur>2</idUtilisateur>\n    </trace>\n    <lesPoints>\n      <point>\n        <id>1</id>\n        <latitude>48.2109</latitude>\n        <longitude>-1.5535</longitude>\n        <altitude>60</altitude>\n        <dateHeure>2018-01-19 13:08:48</dateHeure>\n        <rythmeCardio>81</rythmeCardio>\n      </point>\n      <point>\n        <id>10</id>\n        <latitude>48.2199</latitude>\n        <longitude>-1.5445</longitude>\n        <altitude>150</altitude>\n        <dateHeure>2018-01-19 13:11:48</dateHeure>\n        <rythmeCardio>90</rythmeCardio>\n      </point>\n    </lesPoints>\n  </donnees>\n</data>"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Données incomplètes ou incorrectes",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : données incomplètes",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : données incomplètes."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : données incomplètes (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<data>\n  <reponse>Erreur : données incomplètes.</reponse>\n</data>"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentification incorrecte",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : authentification incorrecte",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : authentification incorrecte."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : authentification incorrecte (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<data>\n  <reponse>Erreur : authentification incorrecte.</reponse>\n</data>"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Non autorisé à consulter la trace",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : non autorisé",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : vous n'êtes pas autorisé par le propriétaire du parcours."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : non autorisé (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<data>\n  <reponse>Erreur : vous n'êtes pas autorisé par le propriétaire du parcours.</reponse>\n</data>"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Trace inexistante",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : trace inexistante",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : parcours inexistant."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : trace inexistante (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<data>\n  <reponse>Erreur : parcours inexistant.</reponse>\n</data>"
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Méthode HTTP incorrecte",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : méthode incorrecte",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : méthode HTTP incorrecte."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : méthode incorrecte (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<data>\n  <reponse>Erreur : méthode HTTP incorrecte.</reponse>\n</data>"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
