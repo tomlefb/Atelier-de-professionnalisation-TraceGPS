@@ -22,6 +22,7 @@
 // curl -i -X GET "http://sio.lyceedelasalle.fr/tracegps/api/Connecterr?pseudo=europa&mdp=13e3668bbee30b004380052b086457b014504b3e&lang=json"
 // curl -i -X GET "http://sio.lyceedelasalle.fr/tracegps/api/connecter?pseudo=europa&mdp=13e3668bbee30b004380052b086457b014504b3e&lang=json"
 //include_once ('../../modele/DAO.php');
+
 // connexion du serveur web à la base MySQL
 $dao = new DAO();
 

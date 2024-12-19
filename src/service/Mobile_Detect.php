@@ -725,7 +725,7 @@ class Mobile_Detect
             $header = strtoupper($header);
         }
 
-        // test the alternate, too
+        // test.php the alternate, too
         $altHeader = 'HTTP_' . $header;
 
         //Test both the regular and the HTTP_ prefix

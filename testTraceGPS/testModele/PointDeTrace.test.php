@@ -1,7 +1,7 @@
 <?php
 // Projet TraceGPS
-// fichier : modele/PointDeTrace.test.php
-// Rôle : test de la classe PointDeTrace.php
+// fichier : modele/PointDeTrace.test.php.php
+// Rôle : test.php de la classe PointDeTrace.php
 // Dernière mise à jour : 18/7/2021 par dPlanchet
 
 // inclusion de la classe PointDeTrace
@@ -73,7 +73,7 @@ echo ("Distance cumulée (Km) : " . $unPoint2->getDistanceCumulee() . "<br>");
 echo ("Vitesse (Km/h) : " . $unPoint2->getVitesse() . "<br>");
 echo ('<br>');
 
-// test de la méthode toString
+// test.php de la méthode toString
 echo "<h4>méthode toString sur objet unPoint2 : </h4>";
 echo ($unPoint2->toString());
 echo ('<br>');

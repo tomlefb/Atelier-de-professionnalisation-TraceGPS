@@ -18,20 +18,14 @@ class Rest {
 	//    $code_reponse : le code numérique à 3 chiffres indiquant l'état de la réponse
 	//    $content_type : le format de la réponse ("application/json; charset=utf-8" ou "application/xml; charset=utf-8")
 	//    $donnees : les données encodées (formatées en Json ou en XML)
-	protected function envoyerReponse($code_reponse, $content_type, $donnees) {
-        //$this->codeReponse = $code_reponse;       // mémorise le code de la réponse HTTP
+    protected function envoyerReponse($code_reponse, $content_type, $donnees) {
         ob_clean();  // Nettoyer tout tampon précédent
-		/*
-		En Java, lorsque le parseur lit une page web, il vérifie que celle-ci ne contient aucune erreur ou message
-		d’erreur. Une page ayant un code réponse différent de 200 entraînera donc l’arrêt de la lecture de cette même
-		page (ce qui provoque un plantage en Java)
-		*/
-		$this->codeReponse = 200;
-		$this->contentType = $content_type;       // mémorise le le format de la réponse HTTP
-        $this->preparerEntetes();                 // prépare les entêtes HTTP de la réponse HTTP
-        echo $donnees;                            // envoie les données dans le corps de la réponse HTTP
-        exit;                                     // fin de l'exécution
-	}
+        $this->codeReponse = $code_reponse;      // Utilise le code de réponse passé en paramètre
+        $this->contentType = $content_type;     // mémorise le format de la réponse HTTP
+        $this->preparerEntetes();               // prépare les entêtes HTTP de la réponse HTTP
+        echo $donnees;                          // envoie les données dans le corps de la réponse HTTP
+        exit;                                   // fin de l'exécution
+    }
 
 	// Cette méthode prépare les entêtes HTTP de la réponse
 	protected function preparerEntetes() {

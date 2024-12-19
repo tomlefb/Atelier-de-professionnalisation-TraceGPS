@@ -1,7 +1,7 @@
 <?php
 // Projet TraceGPS
-// fichier : modele/Outils.test.php
-// Rôle : test de la classe Outils.php (il suffit d'afficher cette page dans un navigateur web)
+// fichier : modele/Outils.test.php.php
+// Rôle : test.php de la classe Outils.php (il suffit d'afficher cette page dans un navigateur web)
 // Dernière mise à jour : 13/7/2021 par dPlanchet
 
 // inclusion de la classe Outils
@@ -17,13 +17,13 @@ include_once ('../../src/modele/Outils.php');
 <body>
 
 <?php
-// test de la fonction PHP sha1 avec les 2 mots de passe utilisés pour les tests
+// test.php de la fonction PHP sha1 avec les 2 mots de passe utilisés pour les tests
 echo ('<b>Test de la fonction PHP sha1 : </b><br>');
 echo ('mdpadmin  : ' . sha1('mdpadmin') . '<br>');
 echo ('mdputilisateur : ' . sha1('mdputilisateur') . '<br>');
 echo ('<br>');
 
-// test de la méthode convertirEnDateFR------------------------------------------------------------
+// test.php de la méthode convertirEnDateFR------------------------------------------------------------
 $uneDateUS = '2007-05-16';
 $uneDateFR = Outils::convertirEnDateFR($uneDateUS);
 echo ('<b>Test de la méthode convertirEnDateFR : </b><br>');
@@ -31,7 +31,7 @@ echo ('$uneDateUS : ' . $uneDateUS . '<br>');
 echo ('$uneDateFR : ' . $uneDateFR . '<br>');
 echo ('<br>');
 
-// test de la méthode convertirEnDateUS------------------------------------------------------------
+// test.php de la méthode convertirEnDateUS------------------------------------------------------------
 $uneDateFR = '16/05/2007';
 $uneDateUS = Outils::convertirEnDateUS($uneDateFR);
 echo ('<b>Test de la méthode convertirEnDateUS : </b><br>');
@@ -39,7 +39,7 @@ echo ('$uneDateFR : ' . $uneDateFR . '<br>');
 echo ('$uneDateUS : ' . $uneDateUS . '<br>');
 echo ('<br>');
 
-// test de la méthode corrigerDate-----------------------------------------------------------------
+// test.php de la méthode corrigerDate-----------------------------------------------------------------
 $uneDateAvant = '16-05-2007';
 $uneDateApres = Outils::corrigerDate($uneDateAvant);
 echo ('<b>Test de la méthode corrigerDate : </b><br>');
@@ -47,7 +47,7 @@ echo ('$uneDateAvant : ' . $uneDateAvant . '<br>');
 echo ('$uneDateApres : ' . $uneDateApres . '<br>');
 echo ('<br>');
 
-// test de la méthode corrigerPrenom---------------------------------------------------------------
+// test.php de la méthode corrigerPrenom---------------------------------------------------------------
 $unPrenomAvant = 'charles';
 $unPrenomApres = Outils::corrigerPrenom($unPrenomAvant);
 echo ('<b>Test de la méthode corrigerPrenom : </b><br>');
@@ -61,7 +61,7 @@ echo ('$unPrenomAvant : ' . $unPrenomAvant . '<br>');
 echo ('$unPrenomApres : ' . $unPrenomApres . '<br>');
 echo ('<br>');
 
-// test de la méthode corrigerTelephone------------------------------------------------------------
+// test.php de la méthode corrigerTelephone------------------------------------------------------------
 $unNumeroAvant = '1122334455';
 $unNumeroApres = Outils::corrigerTelephone($unNumeroAvant);
 echo ('<b>Test de la méthode corrigerTelephone : </b><br>');
@@ -75,7 +75,7 @@ echo ('$unNumeroAvant : ' . $unNumeroAvant . '<br>');
 echo ('$unNumeroApres : ' . $unNumeroApres . '<br>');
 echo ('<br>');
 
-// test de la méthode corrigerVille----------------------------------------------------------------
+// test.php de la méthode corrigerVille----------------------------------------------------------------
 $uneVilleAvant = 'rennes';
 $uneVilleApres = Outils::corrigerVille($uneVilleAvant);
 echo ('<b>Test de la méthode corrigerVille : </b><br>');
@@ -95,17 +95,17 @@ echo ('$uneVilleAvant : ' . $uneVilleAvant . '<br>');
 echo ('$uneVilleApres : ' . $uneVilleApres . '<br>');
 echo ('<br>');
 
-// test de la méthode creerMdp---------------------------------------------------------------------
+// test.php de la méthode creerMdp---------------------------------------------------------------------
 echo ('<b>Test de la méthode creerMdp : </b><br>');
 echo ('Un mot de passe : ' . Outils::creerMdp() . '<br>');
 echo ('Un autre mot de passe : ' . Outils::creerMdp() . '<br>');
 echo ('Et encore un autre mot de passe : ' . Outils::creerMdp() . '<br>');
 echo ('<br>');
 
-// test de la méthode envoyerMail------------------------------------------------------------------
+// test.php de la méthode envoyerMail------------------------------------------------------------------
 // ATTENTION : remplacez l'adr destinataire par votre adresse pour pouvoir vérifier la réception du mail
 $adresseDestinataire = "xxxxxxxxxxxxxxxxxx";
-$sujet = "sujet du test";
+$sujet = "sujet du test.php";
 $message = "corps du message";
 $adresseEmetteur = "delasalle.sio.crib@gmail.com";
 $ok = false;
@@ -117,7 +117,7 @@ else
     echo ('L\'envoi du mail a rencontré un problème !<br>');
 echo ('<br>');
 
-// test de la méthode estUnCodePostalValide -------------------------------------------------------
+// test.php de la méthode estUnCodePostalValide -------------------------------------------------------
 $unCP = '35000';
 if ( Outils::estUnCodePostalValide($unCP) ) $resultat = 'vrai'; else $resultat = 'faux';
 echo ('<b>Test de la méthode estUnCodePostalValide : </b><br>');
@@ -131,7 +131,7 @@ echo ('$unCP : ' . $unCP . '<br>');
 echo ('$resultat : ' . $resultat . '<br>');
 echo ('<br>');
 
-// test de la méthode estUneAdrMailValide ---------------------------------------------------------
+// test.php de la méthode estUneAdrMailValide ---------------------------------------------------------
 $uneAdrMail = 'sophie.fonfec@gmail.com';
 if ( Outils::estUneAdrMailValide($uneAdrMail) ) $resultat = 'vrai'; else $resultat = 'faux';
 echo ('<b>Test de la méthode estUneAdrMailValide : </b><br>');
@@ -151,7 +151,7 @@ echo ('$uneAdrMail : ' . $uneAdrMail . '<br>');
 echo ('$resultat : ' . $resultat . '<br>');
 echo ('<br>');
 
-// test de la méthode estUneDateValide ---------------------------------------------------------
+// test.php de la méthode estUneDateValide ---------------------------------------------------------
 $uneDate = '31/13/2016';
 if ( Outils::estUneDateValide($uneDate) ) $resultat = 'vrai'; else $resultat = 'faux';
 echo ('<b>Test de la méthode estUneDateValide : </b><br>');
@@ -177,7 +177,7 @@ echo ('$uneDate : ' . $uneDate . '<br>');
 echo ('$resultat : ' . $resultat . '<br>');
 echo ('<br>');
 
-// test de la méthode estUnNumTelValide -----------------------------------------------------------
+// test.php de la méthode estUnNumTelValide -----------------------------------------------------------
 $unNumero = '1122334455';
 if ( Outils::estUnNumTelValide($unNumero) ) $resultat = 'vrai'; else $resultat = 'faux';
 echo ('<b>Test de la méthode estUnNumTelValide : </b><br>');

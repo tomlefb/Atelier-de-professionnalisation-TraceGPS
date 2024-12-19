@@ -1,7 +1,7 @@
 <?php
 // Projet TraceGPS
-// fichier : modele/Utilisateur.test.php
-// Rôle : test de la classe Utilisateur.php
+// fichier : modele/Utilisateur.test.php.php
+// Rôle : test.php de la classe Utilisateur.php
 // Dernière mise à jour : 18/7/2021 par dPlanchet
 
 include_once ('../../src/modele/Utilisateur.php');
@@ -35,7 +35,7 @@ echo ('dateDerniereTrace : ' . $utilisateur1->getDateDerniereTrace() . '<br>');
 
 echo ('<br>');
 
-// test de la méthode toString
+// test.php de la méthode toString
 echo "<h4>méthode toString sur objet utilisateur1 : </h4>";
 echo ($utilisateur1->toString());
 echo ('<br>');

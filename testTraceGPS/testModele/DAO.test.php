@@ -1,7 +1,7 @@
 <?php
 // Projet TraceGPS
-// fichier : modele/DAO.test.php
-// Rôle : test de la classe DAO.php
+// fichier : modele/DAO.test.php.php
+// Rôle : test.php de la classe DAO.php
 // Dernière mise à jour : 7/7/2021 par dPlanchet
 ?>
 <!DOCTYPE html>
@@ -19,7 +19,7 @@ include_once ('../../src/modele/DAO.php');
 $dao = new DAO();
 
 
-// test de la méthode getNiveauConnexion ----------------------------------------------------------
+// test.php de la méthode getNiveauConnexion ----------------------------------------------------------
 // modifié par dP le 12/8/2018
 echo "<h3>Test de getNiveauConnexion : </h3>";
 $niveau = $dao->getNiveauConnexion("admin", sha1("mdpadmin"));
@@ -37,7 +37,7 @@ echo "<p>Niveau de ('toto', 'mdputilisateur') : " . $niveau . "</br>";
 
 
 
-// test de la méthode existePseudoUtilisateur -----------------------------------------------------
+// test.php de la méthode existePseudoUtilisateur -----------------------------------------------------
 // modifié par dP le 12/8/2018
 echo "<h3>Test de existePseudoUtilisateur : </h3>";
 if ($dao->existePseudoUtilisateur("admin")) $existe = "oui"; else $existe = "non";
@@ -50,7 +50,7 @@ echo "Existence de l'utilisateur 'toto' : <b>" . $existe . "</b></p>";
 
 
 
-// test de la méthode getUnUtilisateur -----------------------------------------------------------
+// test.php de la méthode getUnUtilisateur -----------------------------------------------------------
 // modifié par dP le 12/8/2018
 echo "<h3>Test de getUnUtilisateur : </h3>";
 $unUtilisateur = $dao->getUnUtilisateur("admin");
@@ -78,7 +78,7 @@ else {
 
 
 
-// test de la méthode getTousLesUtilisateurs ------------------------------------------------------
+// test.php de la méthode getTousLesUtilisateurs ------------------------------------------------------
 // modifié par dP le 12/8/2018
 echo "<h3>Test de getTousLesUtilisateurs : </h3>";
 $lesUtilisateurs = $dao->getTousLesUtilisateurs();
@@ -93,7 +93,7 @@ foreach ($lesUtilisateurs as $unUtilisateur)
 
 
 
-// test de la méthode creerUnUtilisateur ----------------------------------------------------------
+// test.php de la méthode creerUnUtilisateur ----------------------------------------------------------
 // modifié par dP le 12/8/2018
 echo "<h3>Test de creerUnUtilisateur : </h3>";
 $unUtilisateur = new Utilisateur(0, "toto", "mdputilisateur", "delasalle.sio.xxxx@gmail.com", "5566778899", 1, date('Y-m-d H:i:s', time()), 0, null);
@@ -109,7 +109,7 @@ else {
 
 
 
-// test de la méthode modifierMdpUtilisateur ------------------------------------------------------
+// test.php de la méthode modifierMdpUtilisateur ------------------------------------------------------
 // modifié par dP le 12/8/2018
 echo "<h3>Test de modifierMdpUtilisateur : </h3>";
 $unUtilisateur = $dao->getUnUtilisateur("toto");
@@ -132,7 +132,7 @@ else {
 
 
 
-// test de la méthode supprimerUnUtilisateur ------------------------------------------------------
+// test.php de la méthode supprimerUnUtilisateur ------------------------------------------------------
 // modifié par dP le 12/8/2018
 echo "<h3>Test de supprimerUnUtilisateur : </h3>";
 $ok = $dao->supprimerUnUtilisateur("toto");
@@ -153,10 +153,10 @@ else {
 
 
 
-// test de la méthode envoyerMdp ------------------------------------------------------------------
+// test.php de la méthode envoyerMdp ------------------------------------------------------------------
 // modifié par dP le 12/8/2018
 echo "<h3>Test de envoyerMdp : </h3>";
-// pour ce test, une adresse mail que vous pouvez consulter
+// pour ce test.php, une adresse mail que vous pouvez consulter
 $unUtilisateur = new Utilisateur(0, "toto", "mdputilisateur", "delasalle.sio.xxxxx@gmail.com", "5566778899", 2, date('Y-m-d H:i:s', time()), 0, null);
 $ok = $dao->creerUnUtilisateur($unUtilisateur);
 $dao->modifierMdpUtilisateur("toto", "mdpadmin");
@@ -186,7 +186,7 @@ echo "Existence de l'adresse mail 'inexistant@example.com' : <b>" . $existe . "<
 
 
 // Le code des tests restant à développer va être réparti entre les membres de l'équipe de développement.
-// Afin de limiter les conflits avec GitHub, il est décidé d'attribuer un fichier de test à chaque développeur.
+// Afin de limiter les conflits avec GitHub, il est décidé d'attribuer un fichier de test.php à chaque développeur.
 // Développeur 1 : fichier DAO.test1.php
 // Développeur 2 : fichier DAO.test2.php
 // Développeur 3 : fichier DAO.test3.php
