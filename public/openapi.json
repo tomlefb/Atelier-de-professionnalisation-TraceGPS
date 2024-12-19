@@ -1772,6 +1772,147 @@
           }
         }
       }
+    },
+    "/DemanderMdp": {
+      "get": {
+        "summary": "Demander un nouveau mot de passe",
+        "description": "Permet à un utilisateur de demander un nouveau mot de passe en cas d'oubli.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Lang : `xml` ou `json`.",
+        "parameters": [
+          {
+            "name": "pseudo",
+            "in": "query",
+            "required": false,
+            "description": "Le pseudo de l'utilisateur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "description": "Langue du flux de réponse (xml ou json). Par défaut : xml.",
+            "schema": {
+              "type": "string",
+              "enum": ["xml", "json"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Mot de passe réinitialisé avec succès.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "success": {
+                    "summary": "Succès (JSON)",
+                    "value": {
+                      "data": {
+                        "reponse": "Vous allez recevoir un courriel avec votre nouveau mot de passe."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "success": {
+                    "summary": "Succès (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Vous allez recevoir un courriel avec votre nouveau mot de passe.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Données incomplètes.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : données incomplètes",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : données incomplètes."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : données incomplètes (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : données incomplètes.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pseudo inexistant.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : pseudo inexistant",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : pseudo inexistant."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : pseudo inexistant (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : pseudo inexistant.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Problème interne lors de l'enregistrement ou de l'envoi de courriel.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : problème interne",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : problème lors de l'enregistrement du mot de passe."
+                      }
+                    }
+                  },
+                  "email_failure": {
+                    "summary": "Enregistrement effectué mais courriel non envoyé",
+                    "value": {
+                      "data": {
+                        "reponse": "Enregistrement effectué ; l'envoi du courriel de confirmation a rencontré un problème."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : problème interne (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : problème lors de l'enregistrement du mot de passe.</reponse></data>"
+                  },
+                  "email_failure": {
+                    "summary": "Enregistrement effectué mais courriel non envoyé (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Enregistrement effectué ; l'envoi du courriel de confirmation a rencontré un problème.</reponse></data>"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
