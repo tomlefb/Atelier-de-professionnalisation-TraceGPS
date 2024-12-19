@@ -14,6 +14,7 @@
   "paths": {
     "/ChangerDeMdp": {
       "get": {
+        "tags": ["Utilisateurs"],
         "summary": "Changer le mot de passe",
         "description": "Permet à un utilisateur de changer son mot de passe en fournissant son pseudo, l'ancien mot de passe et le nouveau mot de passe.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Ancien mot de passe (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e` (hash pour 'password')\n- Nouveau mot de passe : `newpassword`",
         "parameters": [
@@ -158,6 +159,7 @@
     },
     "/Connecter": {
       "get": {
+        "tags": ["Authentification"],
         "summary": "Authentifier un utilisateur",
         "description": "Permet à un utilisateur de s'authentifier en fournissant son pseudo et son mot de passe hashé en SHA-1.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Mot de passe (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e`",
         "parameters": [
@@ -296,6 +298,7 @@
     },
     "/CreerUnUtilisateur": {
       "get": {
+        "tags": ["Utilisateurs"],
         "summary": "Créer un compte utilisateur",
         "description": "Permet à un utilisateur de se créer un compte en fournissant un pseudo, une adresse mail et un numéro de téléphone.\n\n**Exemple de test :**\n- Pseudo : `newuser`\n- Adresse mail : `newuser@example.com`\n- Numéro de téléphone : `1234567890`",
         "parameters": [
@@ -407,6 +410,7 @@
     },
     "/GetTousLesUtilisateurs": {
       "get": {
+        "tags": ["Utilisateurs"],
         "summary": "Obtenir la liste de tous les utilisateurs",
         "description": "Permet à un utilisateur authentifié d'obtenir la liste de tous les utilisateurs (de niveau 1).\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Mot de passe (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e` (hash pour 'adminpass')",
         "parameters": [
@@ -531,6 +535,7 @@
     },
     "/SupprimerUnUtilisateur": {
       "get": {
+        "tags": ["Utilisateurs"],
         "summary": "Supprimer un utilisateur",
         "description": "Permet à un administrateur de supprimer un utilisateur (à condition qu'il ne possède aucune trace enregistrée).\n\n**Exemple de test :**\n- Pseudo administrateur : `callisto`\n- Mot de passe administrateur (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e`\n- Pseudo de l'utilisateur à supprimer : `usertodelete`",
         "parameters": [
@@ -678,6 +683,7 @@
     },
     "/ArreterEnregistrementParcours": {
       "get": {
+        "tags": ["Parcours"],
         "summary": "Terminer un enregistrement de parcours",
         "description": "Ce service permet à un utilisateur authentifié de terminer l'enregistrement d'un parcours.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Mot de passe (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e`\n- ID Trace : `23`",
         "parameters": [
@@ -803,6 +809,7 @@
     },
     "/DemarrerEnregistrementParcours": {
       "get": {
+        "tags": ["Parcours"],
         "summary": "Démarrer un enregistrement de parcours",
         "description": "Ce service permet à un utilisateur authentifié de démarrer l'enregistrement d'un parcours.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Mot de passe (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e`",
         "parameters": [
@@ -927,6 +934,7 @@
     },
     "/SupprimerUnParcours": {
       "get": {
+        "tags": ["Parcours"],
         "summary": "Supprimer un parcours",
         "description": "Ce service permet à un utilisateur authentifié de supprimer un de ses parcours.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Mot de passe (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e`\n- ID Trace : `23`",
         "parameters": [
@@ -1083,8 +1091,9 @@
     },
     "/DemanderUneAutorisation": {
       "get": {
+        "tags": ["Autorisations"],
         "summary": "Demander une autorisation",
-        "description": "Ce service permet à un utilisateur authentifié de demander une autorisation à un autre utilisateur en spécifiant un message personnalisé.",
+        "description": "Ce service permet à un utilisateur authentifié de demander une autorisation à un autre utilisateur en spécifiant un message personnalisé.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Mot de passe (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e`\n- Pseudo destinataire : `jupiter`\n- Texte du message : `Bonjour, j'aimerais avoir accès à vos parcours.`\n- Lang : `xml` ou `json`.",
         "parameters": [
           {
             "name": "pseudo",
@@ -1298,8 +1307,9 @@
     },
     "/EnvoyerPosition": {
       "get": {
+        "tags": ["Autorisations"],
         "summary": "Envoyer une position",
-        "description": "Ce service permet à un utilisateur authentifié d'envoyer sa position dans une trace en cours.",
+        "description": "Ce service permet à un utilisateur authentifié d'envoyer sa position dans une trace en cours.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Mot de passe (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e`\n- ID Trace : `42`\n- Latitude : `48.8566`\n- Longitude : `2.3522`\n- Altitude : `35`\n- Rythme cardiaque : `80`\n- Lang : `xml` ou `json`.",
         "parameters": [
           {
             "name": "pseudo",
@@ -1569,8 +1579,9 @@
     },
     "/RetirerUneAutorisation": {
       "get": {
+        "tags": ["Autorisations"],
         "summary": "Retirer une autorisation",
-        "description": "Ce service permet à un utilisateur de retirer une autorisation de localisation précédemment accordée à un autre utilisateur.",
+        "description": "Ce service permet à un utilisateur authentifié d'envoyer sa position dans une trace en cours.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Mot de passe (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e`\n- ID Trace : `42`\n- Latitude : `48.8566`\n- Longitude : `2.3522`\n- Altitude : `35`\n- Rythme cardiaque : `80`\n- Lang : `xml` ou `json`.",
         "parameters": [
           {
             "name": "pseudo",
@@ -1775,6 +1786,7 @@
     },
     "/DemanderMdp": {
       "get": {
+        "tags": ["Authentification"],
         "summary": "Demander un nouveau mot de passe",
         "description": "Permet à un utilisateur de demander un nouveau mot de passe en cas d'oubli.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Lang : `xml` ou `json`.",
         "parameters": [
@@ -1916,8 +1928,9 @@
     },
     "/GetLesUtilisateursQueJautorise": {
       "get": {
+        "tags": ["Autorisations"],
         "summary": "Obtenir la liste des utilisateurs autorisés",
-        "description": "Ce service permet à un utilisateur authentifié de consulter la liste des utilisateurs qu'il autorise à consulter ses parcours.",
+        "description": "Ce service permet à un utilisateur authentifié de consulter la liste des utilisateurs qu'il autorise à consulter ses parcours.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Mot de passe (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e`\n- Lang : `xml` ou `json`.",
         "parameters": [
           {
             "name": "pseudo",
@@ -2044,8 +2057,9 @@
     },
     "/GetLesUtilisateursQuiMautorisent": {
       "get": {
+        "tags": ["Autorisations"],
         "summary": "Obtenir la liste des utilisateurs qui autorisent un utilisateur donné",
-        "description": "Ce service permet à un utilisateur authentifié d'obtenir la liste des utilisateurs qui l'autorisent à consulter leurs parcours.",
+        "description": "Ce service permet à un utilisateur authentifié d'obtenir la liste des utilisateurs qui l'autorisent à consulter leurs parcours.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Mot de passe (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e`\n- Lang : `xml` ou `json`.",
         "parameters": [
           {
             "name": "pseudo",
@@ -2193,8 +2207,9 @@
     },
     "/GetUnParcoursEtSesPoints": {
       "get": {
+        "tags": ["Parcours"],
         "summary": "Obtenir les détails d'un parcours et ses points",
-        "description": "Permet à un utilisateur d'obtenir les détails d'un de ses parcours ou d'un parcours d'un utilisateur qui l'autorise.",
+        "description": "Permet à un utilisateur d'obtenir les détails d'un de ses parcours ou d'un parcours d'un utilisateur qui l'autorise.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Mot de passe (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e`\n- ID Trace : `42`\n- Lang : `xml` ou `json`.",
         "parameters": [
           {
             "name": "pseudo",
@@ -2407,6 +2422,198 @@
                   "error": {
                     "summary": "Erreur : méthode incorrecte (XML)",
                     "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<data>\n  <reponse>Erreur : méthode HTTP incorrecte.</reponse>\n</data>"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetLesParcoursDunUtilisateur": {
+      "get": {
+        "tags": ["Parcours"],
+        "summary": "Obtenir les parcours d'un utilisateur",
+        "description": "Ce service permet à un utilisateur d'obtenir la liste de ses parcours ou ceux d'un utilisateur qui l'autorise.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Mot de passe (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e`\n- Pseudo consulté : `europa`\n- Lang : `xml` ou `json`.",
+        "parameters": [
+          {
+            "name": "pseudo",
+            "in": "query",
+            "required": false,
+            "description": "Le pseudo de l'utilisateur demandeur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mdp",
+            "in": "query",
+            "required": false,
+            "description": "Le mot de passe hashé en SHA-1 de l'utilisateur demandeur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pseudoConsulte",
+            "in": "query",
+            "required": false,
+            "description": "Le pseudo de l'utilisateur dont les parcours sont consultés.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "description": "Le format de réponse souhaité (xml ou json). Par défaut, xml.",
+            "schema": {
+              "type": "string",
+              "enum": ["xml", "json"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste des parcours récupérée avec succès.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "success": {
+                    "summary": "Succès (JSON)",
+                    "value": {
+                      "data": {
+                        "reponse": "2 trace(s) pour l'utilisateur callisto.",
+                        "donnees": {
+                          "lesTraces": [
+                            {
+                              "id": "2",
+                              "dateHeureDebut": "2018-01-19 13:08:48",
+                              "terminee": "1",
+                              "dateHeureFin": "2018-01-19 13:11:48",
+                              "distance": "1.2",
+                              "idUtilisateur": "2"
+                            },
+                            {
+                              "id": "1",
+                              "dateHeureDebut": "2018-01-19 13:08:48",
+                              "terminee": "0",
+                              "distance": "0.5",
+                              "idUtilisateur": "2"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "success": {
+                    "summary": "Succès (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>2 trace(s) pour l'utilisateur callisto.</reponse><donnees><lesTraces><trace><id>2</id><dateHeureDebut>2018-01-19 13:08:48</dateHeureDebut><terminee>1</terminee><dateHeureFin>2018-01-19 13:11:48</dateHeureFin><distance>1.2</distance><idUtilisateur>2</idUtilisateur></trace><trace><id>1</id><dateHeureDebut>2018-01-19 13:08:48</dateHeureDebut><terminee>0</terminee><distance>0.5</distance><idUtilisateur>2</idUtilisateur></trace></lesTraces></donnees></data>"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Données incomplètes ou incorrectes.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "incomplete_data": {
+                    "summary": "Données incomplètes",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : données incomplètes."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "incomplete_data": {
+                    "summary": "Données incomplètes (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : données incomplètes.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentification incorrecte.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "auth_error": {
+                    "summary": "Erreur : authentification incorrecte",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : authentification incorrecte."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "auth_error": {
+                    "summary": "Erreur : authentification incorrecte (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : authentification incorrecte.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pseudo consulté inexistant.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "user_not_found": {
+                    "summary": "Erreur : pseudo consulté inexistant",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : pseudo consulté inexistant."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "user_not_found": {
+                    "summary": "Erreur : pseudo consulté inexistant (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : pseudo consulté inexistant.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Non autorisé par l'utilisateur consulté.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "not_authorized": {
+                    "summary": "Erreur : non autorisé",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : vous n'êtes pas autorisé par cet utilisateur."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "not_authorized": {
+                    "summary": "Erreur : non autorisé (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : vous n'êtes pas autorisé par cet utilisateur.</reponse></data>"
                   }
                 }
               }
