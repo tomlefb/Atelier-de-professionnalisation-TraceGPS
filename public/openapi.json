@@ -1913,7 +1913,134 @@
           }
         }
       }
+    },
+    "/GetLesUtilisateursQueJautorise": {
+      "get": {
+        "summary": "Obtenir la liste des utilisateurs autorisés",
+        "description": "Ce service permet à un utilisateur authentifié de consulter la liste des utilisateurs qu'il autorise à consulter ses parcours.",
+        "parameters": [
+          {
+            "name": "pseudo",
+            "in": "query",
+            "required": false,
+            "description": "Le pseudo de l'utilisateur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mdp",
+            "in": "query",
+            "required": false,
+            "description": "Le mot de passe hashé en SHA-1 de l'utilisateur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "description": "Langue du flux de réponse (xml ou json). Par défaut, xml.",
+            "schema": {
+              "type": "string",
+              "enum": ["xml", "json"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste des utilisateurs autorisés récupérée avec succès.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "with_data": {
+                    "summary": "Succès avec des données",
+                    "value": {
+                      "data": {
+                        "reponse": "2 autorisation(s) accordée(s) par neon.",
+                        "donnees": {
+                          "lesUtilisateurs": [
+                            {
+                              "id": 12,
+                              "pseudo": "oxygen",
+                              "adrMail": "delasalle.sio.eleves@gmail.com",
+                              "numTel": "44.55.66.77.88",
+                              "niveau": 1,
+                              "dateCreation": "2018-11-03 21:46:44",
+                              "nbTraces": 2,
+                              "dateDerniereTrace": "2018-01-19 13:08:48"
+                            },
+                            {
+                              "id": 13,
+                              "pseudo": "photon",
+                              "adrMail": "delasalle.sio.eleves@gmail.com",
+                              "numTel": "44.55.66.77.88",
+                              "niveau": 1,
+                              "dateCreation": "2018-11-03 21:46:44",
+                              "nbTraces": 0
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "no_data": {
+                    "summary": "Succès sans données",
+                    "value": {
+                      "data": {
+                        "reponse": "Aucune autorisation accordée par photon."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "with_data": {
+                    "summary": "Succès avec des données (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>2 autorisation(s) accordée(s) par neon.</reponse><donnees><lesUtilisateurs><utilisateur><id>12</id><pseudo>oxygen</pseudo><adrMail>delasalle.sio.eleves@gmail.com</adrMail><numTel>44.55.66.77.88</numTel><niveau>1</niveau><dateCreation>2018-11-03 21:46:44</dateCreation><nbTraces>2</nbTraces><dateDerniereTrace>2018-01-19 13:08:48</dateDerniereTrace></utilisateur><utilisateur><id>13</id><pseudo>photon</pseudo><adrMail>delasalle.sio.eleves@gmail.com</adrMail><numTel>44.55.66.77.88</numTel><niveau>1</niveau><dateCreation>2018-11-03 21:46:44</dateCreation><nbTraces>0</nbTraces></utilisateur></lesUtilisateurs></donnees></data>"
+                  },
+                  "no_data": {
+                    "summary": "Succès sans données (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Aucune autorisation accordée par photon.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Données incomplètes ou incorrectes.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : données incomplètes."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : données incomplètes.</reponse></data>"
+              }
+            }
+          },
+          "401": {
+            "description": "Authentification incorrecte.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : authentification incorrecte."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : authentification incorrecte.</reponse></data>"
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
-
