@@ -2041,6 +2041,155 @@
           }
         }
       }
+    },
+    "/GetLesUtilisateursQuiMautorisent": {
+      "get": {
+        "summary": "Obtenir la liste des utilisateurs qui autorisent un utilisateur donné",
+        "description": "Ce service permet à un utilisateur authentifié d'obtenir la liste des utilisateurs qui l'autorisent à consulter leurs parcours.",
+        "parameters": [
+          {
+            "name": "pseudo",
+            "in": "query",
+            "required": false,
+            "description": "Le pseudo de l'utilisateur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mdp",
+            "in": "query",
+            "required": false,
+            "description": "Le mot de passe hashé en SHA-1 de l'utilisateur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "description": "Langue du flux de réponse (xml ou json). Par défaut, xml.",
+            "schema": {
+              "type": "string",
+              "enum": ["xml", "json"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste des utilisateurs récupérée avec succès",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "success_with_users": {
+                    "summary": "Succès avec utilisateurs (JSON)",
+                    "value": {
+                      "data": {
+                        "reponse": "2 autorisation(s) accordée(s) à juno.",
+                        "donnees": {
+                          "lesUtilisateurs": [
+                            {
+                              "id": "5",
+                              "pseudo": "helios",
+                              "adrMail": "delasalle.sio.eleves@gmail.com",
+                              "numTel": "33.44.55.66.77",
+                              "niveau": "1",
+                              "dateCreation": "2018-11-03 21:46:44",
+                              "nbTraces": "2",
+                              "dateDerniereTrace": "2018-01-19 13:08:48"
+                            },
+                            {
+                              "id": "6",
+                              "pseudo": "indigo",
+                              "adrMail": "delasalle.sio.eleves@gmail.com",
+                              "numTel": "44.55.66.77.88",
+                              "niveau": "1",
+                              "dateCreation": "2018-11-03 21:46:44",
+                              "nbTraces": "2",
+                              "dateDerniereTrace": "2018-01-19 13:08:48"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "success_no_users": {
+                    "summary": "Succès sans utilisateurs (JSON)",
+                    "value": {
+                      "data": {
+                        "reponse": "Aucune autorisation accordée à callisto."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "success_with_users": {
+                    "summary": "Succès avec utilisateurs (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>2 autorisation(s) accordée(s) à juno.</reponse><donnees><lesUtilisateurs><utilisateur><id>5</id><pseudo>helios</pseudo><adrMail>delasalle.sio.eleves@gmail.com</adrMail><numTel>33.44.55.66.77</numTel><niveau>1</niveau><dateCreation>2018-11-03 21:46:44</dateCreation><nbTraces>2</nbTraces><dateDerniereTrace>2018-01-19 13:08:48</dateDerniereTrace></utilisateur><utilisateur><id>6</id><pseudo>indigo</pseudo><adrMail>delasalle.sio.eleves@gmail.com</adrMail><numTel>44.55.66.77.88</numTel><niveau>1</niveau><dateCreation>2018-11-03 21:46:44</dateCreation><nbTraces>2</nbTraces><dateDerniereTrace>2018-01-19 13:08:48</dateDerniereTrace></utilisateur></lesUtilisateurs></donnees></data>"
+                  },
+                  "success_no_users": {
+                    "summary": "Succès sans utilisateurs (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Aucune autorisation accordée à callisto.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Données incomplètes",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : données incomplètes",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : données incomplètes."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : données incomplètes (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : données incomplètes.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentification incorrecte",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : authentification incorrecte",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : authentification incorrecte."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : authentification incorrecte (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : authentification incorrecte.</reponse></data>"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

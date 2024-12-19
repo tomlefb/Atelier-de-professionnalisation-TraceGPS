@@ -33,32 +33,41 @@ if ($this->getMethodeRequete() != "GET") {
             $msg = "Erreur : authentification incorrecte.";
             $code_reponse = 401;
         } else {
-            // Récupération des utilisateurs autorisés par l'utilisateur
-            $utilisateursAutorises = $dao->getLesUtilisateursAutorises($pseudo);
-
-            if (count($utilisateursAutorises) == 0) {
-                $msg = "Aucune autorisation accordée par $pseudo.";
-                $code_reponse = 200;
-                $donnees = null;
+            // Récupération de l'utilisateur et de son ID
+            $utilisateur = $dao->getUnUtilisateur($pseudo);
+            if ($utilisateur == null) {
+                $msg = "Erreur : utilisateur inexistant.";
+                $code_reponse = 404;
             } else {
-                $msg = count($utilisateursAutorises) . " autorisation(s) accordée(s) par $pseudo.";
-                $code_reponse = 200;
-                $donnees = [];
+                $idUtilisateur = $utilisateur->getId();
 
-                foreach ($utilisateursAutorises as $utilisateur) {
-                    $dataUtilisateur = [
-                        "id" => $utilisateur->getId(),
-                        "pseudo" => $utilisateur->getPseudo(),
-                        "adrMail" => $utilisateur->getAdrMail(),
-                        "numTel" => $utilisateur->getNumTel(),
-                        "niveau" => $utilisateur->getNiveau(),
-                        "dateCreation" => $utilisateur->getDateCreation(),
-                        "nbTraces" => $utilisateur->getNbTraces(),
-                    ];
-                    if ($utilisateur->getNbTraces() > 0) {
-                        $dataUtilisateur["dateDerniereTrace"] = $utilisateur->getDateDerniereTrace();
+                // Récupération des utilisateurs autorisés
+                $utilisateursAutorises = $dao->getLesUtilisateursAutorises($idUtilisateur);
+
+                if (count($utilisateursAutorises) == 0) {
+                    $msg = "Aucune autorisation accordée par $pseudo.";
+                    $code_reponse = 200;
+                    $donnees = null;
+                } else {
+                    $msg = count($utilisateursAutorises) . " autorisation(s) accordée(s) par $pseudo.";
+                    $code_reponse = 200;
+                    $donnees = [];
+
+                    foreach ($utilisateursAutorises as $utilisateurAutorise) {
+                        $dataUtilisateur = [
+                            "id" => $utilisateurAutorise->getId(),
+                            "pseudo" => $utilisateurAutorise->getPseudo(),
+                            "adrMail" => $utilisateurAutorise->getAdrMail(),
+                            "numTel" => $utilisateurAutorise->getNumTel(),
+                            "niveau" => $utilisateurAutorise->getNiveau(),
+                            "dateCreation" => $utilisateurAutorise->getDateCreation(),
+                            "nbTraces" => $utilisateurAutorise->getNbTraces(),
+                        ];
+                        if ($utilisateurAutorise->getNbTraces() > 0) {
+                            $dataUtilisateur["dateDerniereTrace"] = $utilisateurAutorise->getDateDerniereTrace();
+                        }
+                        $donnees[] = $dataUtilisateur;
                     }
-                    $donnees[] = $dataUtilisateur;
                 }
             }
         }
