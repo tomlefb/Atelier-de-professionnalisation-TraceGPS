@@ -20,7 +20,7 @@
           {
             "name": "pseudo",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "Le pseudo de l'utilisateur.",
             "schema": {
               "type": "string"
@@ -29,7 +29,7 @@
           {
             "name": "mdp",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "L'ancien mot de passe de l'utilisateur, hashé en SHA-1.",
             "schema": {
               "type": "string"
@@ -38,7 +38,7 @@
           {
             "name": "nouveauMdp",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "Le nouveau mot de passe de l'utilisateur.",
             "schema": {
               "type": "string"
@@ -47,7 +47,7 @@
           {
             "name": "confirmationMdp",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "Confirmation du nouveau mot de passe.",
             "schema": {
               "type": "string"
@@ -164,7 +164,7 @@
           {
             "name": "pseudo",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "Le pseudo de l'utilisateur.",
             "schema": {
               "type": "string"
@@ -173,7 +173,7 @@
           {
             "name": "mdp",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "Le mot de passe hashé en SHA-1.",
             "schema": {
               "type": "string"
@@ -183,13 +183,10 @@
             "name": "lang",
             "in": "query",
             "required": false,
-            "description": "Langue du flux de réponse (xml ou json). Par défaut, xml.",
+            "description": "Langue du flux de réponse (xml ou json). Par défaut : xml.",
             "schema": {
               "type": "string",
-              "enum": [
-                "xml",
-                "json"
-              ]
+              "enum": ["xml", "json"]
             }
           }
         ],
@@ -198,14 +195,24 @@
             "description": "Utilisateur ou administrateur authentifié",
             "content": {
               "application/json": {
-                "example": {
-                  "data": {
-                    "reponse": "Utilisateur authentifié."
+                "examples": {
+                  "success": {
+                    "summary": "Succès (JSON)",
+                    "value": {
+                      "data": {
+                        "reponse": "Utilisateur authentifié."
+                      }
+                    }
                   }
                 }
               },
               "application/xml": {
-                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Utilisateur authentifié.</reponse></data>"
+                "examples": {
+                  "success": {
+                    "summary": "Succès (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Utilisateur authentifié.</reponse></data>"
+                  }
+                }
               }
             }
           },
@@ -213,14 +220,24 @@
             "description": "Données incomplètes",
             "content": {
               "application/json": {
-                "example": {
-                  "data": {
-                    "reponse": "Erreur : données incomplètes."
+                "examples": {
+                  "error": {
+                    "summary": "Données incomplètes (JSON)",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : données incomplètes."
+                      }
+                    }
                   }
                 }
               },
               "application/xml": {
-                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : données incomplètes.</reponse></data>"
+                "examples": {
+                  "error": {
+                    "summary": "Données incomplètes (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : données incomplètes.</reponse></data>"
+                  }
+                }
               }
             }
           },
@@ -228,14 +245,24 @@
             "description": "Authentification incorrecte",
             "content": {
               "application/json": {
-                "example": {
-                  "data": {
-                    "reponse": "Erreur : authentification incorrecte."
+                "examples": {
+                  "error": {
+                    "summary": "Authentification incorrecte (JSON)",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : authentification incorrecte."
+                      }
+                    }
                   }
                 }
               },
               "application/xml": {
-                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : authentification incorrecte.</reponse></data>"
+                "examples": {
+                  "error": {
+                    "summary": "Authentification incorrecte (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : authentification incorrecte.</reponse></data>"
+                  }
+                }
               }
             }
           },
@@ -243,14 +270,24 @@
             "description": "Méthode HTTP incorrecte",
             "content": {
               "application/json": {
-                "example": {
-                  "data": {
-                    "reponse": "Erreur : méthode HTTP incorrecte."
+                "examples": {
+                  "error": {
+                    "summary": "Méthode HTTP incorrecte (JSON)",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : méthode HTTP incorrecte."
+                      }
+                    }
                   }
                 }
               },
               "application/xml": {
-                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : méthode HTTP incorrecte.</reponse></data>"
+                "examples": {
+                  "error": {
+                    "summary": "Méthode HTTP incorrecte (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : méthode HTTP incorrecte.</reponse></data>"
+                  }
+                }
               }
             }
           }
@@ -265,7 +302,7 @@
           {
             "name": "pseudo",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "Le pseudo de l'utilisateur. Doit être unique et contenir au moins 8 caractères.",
             "schema": {
               "type": "string"
@@ -274,7 +311,7 @@
           {
             "name": "adrMail",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "L'adresse email de l'utilisateur. Doit être unique et valide.",
             "schema": {
               "type": "string",
@@ -284,7 +321,7 @@
           {
             "name": "numTel",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "Le numéro de téléphone de l'utilisateur. Doit être valide.",
             "schema": {
               "type": "string"
@@ -376,7 +413,7 @@
           {
             "name": "pseudo",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "Le pseudo de l'utilisateur authentifié.",
             "schema": {
               "type": "string"
@@ -385,7 +422,7 @@
           {
             "name": "mdp",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "Le mot de passe hashé en SHA-1 de l'utilisateur authentifié.",
             "schema": {
               "type": "string"
@@ -500,7 +537,7 @@
           {
             "name": "pseudo",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "Le pseudo de l'administrateur.",
             "schema": {
               "type": "string"
@@ -509,7 +546,7 @@
           {
             "name": "mdp",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "Le mot de passe hashé en SHA-1 de l'administrateur.",
             "schema": {
               "type": "string"
@@ -518,7 +555,7 @@
           {
             "name": "pseudoAsupprimer",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "Le pseudo de l'utilisateur à supprimer.",
             "schema": {
               "type": "string"
@@ -647,7 +684,7 @@
           {
             "name": "pseudo",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "Le pseudo de l'utilisateur.",
             "schema": {
               "type": "string"
@@ -656,7 +693,7 @@
           {
             "name": "mdp",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "Le mot de passe de l'utilisateur hashé en SHA-1.",
             "schema": {
               "type": "string"
@@ -665,7 +702,7 @@
           {
             "name": "idTrace",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "L'identifiant de la trace à terminer.",
             "schema": {
               "type": "integer"
@@ -772,7 +809,7 @@
           {
             "name": "pseudo",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "Le pseudo de l'utilisateur.",
             "schema": {
               "type": "string"
@@ -781,7 +818,7 @@
           {
             "name": "mdp",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "Le mot de passe de l'utilisateur hashé en SHA-1.",
             "schema": {
               "type": "string"
@@ -891,11 +928,12 @@
     "/SupprimerUnParcours": {
       "get": {
         "summary": "Supprimer un parcours",
-        "description": "Ce service permet à un utilisateur authentifié de supprimer un de ses parcours.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Mot de passe (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e`\n- ID Trace : `23`",        "parameters": [
+        "description": "Ce service permet à un utilisateur authentifié de supprimer un de ses parcours.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Mot de passe (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e`\n- ID Trace : `23`",
+        "parameters": [
           {
             "name": "pseudo",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "Le pseudo de l'utilisateur qui demande à supprimer.",
             "schema": {
               "type": "string"
@@ -904,7 +942,7 @@
           {
             "name": "mdp",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "Le mot de passe de l'utilisateur hashé en SHA-1.",
             "schema": {
               "type": "string"
@@ -913,7 +951,7 @@
           {
             "name": "idTrace",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "L'identifiant de la trace à supprimer.",
             "schema": {
               "type": "integer"
@@ -926,10 +964,7 @@
             "description": "Langue du flux de réponse (xml ou json). Par défaut, xml.",
             "schema": {
               "type": "string",
-              "enum": [
-                "xml",
-                "json"
-              ]
+              "enum": ["xml", "json"]
             }
           }
         ],
@@ -1054,7 +1089,7 @@
           {
             "name": "pseudo",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "Le pseudo de l'utilisateur demandeur.",
             "schema": {
               "type": "string"
@@ -1063,7 +1098,7 @@
           {
             "name": "mdp",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "Le mot de passe hashé en SHA-1 de l'utilisateur demandeur.",
             "schema": {
               "type": "string"
@@ -1072,7 +1107,7 @@
           {
             "name": "pseudoDestinataire",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "Le pseudo de l'utilisateur destinataire de la demande.",
             "schema": {
               "type": "string"
@@ -1081,7 +1116,7 @@
           {
             "name": "texteMessage",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "Le message personnalisé envoyé avec la demande.",
             "schema": {
               "type": "string"
@@ -1090,7 +1125,7 @@
           {
             "name": "nomPrenom",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "Le nom et prénom de l'utilisateur demandeur.",
             "schema": {
               "type": "string"
@@ -1269,7 +1304,7 @@
           {
             "name": "pseudo",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "Le pseudo de l'utilisateur.",
             "schema": {
               "type": "string"
@@ -1278,7 +1313,7 @@
           {
             "name": "mdp",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "Le mot de passe hashé en SHA-1 de l'utilisateur.",
             "schema": {
               "type": "string"
@@ -1287,7 +1322,7 @@
           {
             "name": "idTrace",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "L'identifiant de la trace à laquelle la position doit être ajoutée.",
             "schema": {
               "type": "integer"
@@ -1296,7 +1331,7 @@
           {
             "name": "dateHeure",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "La date et l'heure de la position (format : YYYY-MM-DD HH:mm:ss).",
             "schema": {
               "type": "string",
@@ -1306,7 +1341,7 @@
           {
             "name": "latitude",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "La latitude de la position.",
             "schema": {
               "type": "number",
@@ -1316,7 +1351,7 @@
           {
             "name": "longitude",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "La longitude de la position.",
             "schema": {
               "type": "number",
@@ -1326,7 +1361,7 @@
           {
             "name": "altitude",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "L'altitude de la position (en mètres).",
             "schema": {
               "type": "number",
@@ -1540,7 +1575,7 @@
           {
             "name": "pseudo",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "Le pseudo de l'utilisateur qui souhaite retirer l'autorisation.",
             "schema": {
               "type": "string"
@@ -1549,7 +1584,7 @@
           {
             "name": "mdp",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "Le mot de passe hashé en SHA-1 de l'utilisateur.",
             "schema": {
               "type": "string"
@@ -1558,7 +1593,7 @@
           {
             "name": "pseudoARetirer",
             "in": "query",
-            "required": true,
+            "required": false,
             "description": "Le pseudo de l'utilisateur pour lequel l'autorisation doit être retirée.",
             "schema": {
               "type": "string"
