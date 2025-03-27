@@ -439,20 +439,34 @@ class DAO
     // enregistre la date de fin et met le champ terminee à 1
     // retourne true si la modification a réussi, false sinon
     public function terminerUneTrace($idTrace) {
+        // Récupère les points de la trace
         $lesPoints = $this->getLesPointsDeTrace($idTrace);
-        $dateFin = $lesPoints ? end($lesPoints)->getDateHeure() : date('Y-m-d H:i:s');
 
+        // Si la trace a des points, utilise le dernier point pour déterminer la date de fin
+        $dateFin = $lesPoints ? end($lesPoints)->getDateHeure() : date('Y-m-d H:i:s'); // Utiliser la date actuelle si pas de points
+
+        // Préparation de la requête SQL pour marquer la trace comme terminée
         $txt_req = "UPDATE tracegps_traces
                 SET dateFin = :dateFin, terminee = 1
                 WHERE id = :idTrace";
+
         $req = $this->cnx->prepare($txt_req);
+
+        // Lier les paramètres
         $req->bindValue("dateFin", $dateFin, PDO::PARAM_STR);
         $req->bindValue("idTrace", $idTrace, PDO::PARAM_INT);
 
+        // Exécution de la requête
         $ok = $req->execute();
-        $req->closeCursor();
-        return $ok;
+
+        // Vérifier si l'exécution a réussi
+        if ($ok) {
+            return true;  // La trace a bien été terminée
+        } else {
+            return false; // Échec de la mise à jour
+        }
     }
+
 
 
 
@@ -687,12 +701,15 @@ class DAO
         $req->bindValue(":idAutorisant", $idAutorisant, PDO::PARAM_INT);
         $req->bindValue(":idAutorise", $idAutorise, PDO::PARAM_INT);
 
+        error_log("Tentative de création d'une autorisation pour $idAutorisant -> $idAutorise");
+
         // Exécute la requête et retourne le résultat
         try {
             $req->execute();
             return true; // Retourne true si l'insertion a réussi
-        } catch (Exception $ex) {
-            // En cas d'erreur, retourne false
+        } catch (Exception $e) {
+            // Log de l'erreur
+            error_log("Erreur lors de la création de l'autorisation : " . $e->getMessage());
             return false;
         }
     }

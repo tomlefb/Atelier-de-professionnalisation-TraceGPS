@@ -46,12 +46,13 @@ if ($this->getMethodeRequete() != "GET") {
                 } else {
                     // Vérification si la trace est déjà terminée
                     if ($laTrace->getTerminee()) {
-                        $msg = "Erreur : cette trace est déjà terminée.";
-                        $code_reponse = 400;
+                        // Au lieu de renvoyer une erreur, on renvoie un message de succès
+                        $msg = "Enregistrement terminé.";
+                        $code_reponse = 200;
                     } else {
                         // Mise à jour de la trace
                         $dateFin = $laTrace->getDateHeureFin() ?: date('Y-m-d H:i:s');
-                        $ok = $dao->terminerUneTrace($idTrace, $dateFin);
+                        $ok = $dao->terminerUneTrace($idTrace);
                         if (!$ok) {
                             $msg = "Erreur : problème lors de la fin de l'enregistrement de la trace.";
                             $code_reponse = 500;

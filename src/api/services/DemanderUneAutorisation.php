@@ -31,24 +31,38 @@ if ($this->getMethodeRequete() != "GET") {
         $code_reponse = 400;
     } else {
 
-        // Vérification de l'authentification de l'utilisateur demandeur
-        if ($dao->getNiveauConnexion($pseudo, $mdpSha1) == 0) {
-            $msg = "Erreur : authentification incorrecte.";
-            $code_reponse = 401;
+        // Vérification de l'existence du destinataire
+        if (!$dao->existePseudoUtilisateur($pseudoDestinataire)) {
+            $msg = "Erreur : pseudo utilisateur inexistant.";
+            $code_reponse = 404;  // Utilisation d'un code HTTP 404 pour indiquer l'absence de l'utilisateur
         } else {
-            // Vérification de l'existence du destinataire (changement ici)
-            if (!$dao->existePseudoUtilisateur($pseudoDestinataire)) {
-                $msg = "Erreur : pseudo utilisateur inexistant.";
-                $code_reponse = 404;
+            // Vérification de l'authentification de l'utilisateur demandeur
+            if ($dao->getNiveauConnexion($pseudo, $mdpSha1) == 0) {
+                $msg = "Erreur : authentification incorrecte.";
+                $code_reponse = 401;
             } else {
-                // Création et envoi de la demande d'autorisation
-                $ok = $dao->creerUneAutorisation($pseudo, $pseudoDestinataire, $texteMessage, $nomPrenom);
-                if (!$ok) {
-                    $msg = "Erreur : l'envoi du courriel de demande d'autorisation a rencontré un problème.";
-                    $code_reponse = 500;
+                // Récupérer les objets Utilisateur à partir des pseudos
+                $utilisateur = $dao->getUnUtilisateur($pseudo);
+                $destinataire = $dao->getUnUtilisateur($pseudoDestinataire);
+
+                // Vérifier si les utilisateurs existent
+                if ($utilisateur === null || $destinataire === null) {
+                    $msg = "Erreur : utilisateur ou destinataire introuvable.";
+                    $code_reponse = 404;
                 } else {
-                    $msg = "$pseudoDestinataire va recevoir un courriel avec votre demande.";
-                    $code_reponse = 200;
+                    // Extraire les IDs des utilisateurs
+                    $idUtilisateur = $utilisateur->getId();
+                    $idDestinataire = $destinataire->getId();
+
+                    // Passer les IDs à la méthode `creerUneAutorisation`
+                    $ok = $dao->creerUneAutorisation($idUtilisateur, $idDestinataire);
+                    if (!$ok) {
+                        $msg = "Erreur : l'envoi du courriel de demande d'autorisation a rencontré un problème.";
+                        $code_reponse = 500;
+                    } else {
+                        $msg = "$pseudoDestinataire va recevoir un courriel avec votre demande.";
+                        $code_reponse = 200;
+                    }
                 }
             }
         }
