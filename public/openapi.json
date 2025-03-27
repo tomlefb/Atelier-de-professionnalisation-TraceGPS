@@ -1,0 +1,2626 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API TraceGPS",
+    "version": "1.0.0",
+    "description": "Documentation interactive des services TraceGPS"
+  },
+  "servers": [
+    {
+      "url": "http://localhost/ws-php-dp/TraceGPS/src/api",
+      "description": "Serveur local"
+    }
+  ],
+  "paths": {
+    "/ChangerDeMdp": {
+      "get": {
+        "tags": ["Utilisateurs"],
+        "summary": "Changer le mot de passe",
+        "description": "Permet à un utilisateur de changer son mot de passe en fournissant son pseudo, l'ancien mot de passe et le nouveau mot de passe.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Ancien mot de passe (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e` (hash pour 'password')\n- Nouveau mot de passe : `newpassword`",
+        "parameters": [
+          {
+            "name": "pseudo",
+            "in": "query",
+            "required": false,
+            "description": "Le pseudo de l'utilisateur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mdp",
+            "in": "query",
+            "required": false,
+            "description": "L'ancien mot de passe de l'utilisateur, hashé en SHA-1.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "nouveauMdp",
+            "in": "query",
+            "required": false,
+            "description": "Le nouveau mot de passe de l'utilisateur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "confirmationMdp",
+            "in": "query",
+            "required": false,
+            "description": "Confirmation du nouveau mot de passe.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "description": "Langue du flux de réponse (xml ou json). Par défaut, xml.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "xml",
+                "json"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Mot de passe changé avec succès",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "success": {
+                    "summary": "Mot de passe changé",
+                    "value": {
+                      "data": {
+                        "reponse": "Enregistrement effectué ; vous allez recevoir un courriel de confirmation."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "success": {
+                    "summary": "Mot de passe changé (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Enregistrement effectué ; vous allez recevoir un courriel de confirmation.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Données incomplètes ou incorrectes",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : données incomplètes."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : données incomplètes.</reponse></data>"
+              }
+            }
+          },
+          "401": {
+            "description": "Authentification incorrecte",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : authentification incorrecte."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : authentification incorrecte.</reponse></data>"
+              }
+            }
+          },
+          "406": {
+            "description": "Méthode HTTP incorrecte",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : méthode HTTP incorrecte."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : méthode HTTP incorrecte.</reponse></data>"
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur interne du serveur",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : problème lors de l'enregistrement du mot de passe."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : problème lors de l'enregistrement du mot de passe.</reponse></data>"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Connecter": {
+      "get": {
+        "tags": ["Authentification"],
+        "summary": "Authentifier un utilisateur",
+        "description": "Permet à un utilisateur de s'authentifier en fournissant son pseudo et son mot de passe hashé en SHA-1.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Mot de passe (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e`",
+        "parameters": [
+          {
+            "name": "pseudo",
+            "in": "query",
+            "required": false,
+            "description": "Le pseudo de l'utilisateur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mdp",
+            "in": "query",
+            "required": false,
+            "description": "Le mot de passe hashé en SHA-1.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "description": "Langue du flux de réponse (xml ou json). Par défaut : xml.",
+            "schema": {
+              "type": "string",
+              "enum": ["xml", "json"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Utilisateur ou administrateur authentifié",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "success": {
+                    "summary": "Succès (JSON)",
+                    "value": {
+                      "data": {
+                        "reponse": "Utilisateur authentifié."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "success": {
+                    "summary": "Succès (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Utilisateur authentifié.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Données incomplètes",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Données incomplètes (JSON)",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : données incomplètes."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Données incomplètes (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : données incomplètes.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentification incorrecte",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Authentification incorrecte (JSON)",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : authentification incorrecte."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Authentification incorrecte (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : authentification incorrecte.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Méthode HTTP incorrecte",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Méthode HTTP incorrecte (JSON)",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : méthode HTTP incorrecte."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Méthode HTTP incorrecte (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : méthode HTTP incorrecte.</reponse></data>"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/CreerUnUtilisateur": {
+      "get": {
+        "tags": ["Utilisateurs"],
+        "summary": "Créer un compte utilisateur",
+        "description": "Permet à un utilisateur de se créer un compte en fournissant un pseudo, une adresse mail et un numéro de téléphone.\n\n**Exemple de test :**\n- Pseudo : `newuser`\n- Adresse mail : `newuser@example.com`\n- Numéro de téléphone : `1234567890`",
+        "parameters": [
+          {
+            "name": "pseudo",
+            "in": "query",
+            "required": false,
+            "description": "Le pseudo de l'utilisateur. Doit être unique et contenir au moins 8 caractères.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "adrMail",
+            "in": "query",
+            "required": false,
+            "description": "L'adresse email de l'utilisateur. Doit être unique et valide.",
+            "schema": {
+              "type": "string",
+              "format": "email"
+            }
+          },
+          {
+            "name": "numTel",
+            "in": "query",
+            "required": false,
+            "description": "Le numéro de téléphone de l'utilisateur. Doit être valide.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "description": "Langue du flux de réponse (xml ou json). Par défaut : xml.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "xml",
+                "json"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Compte créé avec succès",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Enregistrement effectué ; vous allez recevoir un courriel avec votre mot de passe."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Enregistrement effectué ; vous allez recevoir un courriel avec votre mot de passe.</reponse></data>"
+              }
+            }
+          },
+          "400": {
+            "description": "Données incomplètes ou incorrectes",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : pseudo trop court (8 car minimum) ou déjà existant."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : pseudo trop court (8 car minimum) ou déjà existant.</reponse></data>"
+              }
+            }
+          },
+          "406": {
+            "description": "Méthode HTTP incorrecte",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : méthode HTTP incorrecte."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : méthode HTTP incorrecte.</reponse></data>"
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur interne du serveur",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : problème lors de l'enregistrement."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : problème lors de l'enregistrement.</reponse></data>"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetTousLesUtilisateurs": {
+      "get": {
+        "tags": ["Utilisateurs"],
+        "summary": "Obtenir la liste de tous les utilisateurs",
+        "description": "Permet à un utilisateur authentifié d'obtenir la liste de tous les utilisateurs (de niveau 1).\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Mot de passe (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e` (hash pour 'adminpass')",
+        "parameters": [
+          {
+            "name": "pseudo",
+            "in": "query",
+            "required": false,
+            "description": "Le pseudo de l'utilisateur authentifié.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mdp",
+            "in": "query",
+            "required": false,
+            "description": "Le mot de passe hashé en SHA-1 de l'utilisateur authentifié.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "description": "Langue du flux de réponse (xml ou json). Par défaut : xml.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "xml",
+                "json"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste des utilisateurs récupérée avec succès",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "2 utilisateur(s).",
+                    "donnees": {
+                      "lesUtilisateurs": [
+                        {
+                          "id": 2,
+                          "pseudo": "callisto",
+                          "adrMail": "delasalle.sio.eleves@gmail.com",
+                          "numTel": "22.33.44.55.66",
+                          "niveau": 1,
+                          "dateCreation": "2018-08-12 19:45:23",
+                          "nbTraces": 2,
+                          "dateDerniereTrace": "2018-01-19 13:08:48"
+                        },
+                        {
+                          "id": 3,
+                          "pseudo": "europa",
+                          "adrMail": "delasalle.sio.eleves@gmail.com",
+                          "numTel": "22.33.44.55.66",
+                          "niveau": 1,
+                          "dateCreation": "2018-08-12 19:45:23",
+                          "nbTraces": 0
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>2 utilisateur(s).</reponse><donnees><lesUtilisateurs><utilisateur><id>2</id><pseudo>callisto</pseudo><adrMail>delasalle.sio.eleves@gmail.com</adrMail><numTel>22.33.44.55.66</numTel><niveau>1</niveau><dateCreation>2018-08-12 19:45:23</dateCreation><nbTraces>2</nbTraces><dateDerniereTrace>2018-01-19 13:08:48</dateDerniereTrace></utilisateur><utilisateur><id>3</id><pseudo>europa</pseudo><adrMail>delasalle.sio.eleves@gmail.com</adrMail><numTel>22.33.44.55.66</numTel><niveau>1</niveau><dateCreation>2018-08-12 19:45:23</dateCreation><nbTraces>0</nbTraces></utilisateur></lesUtilisateurs></donnees></data>"
+              }
+            }
+          },
+          "400": {
+            "description": "Données incomplètes ou incorrectes",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : données incomplètes."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : données incomplètes.</reponse></data>"
+              }
+            }
+          },
+          "401": {
+            "description": "Authentification incorrecte",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : authentification incorrecte."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : authentification incorrecte.</reponse></data>"
+              }
+            }
+          },
+          "406": {
+            "description": "Méthode HTTP incorrecte",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : méthode HTTP incorrecte."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : méthode HTTP incorrecte.</reponse></data>"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/SupprimerUnUtilisateur": {
+      "get": {
+        "tags": ["Utilisateurs"],
+        "summary": "Supprimer un utilisateur",
+        "description": "Permet à un administrateur de supprimer un utilisateur (à condition qu'il ne possède aucune trace enregistrée).\n\n**Exemple de test :**\n- Pseudo administrateur : `callisto`\n- Mot de passe administrateur (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e`\n- Pseudo de l'utilisateur à supprimer : `usertodelete`",
+        "parameters": [
+          {
+            "name": "pseudo",
+            "in": "query",
+            "required": false,
+            "description": "Le pseudo de l'administrateur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mdp",
+            "in": "query",
+            "required": false,
+            "description": "Le mot de passe hashé en SHA-1 de l'administrateur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pseudoAsupprimer",
+            "in": "query",
+            "required": false,
+            "description": "Le pseudo de l'utilisateur à supprimer.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "description": "Langue du flux de réponse (xml ou json). Par défaut : xml.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "xml",
+                "json"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Suppression effectuée avec succès",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Suppression effectuée ; un courriel va être envoyé à l'utilisateur."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Suppression effectuée ; un courriel va être envoyé à l'utilisateur.</reponse></data>"
+              }
+            }
+          },
+          "400": {
+            "description": "Données incomplètes ou suppression impossible",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "incomplete_data": {
+                    "summary": "Données incomplètes",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : données incomplètes."
+                      }
+                    }
+                  },
+                  "deletion_impossible": {
+                    "summary": "Suppression impossible",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : suppression impossible ; cet utilisateur possède encore des traces."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "incomplete_data": {
+                    "summary": "Données incomplètes",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : données incomplètes.</reponse></data>"
+                  },
+                  "deletion_impossible": {
+                    "summary": "Suppression impossible",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : suppression impossible ; cet utilisateur possède encore des traces.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentification incorrecte",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : authentification incorrecte."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : authentification incorrecte.</reponse></data>"
+              }
+            }
+          },
+          "406": {
+            "description": "Méthode HTTP incorrecte",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : méthode HTTP incorrecte."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : méthode HTTP incorrecte.</reponse></data>"
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur interne du serveur",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : problème lors de la suppression de l'utilisateur."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : problème lors de la suppression de l'utilisateur.</reponse></data>"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ArreterEnregistrementParcours": {
+      "get": {
+        "tags": ["Parcours"],
+        "summary": "Terminer un enregistrement de parcours",
+        "description": "Ce service permet à un utilisateur authentifié de terminer l'enregistrement d'un parcours.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Mot de passe (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e`\n- ID Trace : `23`",
+        "parameters": [
+          {
+            "name": "pseudo",
+            "in": "query",
+            "required": false,
+            "description": "Le pseudo de l'utilisateur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mdp",
+            "in": "query",
+            "required": false,
+            "description": "Le mot de passe de l'utilisateur hashé en SHA-1.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "idTrace",
+            "in": "query",
+            "required": false,
+            "description": "L'identifiant de la trace à terminer.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "description": "Langue du flux de réponse (xml ou json). Par défaut, xml.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "xml",
+                "json"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Enregistrement terminé",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Enregistrement terminé."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Enregistrement terminé.</reponse></data>"
+              }
+            }
+          },
+          "400": {
+            "description": "Données incomplètes ou incorrectes",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : données incomplètes."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : données incomplètes.</reponse></data>"
+              }
+            }
+          },
+          "401": {
+            "description": "Authentification incorrecte",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : authentification incorrecte."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : authentification incorrecte.</reponse></data>"
+              }
+            }
+          },
+          "406": {
+            "description": "Méthode HTTP incorrecte",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : méthode HTTP incorrecte."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : méthode HTTP incorrecte.</reponse></data>"
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur interne du serveur",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : problème lors de la fin de l'enregistrement de la trace."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : problème lors de la fin de l'enregistrement de la trace.</reponse></data>"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/DemarrerEnregistrementParcours": {
+      "get": {
+        "tags": ["Parcours"],
+        "summary": "Démarrer un enregistrement de parcours",
+        "description": "Ce service permet à un utilisateur authentifié de démarrer l'enregistrement d'un parcours.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Mot de passe (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e`",
+        "parameters": [
+          {
+            "name": "pseudo",
+            "in": "query",
+            "required": false,
+            "description": "Le pseudo de l'utilisateur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mdp",
+            "in": "query",
+            "required": false,
+            "description": "Le mot de passe de l'utilisateur hashé en SHA-1.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "description": "Langue du flux de réponse (xml ou json). Par défaut, xml.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "xml",
+                "json"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Trace créée",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Trace créée.",
+                    "donnees": {
+                      "trace": {
+                        "id": 23,
+                        "dateHeureDebut": "2022-08-15 10:12:34",
+                        "terminee": 0,
+                        "idUtilisateur": 3
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Trace créée.</reponse><donnees><trace><id>23</id><dateHeureDebut>2022-08-15 10:12:34</dateHeureDebut><terminee>0</terminee><idUtilisateur>3</idUtilisateur></trace></donnees></data>"
+              }
+            }
+          },
+          "400": {
+            "description": "Données incomplètes ou incorrectes",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : données incomplètes."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : données incomplètes.</reponse></data>"
+              }
+            }
+          },
+          "401": {
+            "description": "Authentification incorrecte",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : authentification incorrecte."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : authentification incorrecte.</reponse></data>"
+              }
+            }
+          },
+          "406": {
+            "description": "Méthode HTTP incorrecte",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : méthode HTTP incorrecte."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : méthode HTTP incorrecte.</reponse></data>"
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur interne du serveur",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : problème lors de la création de la trace."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : problème lors de la création de la trace.</reponse></data>"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/SupprimerUnParcours": {
+      "get": {
+        "tags": ["Parcours"],
+        "summary": "Supprimer un parcours",
+        "description": "Ce service permet à un utilisateur authentifié de supprimer un de ses parcours.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Mot de passe (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e`\n- ID Trace : `23`",
+        "parameters": [
+          {
+            "name": "pseudo",
+            "in": "query",
+            "required": false,
+            "description": "Le pseudo de l'utilisateur qui demande à supprimer.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mdp",
+            "in": "query",
+            "required": false,
+            "description": "Le mot de passe de l'utilisateur hashé en SHA-1.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "idTrace",
+            "in": "query",
+            "required": false,
+            "description": "L'identifiant de la trace à supprimer.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "description": "Langue du flux de réponse (xml ou json). Par défaut, xml.",
+            "schema": {
+              "type": "string",
+              "enum": ["xml", "json"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Parcours supprimé",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Parcours supprimé."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Parcours supprimé.</reponse></data>"
+              }
+            }
+          },
+          "400": {
+            "description": "Données incomplètes ou incorrectes",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "incomplete_data": {
+                    "summary": "Données incomplètes",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : données incomplètes."
+                      }
+                    }
+                  },
+                  "non_existent_trace": {
+                    "summary": "Parcours inexistant",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : parcours inexistant."
+                      }
+                    }
+                  },
+                  "not_owner": {
+                    "summary": "Non propriétaire du parcours",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : vous n'êtes pas le propriétaire de ce parcours."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "incomplete_data": {
+                    "summary": "Données incomplètes",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : données incomplètes.</reponse></data>"
+                  },
+                  "non_existent_trace": {
+                    "summary": "Parcours inexistant",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : parcours inexistant.</reponse></data>"
+                  },
+                  "not_owner": {
+                    "summary": "Non propriétaire du parcours",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : vous n'êtes pas le propriétaire de ce parcours.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentification incorrecte",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : authentification incorrecte."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : authentification incorrecte.</reponse></data>"
+              }
+            }
+          },
+          "406": {
+            "description": "Méthode HTTP incorrecte",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : méthode HTTP incorrecte."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : méthode HTTP incorrecte.</reponse></data>"
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur interne du serveur lors de la suppression",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : problème lors de la suppression du parcours."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : problème lors de la suppression du parcours.</reponse></data>"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/DemanderUneAutorisation": {
+      "get": {
+        "tags": ["Autorisations"],
+        "summary": "Demander une autorisation",
+        "description": "Ce service permet à un utilisateur authentifié de demander une autorisation à un autre utilisateur en spécifiant un message personnalisé.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Mot de passe (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e`\n- Pseudo destinataire : `jupiter`\n- Texte du message : `Bonjour, j'aimerais avoir accès à vos parcours.`\n- Lang : `xml` ou `json`.",
+        "parameters": [
+          {
+            "name": "pseudo",
+            "in": "query",
+            "required": false,
+            "description": "Le pseudo de l'utilisateur demandeur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mdp",
+            "in": "query",
+            "required": false,
+            "description": "Le mot de passe hashé en SHA-1 de l'utilisateur demandeur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pseudoDestinataire",
+            "in": "query",
+            "required": false,
+            "description": "Le pseudo de l'utilisateur destinataire de la demande.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "texteMessage",
+            "in": "query",
+            "required": false,
+            "description": "Le message personnalisé envoyé avec la demande.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "nomPrenom",
+            "in": "query",
+            "required": false,
+            "description": "Le nom et prénom de l'utilisateur demandeur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "description": "Langue du flux de réponse (xml ou json). Par défaut : xml.",
+            "schema": {
+              "type": "string",
+              "enum": ["xml", "json"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Demande envoyée avec succès",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "success": {
+                    "summary": "Succès (JSON)",
+                    "value": {
+                      "data": {
+                        "reponse": "pseudoDestinataire va recevoir un courriel avec votre demande."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "success": {
+                    "summary": "Succès (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>pseudoDestinataire va recevoir un courriel avec votre demande.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Données incomplètes",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : données incomplètes",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : données incomplètes."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : données incomplètes (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : données incomplètes.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentification incorrecte",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : authentification incorrecte",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : authentification incorrecte."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : authentification incorrecte (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : authentification incorrecte.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Utilisateur destinataire non trouvé",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : pseudo utilisateur inexistant",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : pseudo utilisateur inexistant."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : pseudo utilisateur inexistant (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : pseudo utilisateur inexistant.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Méthode HTTP incorrecte",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : méthode HTTP incorrecte",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : méthode HTTP incorrecte."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : méthode HTTP incorrecte (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : méthode HTTP incorrecte.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur interne",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : problème lors de l'envoi de la demande",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : l'envoi du courriel de demande d'autorisation a rencontré un problème."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : problème lors de l'envoi de la demande (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : l'envoi du courriel de demande d'autorisation a rencontré un problème.</reponse></data>"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/EnvoyerPosition": {
+      "get": {
+        "tags": ["Autorisations"],
+        "summary": "Envoyer une position",
+        "description": "Ce service permet à un utilisateur authentifié d'envoyer sa position dans une trace en cours.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Mot de passe (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e`\n- ID Trace : `42`\n- Latitude : `48.8566`\n- Longitude : `2.3522`\n- Altitude : `35`\n- Rythme cardiaque : `80`\n- Lang : `xml` ou `json`.",
+        "parameters": [
+          {
+            "name": "pseudo",
+            "in": "query",
+            "required": false,
+            "description": "Le pseudo de l'utilisateur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mdp",
+            "in": "query",
+            "required": false,
+            "description": "Le mot de passe hashé en SHA-1 de l'utilisateur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "idTrace",
+            "in": "query",
+            "required": false,
+            "description": "L'identifiant de la trace à laquelle la position doit être ajoutée.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "dateHeure",
+            "in": "query",
+            "required": false,
+            "description": "La date et l'heure de la position (format : YYYY-MM-DD HH:mm:ss).",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "latitude",
+            "in": "query",
+            "required": false,
+            "description": "La latitude de la position.",
+            "schema": {
+              "type": "number",
+              "format": "float"
+            }
+          },
+          {
+            "name": "longitude",
+            "in": "query",
+            "required": false,
+            "description": "La longitude de la position.",
+            "schema": {
+              "type": "number",
+              "format": "float"
+            }
+          },
+          {
+            "name": "altitude",
+            "in": "query",
+            "required": false,
+            "description": "L'altitude de la position (en mètres).",
+            "schema": {
+              "type": "number",
+              "format": "float"
+            }
+          },
+          {
+            "name": "rythmeCardio",
+            "in": "query",
+            "required": false,
+            "description": "Le rythme cardiaque enregistré (facultatif).",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "description": "Langue du flux de réponse (xml ou json). Par défaut : xml.",
+            "schema": {
+              "type": "string",
+              "enum": ["xml", "json"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Position enregistrée avec succès",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "success": {
+                    "summary": "Succès (JSON)",
+                    "value": {
+                      "data": {
+                        "reponse": "Point enregistré."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "success": {
+                    "summary": "Succès (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Point enregistré.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Données incomplètes",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : données incomplètes",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : données incomplètes."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : données incomplètes (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : données incomplètes.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentification incorrecte",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : authentification incorrecte",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : authentification incorrecte."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : authentification incorrecte (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : authentification incorrecte.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Trace non associée à l'utilisateur",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : la trace ne correspond pas",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : le numéro de trace ne correspond pas à cet utilisateur."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : la trace ne correspond pas (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : le numéro de trace ne correspond pas à cet utilisateur.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Trace inexistante",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : la trace n'existe pas",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : le numéro de trace n'existe pas."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : la trace n'existe pas (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : le numéro de trace n'existe pas.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Trace déjà terminée",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : la trace est terminée",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : la trace est déjà terminée."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : la trace est terminée (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : la trace est déjà terminée.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur interne",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : problème lors de l'enregistrement",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : problème lors de l'enregistrement du point."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : problème lors de l'enregistrement (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : problème lors de l'enregistrement du point.</reponse></data>"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/RetirerUneAutorisation": {
+      "get": {
+        "tags": ["Autorisations"],
+        "summary": "Retirer une autorisation",
+        "description": "Ce service permet à un utilisateur authentifié d'envoyer sa position dans une trace en cours.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Mot de passe (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e`\n- ID Trace : `42`\n- Latitude : `48.8566`\n- Longitude : `2.3522`\n- Altitude : `35`\n- Rythme cardiaque : `80`\n- Lang : `xml` ou `json`.",
+        "parameters": [
+          {
+            "name": "pseudo",
+            "in": "query",
+            "required": false,
+            "description": "Le pseudo de l'utilisateur qui souhaite retirer l'autorisation.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mdp",
+            "in": "query",
+            "required": false,
+            "description": "Le mot de passe hashé en SHA-1 de l'utilisateur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pseudoARetirer",
+            "in": "query",
+            "required": false,
+            "description": "Le pseudo de l'utilisateur pour lequel l'autorisation doit être retirée.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "texteMessage",
+            "in": "query",
+            "required": false,
+            "description": "Un message optionnel envoyé à l'utilisateur à qui l'autorisation est retirée.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "description": "Langue du flux de réponse (xml ou json). Par défaut : xml.",
+            "schema": {
+              "type": "string",
+              "enum": ["xml", "json"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Autorisation retirée avec succès",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "success": {
+                    "summary": "Succès (JSON)",
+                    "value": {
+                      "data": {
+                        "reponse": "Autorisation supprimée ; utilisateur destinataire a été notifié."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "success": {
+                    "summary": "Succès (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Autorisation supprimée ; utilisateur destinataire a été notifié.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Données incomplètes ou incorrectes",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : données incomplètes",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : données incomplètes."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : données incomplètes (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : données incomplètes.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentification incorrecte",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : authentification incorrecte",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : authentification incorrecte."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : authentification incorrecte (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : authentification incorrecte.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Utilisateur inexistant",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : utilisateur inexistant",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : pseudo utilisateur inexistant."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : utilisateur inexistant (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : pseudo utilisateur inexistant.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Aucune autorisation accordée",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : autorisation inexistante",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : l'autorisation n'était pas accordée."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : autorisation inexistante (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : l'autorisation n'était pas accordée.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erreur interne",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : problème interne",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : problème lors de la suppression de l'autorisation."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : problème interne (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : problème lors de la suppression de l'autorisation.</reponse></data>"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/DemanderMdp": {
+      "get": {
+        "tags": ["Authentification"],
+        "summary": "Demander un nouveau mot de passe",
+        "description": "Permet à un utilisateur de demander un nouveau mot de passe en cas d'oubli.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Lang : `xml` ou `json`.",
+        "parameters": [
+          {
+            "name": "pseudo",
+            "in": "query",
+            "required": false,
+            "description": "Le pseudo de l'utilisateur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "description": "Langue du flux de réponse (xml ou json). Par défaut : xml.",
+            "schema": {
+              "type": "string",
+              "enum": ["xml", "json"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Mot de passe réinitialisé avec succès.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "success": {
+                    "summary": "Succès (JSON)",
+                    "value": {
+                      "data": {
+                        "reponse": "Vous allez recevoir un courriel avec votre nouveau mot de passe."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "success": {
+                    "summary": "Succès (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Vous allez recevoir un courriel avec votre nouveau mot de passe.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Données incomplètes.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : données incomplètes",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : données incomplètes."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : données incomplètes (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : données incomplètes.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pseudo inexistant.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : pseudo inexistant",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : pseudo inexistant."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : pseudo inexistant (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : pseudo inexistant.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Problème interne lors de l'enregistrement ou de l'envoi de courriel.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : problème interne",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : problème lors de l'enregistrement du mot de passe."
+                      }
+                    }
+                  },
+                  "email_failure": {
+                    "summary": "Enregistrement effectué mais courriel non envoyé",
+                    "value": {
+                      "data": {
+                        "reponse": "Enregistrement effectué ; l'envoi du courriel de confirmation a rencontré un problème."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : problème interne (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : problème lors de l'enregistrement du mot de passe.</reponse></data>"
+                  },
+                  "email_failure": {
+                    "summary": "Enregistrement effectué mais courriel non envoyé (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Enregistrement effectué ; l'envoi du courriel de confirmation a rencontré un problème.</reponse></data>"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetLesUtilisateursQueJautorise": {
+      "get": {
+        "tags": ["Autorisations"],
+        "summary": "Obtenir la liste des utilisateurs autorisés",
+        "description": "Ce service permet à un utilisateur authentifié de consulter la liste des utilisateurs qu'il autorise à consulter ses parcours.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Mot de passe (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e`\n- Lang : `xml` ou `json`.",
+        "parameters": [
+          {
+            "name": "pseudo",
+            "in": "query",
+            "required": false,
+            "description": "Le pseudo de l'utilisateur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mdp",
+            "in": "query",
+            "required": false,
+            "description": "Le mot de passe hashé en SHA-1 de l'utilisateur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "description": "Langue du flux de réponse (xml ou json). Par défaut, xml.",
+            "schema": {
+              "type": "string",
+              "enum": ["xml", "json"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste des utilisateurs autorisés récupérée avec succès.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "with_data": {
+                    "summary": "Succès avec des données",
+                    "value": {
+                      "data": {
+                        "reponse": "2 autorisation(s) accordée(s) par neon.",
+                        "donnees": {
+                          "lesUtilisateurs": [
+                            {
+                              "id": 12,
+                              "pseudo": "oxygen",
+                              "adrMail": "delasalle.sio.eleves@gmail.com",
+                              "numTel": "44.55.66.77.88",
+                              "niveau": 1,
+                              "dateCreation": "2018-11-03 21:46:44",
+                              "nbTraces": 2,
+                              "dateDerniereTrace": "2018-01-19 13:08:48"
+                            },
+                            {
+                              "id": 13,
+                              "pseudo": "photon",
+                              "adrMail": "delasalle.sio.eleves@gmail.com",
+                              "numTel": "44.55.66.77.88",
+                              "niveau": 1,
+                              "dateCreation": "2018-11-03 21:46:44",
+                              "nbTraces": 0
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "no_data": {
+                    "summary": "Succès sans données",
+                    "value": {
+                      "data": {
+                        "reponse": "Aucune autorisation accordée par photon."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "with_data": {
+                    "summary": "Succès avec des données (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>2 autorisation(s) accordée(s) par neon.</reponse><donnees><lesUtilisateurs><utilisateur><id>12</id><pseudo>oxygen</pseudo><adrMail>delasalle.sio.eleves@gmail.com</adrMail><numTel>44.55.66.77.88</numTel><niveau>1</niveau><dateCreation>2018-11-03 21:46:44</dateCreation><nbTraces>2</nbTraces><dateDerniereTrace>2018-01-19 13:08:48</dateDerniereTrace></utilisateur><utilisateur><id>13</id><pseudo>photon</pseudo><adrMail>delasalle.sio.eleves@gmail.com</adrMail><numTel>44.55.66.77.88</numTel><niveau>1</niveau><dateCreation>2018-11-03 21:46:44</dateCreation><nbTraces>0</nbTraces></utilisateur></lesUtilisateurs></donnees></data>"
+                  },
+                  "no_data": {
+                    "summary": "Succès sans données (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Aucune autorisation accordée par photon.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Données incomplètes ou incorrectes.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : données incomplètes."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : données incomplètes.</reponse></data>"
+              }
+            }
+          },
+          "401": {
+            "description": "Authentification incorrecte.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "reponse": "Erreur : authentification incorrecte."
+                  }
+                }
+              },
+              "application/xml": {
+                "example": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : authentification incorrecte.</reponse></data>"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetLesUtilisateursQuiMautorisent": {
+      "get": {
+        "tags": ["Autorisations"],
+        "summary": "Obtenir la liste des utilisateurs qui autorisent un utilisateur donné",
+        "description": "Ce service permet à un utilisateur authentifié d'obtenir la liste des utilisateurs qui l'autorisent à consulter leurs parcours.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Mot de passe (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e`\n- Lang : `xml` ou `json`.",
+        "parameters": [
+          {
+            "name": "pseudo",
+            "in": "query",
+            "required": false,
+            "description": "Le pseudo de l'utilisateur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mdp",
+            "in": "query",
+            "required": false,
+            "description": "Le mot de passe hashé en SHA-1 de l'utilisateur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "description": "Langue du flux de réponse (xml ou json). Par défaut, xml.",
+            "schema": {
+              "type": "string",
+              "enum": ["xml", "json"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste des utilisateurs récupérée avec succès",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "success_with_users": {
+                    "summary": "Succès avec utilisateurs (JSON)",
+                    "value": {
+                      "data": {
+                        "reponse": "2 autorisation(s) accordée(s) à juno.",
+                        "donnees": {
+                          "lesUtilisateurs": [
+                            {
+                              "id": "5",
+                              "pseudo": "helios",
+                              "adrMail": "delasalle.sio.eleves@gmail.com",
+                              "numTel": "33.44.55.66.77",
+                              "niveau": "1",
+                              "dateCreation": "2018-11-03 21:46:44",
+                              "nbTraces": "2",
+                              "dateDerniereTrace": "2018-01-19 13:08:48"
+                            },
+                            {
+                              "id": "6",
+                              "pseudo": "indigo",
+                              "adrMail": "delasalle.sio.eleves@gmail.com",
+                              "numTel": "44.55.66.77.88",
+                              "niveau": "1",
+                              "dateCreation": "2018-11-03 21:46:44",
+                              "nbTraces": "2",
+                              "dateDerniereTrace": "2018-01-19 13:08:48"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "success_no_users": {
+                    "summary": "Succès sans utilisateurs (JSON)",
+                    "value": {
+                      "data": {
+                        "reponse": "Aucune autorisation accordée à callisto."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "success_with_users": {
+                    "summary": "Succès avec utilisateurs (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>2 autorisation(s) accordée(s) à juno.</reponse><donnees><lesUtilisateurs><utilisateur><id>5</id><pseudo>helios</pseudo><adrMail>delasalle.sio.eleves@gmail.com</adrMail><numTel>33.44.55.66.77</numTel><niveau>1</niveau><dateCreation>2018-11-03 21:46:44</dateCreation><nbTraces>2</nbTraces><dateDerniereTrace>2018-01-19 13:08:48</dateDerniereTrace></utilisateur><utilisateur><id>6</id><pseudo>indigo</pseudo><adrMail>delasalle.sio.eleves@gmail.com</adrMail><numTel>44.55.66.77.88</numTel><niveau>1</niveau><dateCreation>2018-11-03 21:46:44</dateCreation><nbTraces>2</nbTraces><dateDerniereTrace>2018-01-19 13:08:48</dateDerniereTrace></utilisateur></lesUtilisateurs></donnees></data>"
+                  },
+                  "success_no_users": {
+                    "summary": "Succès sans utilisateurs (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Aucune autorisation accordée à callisto.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Données incomplètes",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : données incomplètes",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : données incomplètes."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : données incomplètes (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : données incomplètes.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentification incorrecte",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : authentification incorrecte",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : authentification incorrecte."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : authentification incorrecte (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : authentification incorrecte.</reponse></data>"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetUnParcoursEtSesPoints": {
+      "get": {
+        "tags": ["Parcours"],
+        "summary": "Obtenir les détails d'un parcours et ses points",
+        "description": "Permet à un utilisateur d'obtenir les détails d'un de ses parcours ou d'un parcours d'un utilisateur qui l'autorise.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Mot de passe (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e`\n- ID Trace : `42`\n- Lang : `xml` ou `json`.",
+        "parameters": [
+          {
+            "name": "pseudo",
+            "in": "query",
+            "required": false,
+            "description": "Le pseudo de l'utilisateur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mdp",
+            "in": "query",
+            "required": false,
+            "description": "Le mot de passe hashé en SHA-1 de l'utilisateur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "idTrace",
+            "in": "query",
+            "required": false,
+            "description": "L'identifiant de la trace à consulter.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "description": "Langue du flux de réponse (xml ou json). Par défaut : xml.",
+            "schema": {
+              "type": "string",
+              "enum": ["xml", "json"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Données de la trace demandée.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "success": {
+                    "summary": "Succès (JSON)",
+                    "value": {
+                      "data": {
+                        "reponse": "Données de la trace demandée.",
+                        "donnees": {
+                          "trace": {
+                            "id": 2,
+                            "dateHeureDebut": "2018-01-19 13:08:48",
+                            "terminee": 1,
+                            "dateHeureFin": "2018-01-19 13:11:48",
+                            "idUtilisateur": 2
+                          },
+                          "lesPoints": [
+                            {
+                              "id": 1,
+                              "latitude": 48.2109,
+                              "longitude": -1.5535,
+                              "altitude": 60,
+                              "dateHeure": "2018-01-19 13:08:48",
+                              "rythmeCardio": 81
+                            },
+                            {
+                              "id": 10,
+                              "latitude": 48.2199,
+                              "longitude": -1.5445,
+                              "altitude": 150,
+                              "dateHeure": "2018-01-19 13:11:48",
+                              "rythmeCardio": 90
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "success": {
+                    "summary": "Succès (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<data>\n  <reponse>Données de la trace demandée.</reponse>\n  <donnees>\n    <trace>\n      <id>2</id>\n      <dateHeureDebut>2018-01-19 13:08:48</dateHeureDebut>\n      <terminee>1</terminee>\n      <dateHeureFin>2018-01-19 13:11:48</dateHeureFin>\n      <idUtilisateur>2</idUtilisateur>\n    </trace>\n    <lesPoints>\n      <point>\n        <id>1</id>\n        <latitude>48.2109</latitude>\n        <longitude>-1.5535</longitude>\n        <altitude>60</altitude>\n        <dateHeure>2018-01-19 13:08:48</dateHeure>\n        <rythmeCardio>81</rythmeCardio>\n      </point>\n      <point>\n        <id>10</id>\n        <latitude>48.2199</latitude>\n        <longitude>-1.5445</longitude>\n        <altitude>150</altitude>\n        <dateHeure>2018-01-19 13:11:48</dateHeure>\n        <rythmeCardio>90</rythmeCardio>\n      </point>\n    </lesPoints>\n  </donnees>\n</data>"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Données incomplètes ou incorrectes",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : données incomplètes",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : données incomplètes."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : données incomplètes (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<data>\n  <reponse>Erreur : données incomplètes.</reponse>\n</data>"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentification incorrecte",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : authentification incorrecte",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : authentification incorrecte."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : authentification incorrecte (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<data>\n  <reponse>Erreur : authentification incorrecte.</reponse>\n</data>"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Non autorisé à consulter la trace",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : non autorisé",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : vous n'êtes pas autorisé par le propriétaire du parcours."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : non autorisé (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<data>\n  <reponse>Erreur : vous n'êtes pas autorisé par le propriétaire du parcours.</reponse>\n</data>"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Trace inexistante",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : trace inexistante",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : parcours inexistant."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : trace inexistante (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<data>\n  <reponse>Erreur : parcours inexistant.</reponse>\n</data>"
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Méthode HTTP incorrecte",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : méthode incorrecte",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : méthode HTTP incorrecte."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "error": {
+                    "summary": "Erreur : méthode incorrecte (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<data>\n  <reponse>Erreur : méthode HTTP incorrecte.</reponse>\n</data>"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetLesParcoursDunUtilisateur": {
+      "get": {
+        "tags": ["Parcours"],
+        "summary": "Obtenir les parcours d'un utilisateur",
+        "description": "Ce service permet à un utilisateur d'obtenir la liste de ses parcours ou ceux d'un utilisateur qui l'autorise.\n\n**Exemple de test :**\n- Pseudo : `callisto`\n- Mot de passe (SHA-1) : `13e3668bbee30b004380052b086457b014504b3e`\n- Pseudo consulté : `europa`\n- Lang : `xml` ou `json`.",
+        "parameters": [
+          {
+            "name": "pseudo",
+            "in": "query",
+            "required": false,
+            "description": "Le pseudo de l'utilisateur demandeur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mdp",
+            "in": "query",
+            "required": false,
+            "description": "Le mot de passe hashé en SHA-1 de l'utilisateur demandeur.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pseudoConsulte",
+            "in": "query",
+            "required": false,
+            "description": "Le pseudo de l'utilisateur dont les parcours sont consultés.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "description": "Le format de réponse souhaité (xml ou json). Par défaut, xml.",
+            "schema": {
+              "type": "string",
+              "enum": ["xml", "json"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste des parcours récupérée avec succès.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "success": {
+                    "summary": "Succès (JSON)",
+                    "value": {
+                      "data": {
+                        "reponse": "2 trace(s) pour l'utilisateur callisto.",
+                        "donnees": {
+                          "lesTraces": [
+                            {
+                              "id": "2",
+                              "dateHeureDebut": "2018-01-19 13:08:48",
+                              "terminee": "1",
+                              "dateHeureFin": "2018-01-19 13:11:48",
+                              "distance": "1.2",
+                              "idUtilisateur": "2"
+                            },
+                            {
+                              "id": "1",
+                              "dateHeureDebut": "2018-01-19 13:08:48",
+                              "terminee": "0",
+                              "distance": "0.5",
+                              "idUtilisateur": "2"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "success": {
+                    "summary": "Succès (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>2 trace(s) pour l'utilisateur callisto.</reponse><donnees><lesTraces><trace><id>2</id><dateHeureDebut>2018-01-19 13:08:48</dateHeureDebut><terminee>1</terminee><dateHeureFin>2018-01-19 13:11:48</dateHeureFin><distance>1.2</distance><idUtilisateur>2</idUtilisateur></trace><trace><id>1</id><dateHeureDebut>2018-01-19 13:08:48</dateHeureDebut><terminee>0</terminee><distance>0.5</distance><idUtilisateur>2</idUtilisateur></trace></lesTraces></donnees></data>"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Données incomplètes ou incorrectes.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "incomplete_data": {
+                    "summary": "Données incomplètes",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : données incomplètes."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "incomplete_data": {
+                    "summary": "Données incomplètes (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : données incomplètes.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentification incorrecte.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "auth_error": {
+                    "summary": "Erreur : authentification incorrecte",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : authentification incorrecte."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "auth_error": {
+                    "summary": "Erreur : authentification incorrecte (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : authentification incorrecte.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pseudo consulté inexistant.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "user_not_found": {
+                    "summary": "Erreur : pseudo consulté inexistant",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : pseudo consulté inexistant."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "user_not_found": {
+                    "summary": "Erreur : pseudo consulté inexistant (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : pseudo consulté inexistant.</reponse></data>"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Non autorisé par l'utilisateur consulté.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "not_authorized": {
+                    "summary": "Erreur : non autorisé",
+                    "value": {
+                      "data": {
+                        "reponse": "Erreur : vous n'êtes pas autorisé par cet utilisateur."
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "examples": {
+                  "not_authorized": {
+                    "summary": "Erreur : non autorisé (XML)",
+                    "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data><reponse>Erreur : vous n'êtes pas autorisé par cet utilisateur.</reponse></data>"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

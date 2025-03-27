@@ -243,7 +243,7 @@ class Outils
 		$mois = (int)($chaine2);
 		$an = (int)($chaine3);
 	
-		// test des valeurs
+		// test.php des valeurs
         if ($mois < 1 || $mois > 12 || $jour < 1 || $jour > 31)
             return false;
 		else

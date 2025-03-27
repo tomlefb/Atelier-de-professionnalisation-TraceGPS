@@ -1,4 +1,9 @@
 <?php
+
+//link de test : http://localhost/ws-php-nd/tracegps-commun/version_clean/Atelier-de-professionnalisation-TraceGPS/src/api/ChangerDeMdp
+
+
+
 // Projet TraceGPS - services web
 // fichier :  api/services/ChangerDeMdp.php
 // Dernière mise à jour : 3/7/2021 par dP
@@ -14,7 +19,6 @@
 
 // Les paramètres doivent être passés par la méthode GET :
 //     http://<hébergeur>/tracegps/api/ChangerDeMdppseudo=europa&mdp=13e3668bbee30b004380052b086457b014504b3e&nouveauMdp=123&confirmationMdp=123&lang=xml
-include_once ('../../modele/DAO.php');
 // connexion du serveur web à la base MySQL
 $dao = new DAO();
 	
@@ -40,7 +44,7 @@ else {
         $code_reponse = 400;
     }
     else {
-        if ( strlen($nouveauMdp) < 3 ) {
+        if ( strlen($nouveauMdp) < 8 ) {
             $msg = 'Erreur : le mot de passe doit comporter au moins 8 caractères.';
             $code_reponse = 400;
         }

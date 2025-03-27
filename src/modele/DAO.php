@@ -439,20 +439,34 @@ class DAO
     // enregistre la date de fin et met le champ terminee à 1
     // retourne true si la modification a réussi, false sinon
     public function terminerUneTrace($idTrace) {
+        // Récupère les points de la trace
         $lesPoints = $this->getLesPointsDeTrace($idTrace);
-        $dateFin = $lesPoints ? end($lesPoints)->getDateHeure() : date('Y-m-d H:i:s');
 
+        // Si la trace a des points, utilise le dernier point pour déterminer la date de fin
+        $dateFin = $lesPoints ? end($lesPoints)->getDateHeure() : date('Y-m-d H:i:s'); // Utiliser la date actuelle si pas de points
+
+        // Préparation de la requête SQL pour marquer la trace comme terminée
         $txt_req = "UPDATE tracegps_traces
                 SET dateFin = :dateFin, terminee = 1
                 WHERE id = :idTrace";
+
         $req = $this->cnx->prepare($txt_req);
+
+        // Lier les paramètres
         $req->bindValue("dateFin", $dateFin, PDO::PARAM_STR);
         $req->bindValue("idTrace", $idTrace, PDO::PARAM_INT);
 
+        // Exécution de la requête
         $ok = $req->execute();
-        $req->closeCursor();
-        return $ok;
+
+        // Vérifier si l'exécution a réussi
+        if ($ok) {
+            return true;  // La trace a bien été terminée
+        } else {
+            return false; // Échec de la mise à jour
+        }
     }
+
 
 
 
@@ -687,12 +701,15 @@ class DAO
         $req->bindValue(":idAutorisant", $idAutorisant, PDO::PARAM_INT);
         $req->bindValue(":idAutorise", $idAutorise, PDO::PARAM_INT);
 
+        error_log("Tentative de création d'une autorisation pour $idAutorisant -> $idAutorise");
+
         // Exécute la requête et retourne le résultat
         try {
             $req->execute();
             return true; // Retourne true si l'insertion a réussi
-        } catch (Exception $ex) {
-            // En cas d'erreur, retourne false
+        } catch (Exception $e) {
+            // Log de l'erreur
+            error_log("Erreur lors de la création de l'autorisation : " . $e->getMessage());
             return false;
         }
     }
@@ -960,207 +977,353 @@ class DAO
 
 
     // --------------------------------------------------------------------------------------
-    // début de la zone attribuée au développeur 3 (xxxxxxxxxxxxxxxxxxxx) : lignes 750 à 949
+    // début de la zone attribuée au développeur 3 (Briac) : lignes 750 à 949
     // --------------------------------------------------------------------------------------
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-   
+
+    public function creerUnPointDeTrace($unPointDeTrace): bool
+    {
+        // Préparation de la requête pour insérer un point
+        $txt_req = "INSERT INTO tracegps_points (idTrace, id, latitude, longitude, altitude, dateHeure, rythmeCardio)
+                VALUES (:idTrace, :id, :latitude, :longitude, :altitude, :dateHeure, :rythmeCardio)";
+        $req = $this->cnx->prepare($txt_req);
+        $req->bindValue("idTrace", $unPointDeTrace->getIdTrace(), PDO::PARAM_INT);
+        $req->bindValue("id", $unPointDeTrace->getId(), PDO::PARAM_INT);
+        $req->bindValue("latitude", $unPointDeTrace->getLatitude(), PDO::PARAM_STR);
+        $req->bindValue("longitude", $unPointDeTrace->getLongitude(), PDO::PARAM_STR);
+        $req->bindValue("altitude", $unPointDeTrace->getAltitude(), PDO::PARAM_STR);
+        $req->bindValue("dateHeure", $unPointDeTrace->getDateHeure(), PDO::PARAM_STR);
+        $req->bindValue("rythmeCardio", $unPointDeTrace->getRythmeCardio(), PDO::PARAM_INT);
+
+        $ok = $req->execute();
+
+        // Si le point est le premier (id = 1), mise à jour de la date de début de la trace
+        if ($ok && $unPointDeTrace->getId() == 1) {
+            $txt_req_update = "UPDATE tracegps_traces
+                           SET dateDebut = :dateHeure
+                           WHERE id = :idTrace";
+            $req_update = $this->cnx->prepare($txt_req_update);
+            $req_update->bindValue("dateHeure", $unPointDeTrace->getDateHeure(), PDO::PARAM_STR);
+            $req_update->bindValue("idTrace", $unPointDeTrace->getIdTrace(), PDO::PARAM_INT);
+            $ok = $req_update->execute();
+        }
+
+        $req->closeCursor();
+        return $ok;
+    }
+
+
+
+    public function getUneTrace($idTrace) {
+        // préparation de la requête de recherche pour la trace
+        $txt_req = "SELECT * FROM tracegps_traces WHERE id = :idTrace";
+        $req = $this->cnx->prepare($txt_req);
+        $req->bindValue(":idTrace", $idTrace, PDO::PARAM_INT);
+        $req->execute();
+        $uneLigne = $req->fetch(PDO::FETCH_OBJ);
+
+        // si aucune trace n'est trouvée, retourner null
+        if (!$uneLigne) {
+            return null;
+        }
+
+        // construction de l'objet Trace
+        $dateHeureFin = property_exists($uneLigne, 'dateHeureFin') ? $uneLigne->dateHeureFin : null;
+        $uneTrace = new Trace(
+            $uneLigne->id,
+            $uneLigne->dateDebut,
+            $uneLigne->terminee,
+            $dateHeureFin,
+            $uneLigne->idUtilisateur
+        );
+
+        // utilisation de getLesPointsDeTrace pour ajouter les points à l'objet Trace
+        $lesPoints = $this->getLesPointsDeTrace($idTrace);
+        foreach ($lesPoints as $unPoint) {
+            $uneTrace->ajouterPoint($unPoint);
+        }
+
+        // libère les ressources du jeu de données
+        $req->closeCursor();
+
+        // retourne l'objet Trace avec ses points
+        return $uneTrace;
+    }
+
+
+
+    public function getToutesLesTraces() {
+        // Préparation de la requête pour récupérer toutes les traces
+        $txt_req = "SELECT * FROM tracegps_traces ORDER BY dateDebut DESC";
+        $req = $this->cnx->prepare($txt_req);
+        $req->execute();
+
+        $lesTraces = [];
+        while ($uneLigne = $req->fetch(PDO::FETCH_OBJ)) {
+            // Construction de l'objet Trace
+            $dateHeureFin = property_exists($uneLigne, 'dateFin') ? $uneLigne->dateFin : null;
+            $uneTrace = new Trace(
+                $uneLigne->id,
+                $uneLigne->dateDebut,
+                $dateHeureFin,
+                $uneLigne->terminee,
+                $uneLigne->idUtilisateur
+            );
+
+            // Utilisation de getLesPointsDeTrace pour obtenir les points associés à la trace
+            $lesPoints = $this->getLesPointsDeTrace($uneTrace->getId());
+            foreach ($lesPoints as $unPoint) {
+                $uneTrace->ajouterPoint($unPoint);
+            }
+
+            // Ajout de la trace dans la collection
+            $lesTraces[] = $uneTrace;
+        }
+
+        // Libération des ressources
+        $req->closeCursor();
+
+        // Retourne la collection de toutes les traces
+        return $lesTraces;
+    }
+
+
+
+    public function getLesTraces($idUtilisateur): array {
+        // préparation de la requête pour récupérer les traces de l'utilisateur
+        $txt_req = "SELECT * FROM tracegps_traces WHERE idUtilisateur = :idUtilisateur ORDER BY dateDebut DESC";
+        $req = $this->cnx->prepare($txt_req);
+        $req->bindValue(":idUtilisateur", $idUtilisateur, PDO::PARAM_INT);
+        $req->execute();
+
+        $lesTraces = array();
+
+        // boucle pour chaque trace trouvée
+        while ($uneLigne = $req->fetch(PDO::FETCH_OBJ)) {
+            $dateHeureFin = property_exists($uneLigne, 'dateHeureFin') ? $uneLigne->dateHeureFin : null;
+            $uneTrace = new Trace(
+                $uneLigne->id,
+                $uneLigne->dateDebut,
+                $uneLigne->terminee,
+                $dateHeureFin,
+                $uneLigne->idUtilisateur
+            );
+
+            // récupération et ajout des points pour chaque trace
+            $lesPoints = $this->getLesPointsDeTrace($uneLigne->id);
+            foreach ($lesPoints as $unPoint) {
+                $uneTrace->ajouterPoint($unPoint);
+            }
+
+            // ajout de l'objet Trace (avec ses points) dans la collection
+            $lesTraces[] = $uneTrace;
+        }
+
+        // libération des ressources
+        $req->closeCursor();
+
+        // retour de la collection de traces
+        return $lesTraces;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // --------------------------------------------------------------------------------------
-    // début de la zone attribuée test au développeur 4 (Lohann) : lignes 950 à 1150
+    // début de la zone attribuée test.php au développeur 4 (Lohann) : lignes 950 à 1150
     // --------------------------------------------------------------------------------------
     //1.    existeAdrMailUtilisateur
     // Vérifie si une adresse e-mail existe dans la table tracegps_utilisateurs
